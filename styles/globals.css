@@ -1,0 +1,20 @@
+/** GENERAL CSS **/
+html {
+    scroll-behavior: smooth;
+    width: 100%;
+    height: 100%;
+    font-size: 1vw;
+    direction: rtl;
+} 
+
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ecfaff;
+}
+
+.blue_title {
+    color: #020079;
+    font-weight: bold;
+}

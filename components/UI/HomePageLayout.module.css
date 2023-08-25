@@ -1,0 +1,24 @@
+.nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75vw 2vw;
+    align-items: center;
+    border-bottom: 1px solid #0200792c;
+    background-color: #d5f2fd;
+}
+
+.logo_container {
+    width: 11vw;
+    height: 4.5vw;
+    position: relative;
+    top: 0vw;
+    left: 0vw;
+}
+
+.logo_container > img {
+    border-radius: 7px;
+}
+
+.nav_message {
+    font-size: 135%;
+}
