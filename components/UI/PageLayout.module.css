@@ -1,0 +1,38 @@
+.nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 1vw 2vw;
+    align-items: center;
+    border-bottom: 1px solid #0200792c;
+    background-color: #d5f2fd;
+}
+
+.logo_container {
+    width: 13.5vw;
+    height: 5.5vw;
+    position: relative;
+    top: 0vw;
+    left: 0vw;
+}
+
+.logo_container > img {
+    border-radius: 7px;
+}
+
+.nav_message {
+    font-size: 150%;
+}
+
+.nav_items {
+    display: flex;
+    column-gap: 1.5vw;
+}
+
+.nav_link {
+    text-decoration: none;
+    font-size: 120%;
+}
+
+.nav_link:hover {
+    text-decoration: underline;
+}
