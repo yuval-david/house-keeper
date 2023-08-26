@@ -12,7 +12,7 @@
   height: 400px;
   padding: 20px;
   border-radius: 50%;
-  margin: 40px auto;
+  margin: 54px auto;
 }
 .circle_container a {
   display: block;
@@ -121,4 +121,70 @@
 .red:hover {
     background-color: rgba(217, 0, 25, 0.213);
     transition-duration: 0.25s;
+}
+
+
+
+/***********   MOBILE LIST CSS   ************/
+@media (max-width: 1024px) {
+
+    .place_list {
+        position: unset;
+        box-shadow: unset;
+    }
+    
+    
+    .circle_container {
+        position: unset;
+        width: 90%;
+        height: auto;
+        padding: 3vw;
+        border-radius: 0;
+        margin: 5vw auto;
+    }
+
+    .circle_container a {
+        display: unset;
+        position: unset;
+        width: auto; 
+        height: auto;
+        margin: unset;
+        text-align: center;
+        text-decoration: none;
+        color: inherit;
+        width: 46%;
+    }
+    
+    .circle_container a.center {
+        top: unset;
+    }
+
+    .links_container {
+        margin-top: 16vw;
+        margin-bottom: 10vw;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        row-gap: 15vw;
+    }
+
+    .deg0 { transform: none; } /* 12em = half the width of the wrapper */
+    .deg45 { transform: none; }
+    .deg90 { transform: none; } 
+    .deg135 { transform: none; }
+    .deg180 { transform: none; }     
+    .deg225 { transform: none; } 
+    .deg270 { transform: none; } 
+    .deg315 { transform: none; } 
+
+    .circle_container a span {
+        width: 100%;
+        display: inline-block;
+        font-size: 130%;
+        padding: 5vw;
+    }
+
+    .center h2 {
+        font-size: 170%;
+    }
 }

@@ -7,6 +7,16 @@ html {
     direction: rtl;
 } 
 
+* {
+    box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+    html {
+        font-size: 3.66vw;
+    }
+}
+
 body {
     margin: 0;
     width: 100%;
