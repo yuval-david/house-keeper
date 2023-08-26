@@ -7,6 +7,12 @@
     background-color: #d5f2fd;
 }
 
+@media (max-width: 1024px) {
+    .nav {
+        padding: 3vw;
+    }
+}
+
 .logo_container {
     width: 11vw;
     height: 4.5vw;
@@ -17,6 +23,13 @@
 
 .logo_container > img {
     border-radius: 7px;
+}
+
+@media (max-width: 1024px) {
+    .logo_container {
+        width: 28vw;
+        height: 11vw;
+    }
 }
 
 .nav_message {
