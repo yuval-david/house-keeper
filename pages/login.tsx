@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import style from "../styles/Login.module.css"
-
+import TextField from '@mui/material/TextField';
 
 export default function Login() {
 
@@ -13,9 +13,20 @@ export default function Login() {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <main>
+            <main className={style.login_main} dir='rtl'>
                 <div className={style.login_logo}>
                     <Image src="/housekeeper.jpg" fill alt="House Keeper" />
+                </div>
+                <div className={style.login_form}>
+                    <h1>התחברות</h1>
+                    <form dir='rtl'>
+                        <TextField id="email" label="כתובת אימייל" variant="outlined" fullWidth dir="rtl" />
+                        <TextField id="password" label="סיסמה" variant="outlined" type='password' fullWidth dir="rtl" />
+
+
+                        <button>התחברות</button>
+
+                    </form>
                 </div>
             </main>
         </>

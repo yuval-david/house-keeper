@@ -1,9 +1,29 @@
+.login_main {
+    background-color: white;
+    height: 100vh;
+    margin: auto;
+    background: url("../public/login/building-desktop.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+}
+
+
 .login_logo {
     position: relative;
     top: 3vw;
     left: 0;
     width: 28vw;
-    height: 12vw;
+    height: 10vw;
     margin: auto;
     border: 2px solid #016fa0;
+}
+
+
+.login_form {
+    width: 28vw;
+    background: white;
+    margin: auto;
+    margin-top: 5vw;
+    border: 2px solid #016fa0;
+    padding: 1vw;
 }
