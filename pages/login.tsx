@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import style from "../styles/Login.module.css"
-import TextField from '@mui/material/TextField';
+import { TextField } from "../components/UI/FormFields/TextField"
 
 export default function Login() {
 
@@ -18,14 +18,13 @@ export default function Login() {
                     <Image src="/housekeeper.jpg" fill alt="House Keeper" />
                 </div>
                 <div className={style.login_form}>
-                    <h1>התחברות</h1>
+                    <h1 className={`blue_title ${style.form_title}`}>התחברות</h1>
                     <form dir='rtl'>
-                        <TextField id="email" label="כתובת אימייל" variant="outlined" fullWidth dir="rtl" />
-                        <TextField id="password" label="סיסמה" variant="outlined" type='password' fullWidth dir="rtl" />
-
-
-                        <button>התחברות</button>
-
+                        <div className={style.field_container}>
+                            <TextField label="כתובת אימייל" dir='ltr' type='text' />
+                            <TextField label="סיסמה" dir='ltr' type='password' />
+                        </div>
+                        <button className={style.submit_btn}>התחברות</button>
                     </form>
                 </div>
             </main>

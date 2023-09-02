@@ -16,14 +16,50 @@
     height: 10vw;
     margin: auto;
     border: 2px solid #016fa0;
+    opacity: 0.9;
 }
 
 
 .login_form {
     width: 28vw;
-    background: white;
+    background: rgba(255, 255, 255, 0.94);
     margin: auto;
     margin-top: 5vw;
     border: 2px solid #016fa0;
     padding: 1vw;
+    padding-bottom: 2vw;
+    text-align: center;
+}
+
+.login_form form {
+    width: 90%;
+    margin: auto;
+}
+
+.form_title {
+    font-size: 160%;
+}
+
+.submit_btn {
+    margin-top: 2vw;
+    background-color: rgba(30, 152, 215, 0.69);
+    color: #020079;
+    font-weight: bold;
+    border: none;
+    font-size: 120%;
+    padding: 8px 15px;
+    min-width: 80%;
+    transition: 0.25s;
+    cursor: pointer;
+}
+
+.submit_btn:hover {
+    background-color: rgba(30, 153, 215, 0.553);
+    transition: 0.25s;
+}
+
+.field_container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1vw;
 }

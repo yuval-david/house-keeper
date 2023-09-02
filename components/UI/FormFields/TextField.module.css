@@ -1,0 +1,21 @@
+.text_field {
+    width: 100%;
+    border:  1px solid #020079;
+    border-radius: 4px;
+    color: #020079;
+    font-size: 120%;
+    height: 3vw;
+    padding: 0 8px;
+} 
+
+.text_field_container {
+    text-align: right;
+}
+
+.text_field_container > label {
+    margin-bottom: 0.5vw;
+    display: block;
+    font-size: 100%;
+    font-weight: 600;
+
+}
