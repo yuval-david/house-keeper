@@ -1,8 +1,11 @@
+import { PageLayout } from '@/components/UI/PageLayout'
 import { TenantsPageComponent } from '@/components/tenants/TenantsPageComponent'
 import React from 'react'
 
 export default function TenantsPage() {
     return (
-        <TenantsPageComponent />
+        <PageLayout pageTitle="ניהול דיירים">
+            <TenantsPageComponent />
+        </PageLayout>
     )
 }

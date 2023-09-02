@@ -4,7 +4,7 @@ import style from "./PageLayout.module.css"
 import Link from 'next/link';
 
 // This is Layout component for all pages in the application (exclude Home Page)
-export function PageLayout({ children }: { children: ReactNode }) {
+export function PageLayout({ pageTitle, children }: { pageTitle?: string; children: ReactNode }) {
     return (
         <div>
             <nav className={style.nav}>
@@ -19,7 +19,8 @@ export function PageLayout({ children }: { children: ReactNode }) {
                     <Image src="/housekeeper.jpg" alt="house-kkeper" fill />
                 </div>
             </nav>
-            <main>
+            <main className={style.main}>
+                {!!pageTitle && <h1 className={`blue_title ${style.page_title}`}>{pageTitle}</h1>}
                 {children}
             </main>
         </div>

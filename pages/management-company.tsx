@@ -4,6 +4,8 @@ import React from 'react'
 
 export default function ManagementCompanyPage() {
     return (
-        <ManagementCompanyPageComponent />
+        <PageLayout pageTitle="חברת הניהול">
+            <ManagementCompanyPageComponent />
+        </PageLayout>
     )
 }

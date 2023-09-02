@@ -4,7 +4,7 @@ import React from 'react'
 
 export default function MeetingsPage() {
     return (
-        <PageLayout>
+        <PageLayout pageTitle="פגישות דיירים">
             <MeetingsComponent />
         </PageLayout>
     )
