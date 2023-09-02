@@ -2,8 +2,42 @@ import Head from 'next/head'
 import Image from 'next/image'
 import style from "../styles/Login.module.css"
 import { TextField } from "../components/UI/FormFields/TextField"
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 export default function Login() {
+
+    const router = useRouter();
+
+    // Form Fields
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    // Handle submit login function
+    const handleLogin = async (event: any) => {
+        event.preventDefault();
+        const data = {
+            email,
+            password,
+        }
+
+        console.log(data);
+        router.replace({
+            pathname: "/"
+        });
+
+        // Add after finish backned: 
+        // const url = "https://localhost:3000/api/login";
+        // const response = await fetch(url, {
+        //     method: "POST",
+        //     mode: "cors",
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     body: JSON.stringify(data)
+        // });
+        // console.log("response: ", response);
+    }
 
     return (
         <>
@@ -19,12 +53,12 @@ export default function Login() {
                 </div>
                 <div className={style.login_form}>
                     <h1 className={`blue_title ${style.form_title}`}>התחברות</h1>
-                    <form dir='rtl'>
+                    <form dir='rtl' onSubmit={(e) => handleLogin(e)}>
                         <div className={style.field_container}>
-                            <TextField label="כתובת אימייל" dir='ltr' type='text' />
-                            <TextField label="סיסמה" dir='ltr' type='password' />
+                            <TextField value={email} onChange={(e) => setEmail(e.target.value)} label="כתובת אימייל" dir='ltr' type='text' />
+                            <TextField value={password} onChange={(e) => setPassword(e.target.value)} label="סיסמה" dir='ltr' type='password' />
                         </div>
-                        <button className={style.submit_btn}>התחברות</button>
+                        <button className={style.submit_btn} type='submit'>התחברות</button>
                     </form>
                 </div>
             </main>

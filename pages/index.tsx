@@ -1,9 +1,13 @@
 import Head from 'next/head'
 import { HomePageComponent } from '@/components/home/HomePageComponent'
 import { HomePageLayout } from '@/components/UI/HomePageLayout'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react';
 
 
 export default function Home() {
+
+  const router = useRouter();
 
   return (
     <>
