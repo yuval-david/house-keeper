@@ -4,6 +4,7 @@ import style from "../styles/Login.module.css"
 import { TextField } from "../components/UI/FormFields/TextField"
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 export default function Login() {
 
@@ -22,9 +23,7 @@ export default function Login() {
         }
 
         console.log(data);
-        router.replace({
-            pathname: "/"
-        });
+        router.replace("/home");
 
         // Add after finish backned: 
         // const url = "https://localhost:3000/api/login";
@@ -59,6 +58,9 @@ export default function Login() {
                             <TextField value={password} onChange={(e) => setPassword(e.target.value)} label="סיסמה" dir='ltr' type='password' />
                         </div>
                         <button className={style.submit_btn} type='submit'>התחברות</button>
+                        <Link href="/register" className={style.register_text}>
+                            עדיין לא רשום? לחץ כאן להרשמה
+                        </Link>
                     </form>
                 </div>
             </main>
