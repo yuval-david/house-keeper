@@ -9,10 +9,11 @@ export function PageLayout({ children }: { children: ReactNode }) {
         <div>
             <nav className={style.nav}>
                 <div className={style.nav_items}>
-                    <Link className={`blue_title ${style.nav_link}`} href="/">דף הבית</Link>
-                    <Link className={`blue_title ${style.nav_link}`} href="/">פגישות דיירים</Link>
-                    <Link className={`blue_title ${style.nav_link}`} href="/">תקלות</Link>
-                    <Link className={`blue_title ${style.nav_link}`} href="/">חברת ניהול</Link>
+                    <Link className={`blue_title ${style.nav_link}`} href="/home">דף הבית</Link>
+                    <Link className={`blue_title ${style.nav_link}`} href="/meetings">פגישות דיירים</Link>
+                    <Link className={`blue_title ${style.nav_link}`} href="/faults">תקלות</Link>
+                    <Link className={`blue_title ${style.nav_link}`} href="/management-company">חברת ניהול</Link>
+                    <Link className={`blue_title ${style.nav_link}`} href="/tenants">ניהול דיירים</Link>
                 </div>
                 <div className={style.logo_container}>
                     <Image src="/housekeeper.jpg" alt="house-kkeper" fill />
