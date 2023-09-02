@@ -8,6 +8,12 @@
     padding: 0 8px;
 } 
 
+@media (max-width: 1024px) {
+    .text_field {
+        height: 10vw;
+    }
+}
+
 .text_field_container {
     text-align: right;
 }
@@ -17,5 +23,11 @@
     display: block;
     font-size: 100%;
     font-weight: 600;
+    color: #020079;
+}
 
+@media (max-width: 1024px) {
+    .text_field_container > label {
+        font-size: 110%;
+    }
 }

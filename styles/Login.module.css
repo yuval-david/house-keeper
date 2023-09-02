@@ -7,6 +7,27 @@
     background-size: 100% auto;
 }
 
+@media (max-width: 1024px) {
+    .login_main {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        overflow-y: auto;
+        background: linear-gradient(rgba(255, 255, 255, 0.779), rgba(255, 255, 255, 0.746)), url("../public/login/building-desktop.jpg");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .login_main {
+        background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("../public/login/building.jpg");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+}
+
 
 .login_logo {
     position: relative;
@@ -19,6 +40,14 @@
     opacity: 0.9;
 }
 
+@media (max-width: 1024px) {
+    .login_logo {
+        top: 6vw;
+        width: 90vw;
+        height: 35vw;
+    }
+}
+
 
 .login_form {
     width: 28vw;
@@ -29,6 +58,19 @@
     padding: 1vw;
     padding-bottom: 2vw;
     text-align: center;
+}
+
+@media (max-width: 1024px) {
+    .login_form {
+        width: 90vw;
+        background: none;
+        margin: auto;
+        margin-top: 10vw;
+        border: none;
+        padding: 1vw;
+        padding-bottom: 2vw;
+        text-align: center;
+    }
 }
 
 .login_form form {
@@ -58,8 +100,20 @@
     transition: 0.25s;
 }
 
+@media (max-width: 1024px) {
+    .submit_btn {
+        margin-top: 6vw;
+    }
+}
+
 .field_container {
     display: flex;
     flex-direction: column;
     row-gap: 1vw;
+}
+
+@media (max-width: 1024px) {
+    .field_container {
+        row-gap: 2vw;
+    }
 }
