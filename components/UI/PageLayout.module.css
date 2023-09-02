@@ -36,3 +36,13 @@
 .nav_link:hover {
     text-decoration: underline;
 }
+
+
+.page_title {
+    font-size: 180%;
+    margin-top: 0;
+}
+
+.main {
+    padding: 2vw;
+}
