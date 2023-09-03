@@ -1,0 +1,30 @@
+.meeting_card {
+    border: 1.5px solid #797979;
+    display: flex;
+    min-height: 10vw;
+}
+
+.icon_part {
+    flex: 1;
+    background-color: rgba(240, 128, 128, 0.553);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.meeting_card:nth-child(2n) .icon_part {
+   background-color: rgba(194, 128, 255, 0.27); 
+}
+
+.meeting_card:nth-child(3n) .icon_part {
+   background-color: rgba(151, 242, 4, 0.405); 
+}
+
+.content_part {
+    flex: 5;
+    border-right: 1.5px solid #797979;
+}
+
+.icon_container {
+    width: 25%;
+}
