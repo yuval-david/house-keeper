@@ -41,8 +41,24 @@
 .page_title {
     font-size: 180%;
     margin-top: 0;
+    margin-bottom: 2vw;
+}
+
+@media (max-width: 1024px) {
+    .page_title {
+        margin-top: 2vw;
+        margin-bottom: 6vw;
+    }
 }
 
 .main {
     padding: 2vw;
+}
+
+@media (max-width: 1024px) {
+    .main {
+        padding: 4vw;
+        padding-left: 6vw;
+        padding-right: 6vw;
+    }
 }
