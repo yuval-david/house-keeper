@@ -24,6 +24,10 @@ body {
     background-color: #ecfaff;
 }
 
+img {
+    width: 100%;
+}
+
 .blue_title {
     color: #020079;
     font-weight: bold;
