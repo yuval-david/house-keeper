@@ -23,8 +23,158 @@
 .content_part {
     flex: 5;
     border-right: 1.5px solid #797979;
+    padding: 1.5vw 1vw;
+    display: flex;
+    background-color: white;
+}
+
+@media (max-width:1024px) {
+    .content_part {
+        flex-direction: column;
+        row-gap: 5vw;
+        padding: 3vw;
+    }
 }
 
 .icon_container {
     width: 25%;
+}
+
+@media (max-width:1024px) {
+    .icon_container {
+        width: 55%;
+    }
+}
+
+.meeting_details {
+    flex: 1;
+    padding: 0.5vw;
+}
+
+.meeting_actions {
+    flex: 1;
+    padding: 0.5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.meeting_actions > div {
+    display: flex;
+    justify-content: space-between;
+}
+
+@media (max-width:1024px) {
+    .meeting_actions {
+        row-gap: 3vw;
+    }
+}
+
+.meeting_actions > div button {
+    width: 47%;
+    padding: 0.5vw;
+    padding: 0.5vw;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    font-size: 110%;
+}
+
+@media (max-width:1024px) {
+    .meeting_actions > div button {
+        width: 48%;
+    }
+}
+
+.meeting_details h3 {
+    margin-top: 0;
+    font-size: 120%;
+}
+
+.details_container {
+    display: flex;
+    align-items: center;
+    column-gap: 2.5vw;
+}
+
+@media (max-width:1024px) {
+    .details_container {
+        column-gap: 12vw;
+    }
+}
+
+.date_part {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5vw;
+}
+
+.date_part .detail span {
+    font-size: 115%;
+}
+
+.date_part .detail .label {
+    font-weight: bold;
+}
+
+.btn_status_part a {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    width: 8vw;
+    padding: 0.5vw 0;
+    background-color: rgba(3, 191, 22, 0.6);
+    border: 2px solid #95f204;
+    font-weight: bold;
+    transition-duration: 0.25s;
+}
+
+@media (max-width:1024px) {
+    .btn_status_part a {
+        width: 25vw;
+    }
+}
+
+.btn_status_part a:hover {
+    background-color: #95f204;
+    transition-duration: 0.25s;
+}
+
+/* BUTTONS COLORS */
+.btn_view_short {
+    background-color: rgba(0, 170, 170, 0.99);
+    border: 1.5px solid rgba(0, 55, 55, 0.87);
+    transition: 0.25s;
+}
+.btn_view_short:hover {
+   background-color: rgba(0, 55, 55, 0.87);
+   transition: 0.25s; 
+}
+
+.btn_add_calendar {
+    background-color: rgba(185, 26, 170, 0.45);
+    border: 1.5px solid rgba(185, 26, 170, 0.61);
+}
+.btn_add_calendar:hover {
+    background-color: rgba(185, 26, 170, 0.61);
+    transition: 0.25s; 
+}
+
+.btn_send_alert {
+    background-color: rgba(245, 154, 35, 0.85);
+    border: 1.5px solid rgba(215, 130, 31, 0.99);
+}
+.btn_send_alert:hover {
+    background-color: rgba(215, 130, 31, 0.99);
+    transition: 0.25s; 
+ }
+
+.btn_add_short {
+    background-color: rgba(252, 95, 114, 0.99);
+    border: 1.5px solid rgba(173, 38, 55, 0.99);
+}
+.btn_add_short:hover {
+    background-color: rgba(173, 38, 55, 0.99);
+    transition: 0.25s; 
 }
