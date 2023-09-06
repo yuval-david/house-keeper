@@ -1,5 +1,5 @@
 import React from 'react'
-import style from "./CustomInput.module.css"
+import style from "./CustomInputRow.module.css"
 
 export function CustomInputRow({
     label,

@@ -9,6 +9,7 @@ export default function addMeetingPage() {
     const [meetingTime, setMeetingTime] = useState<string>("");
     const [meetingPlace, setMeetingPlace] = useState<string>("");
 
+    // Sumbit ADD-MEETING form
     const handleSubmit = (event: any) => {
         event.preventDefault();
         const data = {
@@ -18,6 +19,7 @@ export default function addMeetingPage() {
         }
         console.log(data);
     }
+
     return (
         <PageLayout pageTitle='הוספת פגישה חדשה'>
             <form className={style.form} onSubmit={handleSubmit}>
@@ -40,7 +42,6 @@ export default function addMeetingPage() {
                 <div className={style.meeting_save_btn}>
                     <ButtonSave text='לחץ לשמירה' type='submit' />
                 </div>
-
             </form>
         </PageLayout>
     )

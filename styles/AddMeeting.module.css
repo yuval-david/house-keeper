@@ -40,6 +40,12 @@
     font-size: 150%;
 }
 
+@media (max-width:1024px) {
+    .content_part h2 {
+        font-size: 140%;
+    }
+}
+
 .content_part h4 {
     margin-top: 0;
     font-size: 120%;
@@ -63,8 +69,21 @@
     row-gap: 1.5vw;
 }
 
+@media (max-width:1024px) {
+    .details_list {
+        width: 100%;
+    }
+}
+
 .form {
     display: flex;
+}
+
+@media (max-width:1024px) {
+    .form {
+        flex-direction: column;
+        row-gap: 10vw;
+    }
 }
 
 .meeting_save_btn {

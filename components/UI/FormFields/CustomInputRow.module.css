@@ -31,11 +31,17 @@
 
 @media (max-width: 1024px) {
     .text_field_container > label {
-        font-size: 110%;
+        font-size: 120%;
     }
 }
 
 
 .text_field_container input {
     max-width: 70%;
+}
+
+@media (max-width: 1024px) {
+    .text_field_container input {
+        max-width: 75%;
+    }
 }

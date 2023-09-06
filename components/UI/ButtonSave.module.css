@@ -8,6 +8,7 @@
     padding: 0.5vw 1vw;
     cursor: pointer;
     transition: 0.25s;
+    font-size: 120%;
 }
 
 .button:hover {
@@ -17,10 +18,22 @@
 
 .btn_text {
     color: white;
-    font-size: 120%;
+    font-size: inherit;
     font-weight: 600;
 }
 
 .btn_icon {
     width: 2vw;
+}
+
+
+@media (max-width:1024px) {
+    .button {
+        padding: 2.5vw;
+        column-gap: 4vw;
+    }
+
+    .btn_icon {
+        width: 6vw;
+    }
 }
