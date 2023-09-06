@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import style from "../styles/Login.module.css"
-import { TextField } from "../components/UI/FormFields/TextField"
+import { CustomInput } from "../components/UI/FormFields/CustomInput"
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -54,8 +54,8 @@ export default function Login() {
                     <h1 className={`blue_title ${style.form_title}`}>התחברות</h1>
                     <form dir='rtl' onSubmit={(e) => handleLogin(e)}>
                         <div className={style.field_container}>
-                            <TextField value={email} onChange={(e) => setEmail(e.target.value)} label="כתובת אימייל" dir='ltr' type='text' />
-                            <TextField value={password} onChange={(e) => setPassword(e.target.value)} label="סיסמה" dir='ltr' type='password' />
+                            <CustomInput value={email} onChange={(e) => setEmail(e.target.value)} label="כתובת אימייל" dir='ltr' type='text' />
+                            <CustomInput value={password} onChange={(e) => setPassword(e.target.value)} label="סיסמה" dir='ltr' type='password' />
                         </div>
                         <button className={style.submit_btn} type='submit'>התחברות</button>
                         <Link href="/register" className={style.register_text}>

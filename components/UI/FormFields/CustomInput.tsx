@@ -1,7 +1,7 @@
 import React from 'react'
-import style from "./TextField.module.css"
+import style from "./CustomInput.module.css"
 
-export function TextField({
+export function CustomInput({
     label,
     placeholder,
     dir = "rtl",

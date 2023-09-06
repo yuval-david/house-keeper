@@ -1,0 +1,79 @@
+.meeting_card {
+    border: 1.5px solid #797979;
+    display: flex;
+    min-height: 10vw;
+}
+
+.icon_part {
+    flex: 1;
+    background-color: rgba(240, 128, 128, 0.553);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.meeting_card:nth-child(2n) .icon_part {
+   background-color: rgba(194, 128, 255, 0.27); 
+}
+
+.meeting_card:nth-child(3n) .icon_part {
+   background-color: rgba(151, 242, 4, 0.405); 
+}
+
+.content_part {
+    flex: 5;
+    border-right: 1.5px solid #797979;
+    padding: 2vw;
+    background-color: white;
+}
+
+@media (max-width:1024px) {
+    .content_part {
+        flex-direction: column;
+        row-gap: 5vw;
+        padding: 3vw;
+    }
+}
+
+.content_part h2 {
+    margin-top: 0;
+    font-size: 150%;
+}
+
+.content_part h4 {
+    margin-top: 0;
+    font-size: 120%;
+    text-decoration: underline;
+}
+
+.icon_container {
+    width: 25%;
+}
+
+@media (max-width:1024px) {
+    .icon_container {
+        width: 55%;
+    }
+}
+
+.details_list {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5vw;
+}
+
+.form {
+    display: flex;
+}
+
+.meeting_save_btn {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.meeting_card {
+    flex: 2;
+}
