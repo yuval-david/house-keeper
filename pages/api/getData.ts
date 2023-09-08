@@ -7,8 +7,9 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   try {
-    const query = "SELECT * FROM tenants";
-    const data = await excuteQuery({query});
+    const query = "SELECT * FROM meetings";
+    // const query = "SELECT * FROM tenants"; // Local DB
+    const data = await excuteQuery({ query });
     res.status(200).json({ results: data });
   } catch (error: any) {
     res.status(500).json({ error: error.message })
