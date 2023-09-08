@@ -8,7 +8,6 @@ export default async function handler(
 ) {
   try {
     const query = "SELECT * FROM meetings";
-    // const query = "SELECT * FROM tenants"; // Local DB
     const data = await excuteQuery({ query });
     res.status(200).json({ results: data });
   } catch (error: any) {
