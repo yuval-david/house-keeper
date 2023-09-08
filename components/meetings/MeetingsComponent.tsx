@@ -22,19 +22,23 @@ export function MeetingsComponent() {
             }).catch(err => { console.log(err); setLoading(false) });
     }, []);
 
-    if (isLoading) return <p>Loading...</p>;
-    if (!meetings) return <p>Missing data about meetings</p>;
+    // if (isLoading) return <p>Loading...</p>;
+    // if (!meetings) return <p>Missing data about meetings</p>;
     console.log(meetings);
 
     return (
         <div>
             <ButtonAddItem buttonLink="/meetings/add-meeting" buttonText='להוספת פגישה חדשה' />
             <div className={style.meetings_cards_container}>
-                {meetings.length > 0 && meetings.map((meetingItem, index) => {
+                {/* {meetings.length > 0 && meetings.map((meetingItem, index) => {
                     return (
                         <MeetingCard key={index} />
                     )
-                })}
+                })} */}
+                <MeetingCard />
+                <MeetingCard />
+                <MeetingCard />
+
             </div>
         </div>
     )
