@@ -14,6 +14,7 @@
     "@mui/material": "^5.14.7",
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
+    "@vercel/postgres": "^0.4.1",
     "mysql2": "^3.6.0",
     "next": "13.4.13",
     "react": "18.2.0",

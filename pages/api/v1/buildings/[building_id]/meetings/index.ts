@@ -1,16 +1,15 @@
-import excuteQuery from '@/DB/connectDB';
-import mysql from 'mysql2/promise';
-import type { NextApiRequest, NextApiResponse } from 'next'
+import { sql } from '@vercel/postgres';
+import { NextApiResponse, NextApiRequest } from 'next';
 
 export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<any>
+    request: NextApiRequest,
+    response: NextApiResponse,
 ) {
-  try {
-    const query = "SELECT * FROM meetings";
-    const data = await excuteQuery({ query });
-    res.status(200).json({ results: data });
-  } catch (error: any) {
-    res.status(500).json({ error: error.message })
-  }
+    try {
+        const meetings = await sql`SELECT * FROM meetings;`;
+        return response.status(200).json({ meetings: meetings.rows });
+    } catch (error) {
+        return response.status(500).json({ error });
+    }
+
 }
