@@ -1,3 +1,4 @@
+// Delete after decide to move POSTGRES DB inside Vercel
 import mysql from 'mysql2/promise';
 
 
