@@ -48,6 +48,7 @@ export function MeetingCard({
             <div className={style.content_part}>
                 <div className={style.meeting_details}>
                     <h3>{meetingTitle} - בתאריך {meetingDate}</h3>
+                    {!!description && <p className={style.desc}>{description}</p>}
                     <div className={style.details_container}>
                         <div className={style.date_part}>
                             <div className={style.detail}>
