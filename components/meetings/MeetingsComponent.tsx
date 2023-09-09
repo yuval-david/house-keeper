@@ -17,27 +17,23 @@ export function MeetingsComponent() {
         fetch(meetingsEndpoint)
             .then((res) => res.json())
             .then((data) => {
-                setMeetings(data.results);
+                setMeetings(data.meetings);
                 setLoading(false);
             }).catch(err => { console.log(err); setLoading(false) });
     }, []);
 
-    // if (isLoading) return <p>Loading...</p>;
-    // if (!meetings) return <p>Missing data about meetings</p>;
-    console.log(meetings);
+    if (isLoading) return <p>Loading...</p>;
+    if (!meetings) return <p>Missing data about meetings</p>;
 
     return (
         <div>
             <ButtonAddItem buttonLink="/meetings/add-meeting" buttonText='להוספת פגישה חדשה' />
             <div className={style.meetings_cards_container}>
-                {/* {meetings.length > 0 && meetings.map((meetingItem, index) => {
+                {meetings.length > 0 && meetings.map((meetingItem) => {
                     return (
-                        <MeetingCard key={index} />
+                        <MeetingCard key={meetingItem.id} name={meetingItem?.name} date={meetingItem.date} time={meetingItem.time} location={meetingItem.location} description={meetingItem?.description} />
                     )
-                })} */}
-                <MeetingCard />
-                <MeetingCard />
-                <MeetingCard />
+                })}
 
             </div>
         </div>
