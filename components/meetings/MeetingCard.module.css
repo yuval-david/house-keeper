@@ -56,7 +56,8 @@
     padding: 0.5vw;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    row-gap: 1.5vw;
+    margin: auto;
 }
 
 .meeting_actions > div {
@@ -101,6 +102,12 @@
     .details_container {
         column-gap: 12vw;
     }
+}
+
+.desc {
+    font-size: 105%;
+    color: rgb(46, 44, 44);
+    padding-bottom: 1vw;
 }
 
 .date_part {

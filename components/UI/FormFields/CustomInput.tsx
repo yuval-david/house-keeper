@@ -7,6 +7,8 @@ export function CustomInput({
     dir = "rtl",
     type = "text",
     value,
+    required = false,
+    textareaRows = 3,
     onChange,
 }: {
     label?: string;
@@ -14,6 +16,8 @@ export function CustomInput({
     dir?: string;
     type?: string;
     value: any,
+    required?: boolean,
+    textareaRows?: number;
     onChange: (event: any) => void,
 }) {
 
@@ -24,6 +28,8 @@ export function CustomInput({
             break;
         case "text":
             defaultValue = undefined;
+        case "textarea":
+            defaultValue = undefined;
             break;
         case "password":
             defaultValue = undefined;
@@ -31,9 +37,23 @@ export function CustomInput({
             defaultValue = undefined;
     }
 
+    const displayedLabel = required ? "*" + label : label;
+
+
+    if (type === "textarea") {
+        return (
+            <div className={style.text_field_container}>
+                <label>{displayedLabel}: </label>
+                <textarea required={required} rows={textareaRows} value={value} onChange={onChange} dir={dir} placeholder={placeholder} className={style.text_field} />
+            </div>
+
+        )
+    }
+
+
     return (
         <div className={style.text_field_container}>
-            <label>{label}</label>
+            <label>{displayedLabel}</label>
             <input value={value} onChange={onChange} dir={dir} type={type} placeholder={placeholder} className={style.text_field} />
         </div>
     )

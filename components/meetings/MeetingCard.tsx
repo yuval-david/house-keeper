@@ -10,7 +10,8 @@ export function MeetingCard({
     date,
     time,
     location,
-    description
+    description,
+    isSummary,
 }: {
     id: number;
     name?: string;
@@ -18,6 +19,7 @@ export function MeetingCard({
     time: string;
     location: string;
     description?: string;
+    isSummary?: boolean;
 }) {
     const router = useRouter();
 
@@ -48,6 +50,7 @@ export function MeetingCard({
             <div className={style.content_part}>
                 <div className={style.meeting_details}>
                     <h3>{meetingTitle} - בתאריך {meetingDate}</h3>
+                    {!!description && <p className={style.desc}>{description}</p>}
                     <div className={style.details_container}>
                         <div className={style.date_part}>
                             <div className={style.detail}>
@@ -69,20 +72,20 @@ export function MeetingCard({
 
                 <div className={style.meeting_actions}>
                     <div>
-                        <button type='button' onClick={handleClickViewShortBtn} className={style.btn_view_short}>
-                            לצפייה בתקציר הפגישה
-                        </button>
                         <button type='button' onClick={handleClickAddCalender} className={style.btn_add_calendar}>
                             הוספה ליומן
                         </button>
-                    </div>
-                    <div>
                         <button type='button' className={style.btn_send_alert}>
                             שליחת תזכור לפגישה
                         </button>
-                        <button type='button' onClick={handleClickAddShortBtn} className={style.btn_add_short}>
+                    </div>
+                    <div>
+                        {isSummary && <button type='button' onClick={handleClickViewShortBtn} className={style.btn_view_short}>
+                            לצפייה בתקציר הפגישה
+                        </button>}
+                        {!isSummary && <button type='button' onClick={handleClickAddShortBtn} className={style.btn_add_short}>
                             הוספת תקציר לפגישה
-                        </button>
+                        </button>}
                     </div>
                 </div>
             </div>
