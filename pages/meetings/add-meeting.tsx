@@ -5,19 +5,35 @@ import { CustomInputRow } from '@/components/UI/FormFields/CustomInputRow'
 import { ButtonSave } from '@/components/UI/ButtonSave';
 
 export default function addMeetingPage() {
+
+    // Hardcoded - need to come from store after login
+    const buildingID = 1;
+
+    // Form Values
     const [meetingDate, setMeetingDate] = useState<string>("");
     const [meetingTime, setMeetingTime] = useState<string>("");
     const [meetingPlace, setMeetingPlace] = useState<string>("");
+
+    const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
+    const addMeetingEndpoint = apiEndpoint + `/v1/buildings/${buildingID}/meetings`;
 
     // Sumbit ADD-MEETING form
     const handleSubmit = (event: any) => {
         event.preventDefault();
         const data = {
-            meetingDate,
-            meetingTime,
-            meetingPlace,
+            date: meetingDate,
+            time: meetingTime,
+            location: meetingPlace,
         }
-        console.log(data);
+        console.log("Form Data: ", data);
+        const response = fetch(addMeetingEndpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+        });
+        console.log("Response: ", response);
     }
 
     return (

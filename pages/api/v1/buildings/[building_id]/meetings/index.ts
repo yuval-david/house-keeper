@@ -14,17 +14,22 @@ export default async function handler(
         }
 
         // POST
-        // if (request.method === 'POST') {
-        //     const meetingName = request.query.meetingName as string;
-        //     const meetingDate = request.query.meetingDate as string;
-        //     const location = request.query.location as string;
-        //     const description = request.query.meetingDate as string;
-        //     if (!meetingName || !meetingDate || !location) throw new Error('Meeting details are missing.');
-        //     await sql`INSERT INTO meetings (name, date, location, description) VALUES (${meetingName}, ${meetingDate}, ${location}, ${description});`;
+        if (request.method === 'POST') {
+            const { name: meetingName, date: meetingDate, time, location, description, summary } = request.body;
+            // if (!meetingDate || !location) throw new Error('Meeting details are missing.'); // Another way to handle validation
+            if (!meetingDate || !location || !time) {
+                return response.status(400).json({ response: { message: 'Meeting details are missing.' } });
+            }
 
-        //     const meetings = await sql`SELECT * FROM meetings;`;
-        //     return response.status(200).json({ meetings: meetings.rows });
-        // }
+            const res = await sql`INSERT INTO meetings (name, date, time, location, description, summary) VALUES (${meetingName}, ${meetingDate}, ${time}, ${location}, ${description}, ${summary});`;
+
+            // INSERT successfully
+            if (res.rowCount > 0) {
+                return response.status(200).json({ response: res, message: "Meeting created succesfuly" });
+            } else {
+                throw new Error('There is sql error during adding new meeting.')
+            }
+        }
 
     } catch (error) {
         return response.status(500).json({ error });

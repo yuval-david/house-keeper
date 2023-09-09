@@ -5,8 +5,10 @@ import { MeetingCard } from './MeetingCard'
 import { Meeting } from '@/Types/objects_types';
 
 export function MeetingsComponent() {
+    // Hardcoded - need to come from store after login
+    const buildingID = 1;
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    const meetingsEndpoint = apiEndpoint + "/v1/buildings/1/meetings";
+    const meetingsEndpoint = apiEndpoint + `/v1/buildings/${buildingID}/meetings`;
 
     const [meetings, setMeetings] = useState<Meeting[] | null>(null);
     const [isLoading, setLoading] = useState(false);
