@@ -5,8 +5,10 @@ import { MeetingCard } from './MeetingCard'
 import { Meeting } from '@/Types/objects_types';
 
 export function MeetingsComponent() {
+    // Hardcoded - need to come from store after login
+    const buildingID = 1;
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    const meetingsEndpoint = apiEndpoint + "/v1/buildings/1/meetings";
+    const meetingsEndpoint = apiEndpoint + `/v1/buildings/${buildingID}/meetings`;
 
     const [meetings, setMeetings] = useState<Meeting[] | null>(null);
     const [isLoading, setLoading] = useState(false);
@@ -17,27 +19,23 @@ export function MeetingsComponent() {
         fetch(meetingsEndpoint)
             .then((res) => res.json())
             .then((data) => {
-                setMeetings(data.results);
+                setMeetings(data.meetings);
                 setLoading(false);
             }).catch(err => { console.log(err); setLoading(false) });
     }, []);
 
-    // if (isLoading) return <p>Loading...</p>;
-    // if (!meetings) return <p>Missing data about meetings</p>;
-    console.log(meetings);
+    if (isLoading) return <p>Loading...</p>;
+    if (!meetings) return <p>Missing data about meetings</p>;
 
     return (
         <div>
             <ButtonAddItem buttonLink="/meetings/add-meeting" buttonText='להוספת פגישה חדשה' />
             <div className={style.meetings_cards_container}>
-                {/* {meetings.length > 0 && meetings.map((meetingItem, index) => {
+                {meetings.length > 0 && meetings.map((meetingItem) => {
                     return (
-                        <MeetingCard key={index} />
+                        <MeetingCard key={meetingItem.id} id={meetingItem.id} name={meetingItem?.name} date={meetingItem.date} time={meetingItem.time} location={meetingItem.location} description={meetingItem?.description} />
                     )
-                })} */}
-                <MeetingCard />
-                <MeetingCard />
-                <MeetingCard />
+                })}
 
             </div>
         </div>

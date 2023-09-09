@@ -2,22 +2,41 @@ import React from 'react'
 import style from "./MeetingCard.module.css"
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { getDate } from '@/utils/getDate';
 
-export function MeetingCard() {
-
+export function MeetingCard({
+    id,
+    name,
+    date,
+    time,
+    location,
+    description
+}: {
+    id: number;
+    name?: string;
+    date: string;
+    time: string;
+    location: string;
+    description?: string;
+}) {
     const router = useRouter();
 
     const handleClickViewShortBtn = () => {
-        router.push("/meetings/view-summary");
+        router.push(`/meetings/${id}/view-summary`);
     }
 
     const handleClickAddShortBtn = () => {
-        router.push("/meetings/add-summary");
+        router.push(`/meetings/${id}/add-summary`);
     }
 
     const handleClickAddCalender = () => {
         alert("הוספה ליומן");
     }
+
+    const meetingTitle = name || "פגישת דיירים";
+    const meetingDate = getDate(date);
+    const meetingTimeParts = time.split(":");
+    const meetingTime = meetingTimeParts[0] + ":" + meetingTimeParts[1];
 
     return (
         <div className={style.meeting_card}>
@@ -28,20 +47,20 @@ export function MeetingCard() {
             </div>
             <div className={style.content_part}>
                 <div className={style.meeting_details}>
-                    <h3>פגישת דיירים - בתאריך 17.10.23</h3>
+                    <h3>{meetingTitle} - בתאריך {meetingDate}</h3>
                     <div className={style.details_container}>
                         <div className={style.date_part}>
                             <div className={style.detail}>
                                 <span className={style.label}>שעה:</span>
-                                <span> 17:00</span>
+                                <span> {meetingTime}</span>
                             </div>
                             <div className={style.detail}>
                                 <span className={style.label}>מיקום:</span>
-                                <span> לובי</span>
+                                <span> {location}</span>
                             </div>
                         </div>
                         <div className={style.btn_status_part}>
-                            <Link href="/meetings/update-status">
+                            <Link href={`/meetings/${id}/update-status`}>
                                 לחץ כאן לעדכון סטטוס הגעה
                             </Link>
                         </div>
