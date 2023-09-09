@@ -5,27 +5,28 @@ import { useRouter } from 'next/router'
 import { getDate } from '@/utils/getDate';
 
 export function MeetingCard({
+    id,
     name,
     date,
     time,
     location,
     description
 }: {
+    id: number;
     name?: string;
     date: string;
     time: string;
     location: string;
     description?: string;
 }) {
-
     const router = useRouter();
 
     const handleClickViewShortBtn = () => {
-        router.push("/meetings/view-summary");
+        router.push(`/meetings/${id}/view-summary`);
     }
 
     const handleClickAddShortBtn = () => {
-        router.push("/meetings/add-summary");
+        router.push(`/meetings/${id}/add-summary`);
     }
 
     const handleClickAddCalender = () => {
@@ -59,7 +60,7 @@ export function MeetingCard({
                             </div>
                         </div>
                         <div className={style.btn_status_part}>
-                            <Link href="/meetings/update-status">
+                            <Link href={`/meetings/${id}/update-status`}>
                                 לחץ כאן לעדכון סטטוס הגעה
                             </Link>
                         </div>

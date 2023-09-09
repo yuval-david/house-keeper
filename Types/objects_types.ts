@@ -1,5 +1,5 @@
 export interface Meeting {
-    id: string;
+    id: number;
     name: string;
     date: string; // Date [2023-06-05]
     time: string; // TIME [00:00:00]
