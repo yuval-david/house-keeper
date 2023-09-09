@@ -18,7 +18,7 @@ export default async function handler(
             const { name: meetingName, date: meetingDate, time, location, description, summary } = request.body;
             // if (!meetingDate || !location) throw new Error('Meeting details are missing.'); // Another way to handle validation
             if (!meetingDate || !location || !time) {
-                return response.status(400).json({ response: { message: 'Meeting details are missing.' } });
+                return response.status(400).json({ message: 'Meeting details are missing.' });
             }
 
             const res = await sql`INSERT INTO meetings (name, date, time, location, description, summary) VALUES (${meetingName}, ${meetingDate}, ${time}, ${location}, ${description}, ${summary});`;
