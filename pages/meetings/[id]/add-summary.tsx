@@ -39,6 +39,10 @@ export default function addSummaryPage() {
                         <h4>פרטי הפגישה</h4>
                         <div className={style.details_existing}>
                             <div className={style.detail}>
+                                <span className={style.label}>תאריך:</span>
+                                <span> 10.09.2023</span>
+                            </div>
+                            <div className={style.detail}>
                                 <span className={style.label}>שעה:</span>
                                 <span> 16:00</span>
                             </div>
