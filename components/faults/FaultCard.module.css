@@ -81,11 +81,35 @@
     row-gap: 3vw;
 }
 
+@media (max-width:1024px) {
+    .more_details {
+        flex-direction: column-reverse;
+    }
+}
+
 .more_details > a {
     margin-right: auto;
+}
+
+@media (max-width:1024px) {
+    .more_details > a {
+        margin-right: 0;
+        margin-bottom: 2vw;
+        margin-left: auto;
+    }
 }
 
 .fault_img_container {
     width: 15vw;
     margin-right: auto;
+}
+
+@media (max-width:1024px) {
+    .fault_img_container {
+        width: 75%;
+        margin-right: 0;
+        margin-top: 1vw;
+        margin-bottom: 2vw;
+        margin-left: auto;
+    }
 }
