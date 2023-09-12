@@ -6,7 +6,7 @@ import { FaultCard } from './FaultCard'
 export function FaultsComponent() {
     return (
         <div>
-            <ButtonAddItem buttonLink="/faults/add-fault" buttonText='להוספת תקלה חדשה' />
+            <ButtonAddItem buttonLink="/faults/add" buttonText='להוספת תקלה חדשה' />
             <div className={style.faults_cards_container}>
                 <FaultCard />
                 <FaultCard />
