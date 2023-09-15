@@ -27,8 +27,6 @@ export default function AddFaultPage() {
         console.log("Submit form");
     }
 
-    console.log("faultStatus: ", faultStatus);
-
     return (
         <PageLayout pageTitle='הוספת תקלה חדשה'>
             <form className={style.form} onSubmit={handleSubmit}>
