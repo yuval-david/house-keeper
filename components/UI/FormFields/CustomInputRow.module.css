@@ -40,12 +40,27 @@ textarea.text_field {
 }
 
 
-.text_field_container input, .text_field_container textarea {
+.text_field_container input, .text_field_container textarea, .text_field_container select {
     max-width: 70%;
 }
 
 @media (max-width: 1024px) {
-    .text_field_container input, .text_field_container textarea {
+    .text_field_container input, .text_field_container textarea , .text_field_container select {
         max-width: 75%;
     }
+}
+
+.radio_container {
+    width: 70%;
+}
+
+.options_list {
+    display: flex;
+    column-gap: 1vw;
+}
+
+.radio_div {
+    display: flex;
+    align-items: center;
+    font-size: 115%;
 }
