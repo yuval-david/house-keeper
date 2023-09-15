@@ -11,6 +11,7 @@ export function CustomInputRow({
     textareaRows = 3,
     options = [],
     numberMin = 0,
+    fileTypesAccept,
     onChange,
 }: {
     label?: string;
@@ -22,6 +23,7 @@ export function CustomInputRow({
     textareaRows?: number;
     options?: string[];
     numberMin?: number;
+    fileTypesAccept?: string;
     onChange: (event: any) => void,
 }) {
 
@@ -89,6 +91,18 @@ export function CustomInputRow({
                         ))}
                     </div>
 
+                </div>
+            </div>
+
+        )
+    }
+
+    if (type === "file") {
+        return (
+            <div className={`${style.text_field_container} ${style.file_container}`}>
+                <label>{displayedLabel}:</label>
+                <div className={style.inp_file}>
+                    <input required={required} value={value} onChange={onChange} dir={dir} type={type} placeholder={placeholder} className={style.text_field} accept={fileTypesAccept} />
                 </div>
             </div>
 

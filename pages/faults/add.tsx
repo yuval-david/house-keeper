@@ -55,7 +55,7 @@ export default function AddFaultPage() {
                                     </div>
                                 )
                             }
-
+                            <CustomInputRow value={faultImage} onChange={(e) => setFaultImage(e.target.value)} label='תמונה' placeholder='' type='file' dir='rtl' fileTypesAccept='image/*' />
                         </div>
                     </div>
                 </div>
