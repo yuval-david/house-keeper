@@ -1,3 +1,8 @@
+export type FaultStatus = "טופלה" | "לא טופלה" | "";
+export type FaultUrgency = "דחופה" | "לא דחופה" | "";
+export type FaultType = "קלה" | "בינונית" | "חמורה" | "";
+export type YesNowAnswers = "כן" | "לא" | "";
+
 export interface Meeting {
     id: number;
     name: string;
@@ -7,4 +12,22 @@ export interface Meeting {
     description?: string;
     summary?: string;
     users?: number[]; // List of users IDs
+}
+
+export interface Fault {
+    id: number;
+    faultName: string;
+    faultType: FaultType;
+    faultUrgency: FaultUrgency;
+    faultLocation: string;
+    faultStatus: FaultStatus;
+    doneBy?: string;
+    isSupplierInvolved?: YesNowAnswers;
+    faultPrice?: number;
+    faultImage?: string; // check about upload file
+}
+
+export interface InputOption {
+    label: string;
+    value: string | number;
 }
