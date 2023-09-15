@@ -1,5 +1,6 @@
 import React from 'react'
 import style from "./CustomInputRow.module.css"
+import { InputOption } from '@/Types/objects_types';
 
 export function CustomInputRow({
     label,
@@ -21,7 +22,8 @@ export function CustomInputRow({
     value: any,
     required?: boolean,
     textareaRows?: number;
-    options?: string[];
+    // Options can be strings array or objects array
+    options?: InputOption[] | string[];
     numberMin?: number;
     fileTypesAccept?: string;
     onChange: (event: any) => void,
@@ -68,9 +70,21 @@ export function CustomInputRow({
                 <label htmlFor={label}>{displayedLabel}: </label>
                 <select name={label} id={label} value={value} onChange={onChange} dir={dir} className={style.text_field} required={required}>
                     <option value="" disabled>בחר/י</option>
-                    {options.map((optionItem) => (
-                        <option value={optionItem}>{optionItem}</option>
-                    ))}
+                    {options.map((optionItem, index) => {
+
+                        if (typeof optionItem === "string") {
+                            return (
+                                <option value={optionItem} key={index}>{optionItem}</option>
+                            )
+                        }
+
+                        if (typeof optionItem === "object") {
+                            return (
+                                <option value={optionItem.value} key={index}>{optionItem.label}</option>
+                            )
+                        }
+
+                    })}
                 </select>
             </div>
 
@@ -83,12 +97,28 @@ export function CustomInputRow({
                 <label>{displayedLabel}: </label>
                 <div className={style.radio_container}>
                     <div className={style.options_list}>
-                        {options.map((radioOption) => (
-                            <div className={style.radio_div}>
-                                <input type="radio" id={radioOption} name={label} value={radioOption} onChange={onChange} required={required} />
-                                <label htmlFor={radioOption}>{radioOption}</label>
-                            </div>
-                        ))}
+                        {options.map((radioOption, index) => {
+
+                            if (typeof radioOption === "string") {
+                                return (
+                                    <div className={style.radio_div} key={index}>
+                                        <input type="radio" id={radioOption} name={label} value={radioOption} onChange={onChange} required={required} checked={value === radioOption} />
+                                        <label htmlFor={radioOption}>{radioOption}</label>
+                                    </div>
+                                )
+                            }
+
+                            if (typeof radioOption === "object") {
+                                return (
+                                    <div className={style.radio_div} key={index}>
+                                        <input type="radio" id={radioOption.label} name={label} value={radioOption.value} onChange={onChange} required={required} checked={value == radioOption.value} />
+                                        <label htmlFor={radioOption.label}>{radioOption.label}</label>
+                                    </div>
+                                )
+                            }
+
+                        })}
+
                     </div>
 
                 </div>

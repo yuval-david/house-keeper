@@ -4,27 +4,38 @@ import style from "../../styles/AddFault.module.css"
 import { ButtonSave } from '@/components/UI/ButtonSave';
 import { Loader } from '@/components/UI/Loader';
 import { CustomInputRow } from '@/components/UI/FormFields/CustomInputRow';
-
-
-const faultTypes: string[] = ["חמורה", "בינונית", "קלה"];
-const faultUrgencyLevels: string[] = ["דחופה", "לא דחופה"];
-const faultStatuses: string[] = ["טופלה", "לא טופלה"];
+import { faultTypes, faultUrgencyLevels, faultStatuses } from "@/components/faults/FalutsFieldsOptions"
+import { FaultStatus, FaultType, FaultUrgency } from '@/Types/objects_types';
 
 export default function AddFaultPage() {
 
-    const [isLoadingAddFault, setIsLoadingAddFault] = useState(false);
-    const [faultName, setFaultName] = useState("");
-    const [faultType, setFaultType] = useState("");
-    const [faultUrgency, setFaultUrgency] = useState("");
-    const [faultLocation, setFaultLocation] = useState("");
-    const [faultStatus, setFaultStatus] = useState("");
-    const [doneBy, setDoneBy] = useState("");
-    const [isSupplierInvolved, setIsSupplierInvolved] = useState(false);
-    const [faultPrice, setFaultPrice] = useState(0);
+    const [isLoadingAddFault, setIsLoadingAddFault] = useState<boolean>(false);
+    const [faultName, setFaultName] = useState<string>("");
+    const [faultType, setFaultType] = useState<FaultType>("");
+    const [faultUrgency, setFaultUrgency] = useState<FaultUrgency>("");
+    const [faultLocation, setFaultLocation] = useState<string>("");
+    const [faultStatus, setFaultStatus] = useState<FaultStatus>("");
+    const [doneBy, setDoneBy] = useState<string>("");
+    const [isSupplierInvolved, setIsSupplierInvolved] = useState<string>("");
+    const [faultPrice, setFaultPrice] = useState<number>(0);
     const [faultImage, setFaultImage] = useState(""); // Need to check how to implement image
 
     const handleSubmit = async (event: any) => {
-        console.log("Submit form");
+        event.preventDefault();
+        setIsLoadingAddFault(true);
+        const data = {
+            faultName,
+            faultType,
+            faultUrgency,
+            faultLocation,
+            faultStatus,
+            doneBy,
+            supplierInvolved: isSupplierInvolved === "כן" || false,
+            price: typeof faultPrice === "string" ? parseInt(faultPrice) : faultPrice,
+            faultImage, // check how to upload file
+        }
+        console.log("Submitted form data:", data);
+        setIsLoadingAddFault(false);
     }
 
     return (
