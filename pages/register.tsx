@@ -10,13 +10,22 @@ export default function RegisterPage() {
     const router = useRouter();
 
     // Form Fields
+    const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [passwordConfirm, setPasswordConfirm] = useState("");
 
     // Handle submit login function
     const handleRegisterSubmit = async (event: any) => {
         event.preventDefault();
+
+        if (password !== passwordConfirm) {
+            alert("אישור הסיסמה שונה מהסיסמה. נסו שוב.");
+            return;
+        }
+
         const data = {
+            fullName,
             email,
             password,
         }
@@ -53,10 +62,10 @@ export default function RegisterPage() {
                     <h1 className={`blue_title ${style.form_title}`}>הרשמה</h1>
                     <form dir='rtl' onSubmit={(e) => handleRegisterSubmit(e)}>
                         <div className={style.field_container}>
-                            <CustomInput value={email} onChange={(e) => setEmail(e.target.value)} required label="שם מלא" dir='ltr' type='text' />
-                            <CustomInput value={email} onChange={(e) => setEmail(e.target.value)} required label="כתובת אימייל" dir='ltr' type='text' />
+                            <CustomInput value={fullName} onChange={(e) => setFullName(e.target.value)} required label="שם מלא" dir='rtl' type='text' />
+                            <CustomInput value={email} onChange={(e) => setEmail(e.target.value)} required label="כתובת אימייל" dir='ltr' type='email' />
                             <CustomInput value={password} onChange={(e) => setPassword(e.target.value)} required label="סיסמה" dir='ltr' type='password' />
-                            <CustomInput value={email} onChange={(e) => setEmail(e.target.value)} required label="אישור סיסמה" dir='ltr' type='text' />
+                            <CustomInput value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} required label="אישור סיסמה" dir='ltr' type='password' />
                         </div>
                         <button className={style.submit_btn} type='submit'>להרשמה</button>
                     </form>
