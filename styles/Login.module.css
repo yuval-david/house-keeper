@@ -28,6 +28,9 @@
     }
 }
 
+.register {
+    background: rgba(236, 250, 255, 1);
+}
 
 .login_logo {
     position: relative;
@@ -38,6 +41,12 @@
     margin: auto;
     border: 2px solid #016fa0;
     opacity: 0.9;
+}
+
+.register .login_logo {
+    top: 1.5vw;
+    width: 15vw;
+    height: 6vw;
 }
 
 @media (max-width: 1024px) {
@@ -58,6 +67,10 @@
     padding: 1vw;
     padding-bottom: 2vw;
     text-align: center;
+}
+
+.register .login_form {
+    margin-top: 3vw;
 }
 
 @media (max-width: 1024px) {

@@ -54,7 +54,7 @@ export function CustomInput({
     return (
         <div className={style.text_field_container}>
             <label>{displayedLabel}</label>
-            <input value={value} onChange={onChange} dir={dir} type={type} placeholder={placeholder} className={style.text_field} />
+            <input required={required} value={value} onChange={onChange} dir={dir} type={type} placeholder={placeholder} className={style.text_field} />
         </div>
     )
 }
