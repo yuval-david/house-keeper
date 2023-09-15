@@ -54,6 +54,13 @@ textarea.text_field {
     width: 70%;
 }
 
+@media (max-width:1024px) {
+    .radio_container, .text_field_container .inp_file {
+        width: 80%;
+    }
+    
+}
+
 .options_list {
     display: flex;
     column-gap: 1vw;

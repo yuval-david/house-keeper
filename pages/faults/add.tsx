@@ -42,8 +42,8 @@ export default function AddFaultPage() {
                             <CustomInputRow value={faultName} onChange={(e) => setFaultName(e.target.value)} label='שם התקלה' placeholder='' type='text' dir='rtl' required />
                             <CustomInputRow value={faultType} onChange={(e) => setFaultType(e.target.value)} label='סוג התקלה' placeholder='' type='select' dir='rtl' required options={faultTypes} />
                             <CustomInputRow value={faultUrgency} onChange={(e) => setFaultUrgency(e.target.value)} label='רמת דחיפות' placeholder='' type='select' dir='rtl' required options={faultUrgencyLevels} />
-                            <CustomInputRow value={faultLocation} onChange={(e) => setFaultLocation(e.target.value)} label='מיקום התקלה' placeholder='' type='text' dir='rtl' required />
-                            <CustomInputRow value={faultStatus} onChange={(e) => setFaultStatus(e.target.value)} label='סטטוס התקלה' placeholder='' type='radio' dir='rtl' required options={faultStatuses} />
+                            <CustomInputRow value={faultLocation} onChange={(e) => setFaultLocation(e.target.value)} label='מיקום' placeholder='' type='text' dir='rtl' required />
+                            <CustomInputRow value={faultStatus} onChange={(e) => setFaultStatus(e.target.value)} label='סטטוס' placeholder='' type='radio' dir='rtl' required options={faultStatuses} />
                             {
                                 faultStatus === "טופלה" && (
                                     <div className={style.details_done_fault}>

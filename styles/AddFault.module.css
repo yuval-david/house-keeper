@@ -12,6 +12,12 @@
     align-items: center;
 }
 
+@media (max-width:1024px) {
+    .icon_part {
+        display: none;
+    }
+}
+
 .fault_card:nth-child(2n) .icon_part {
    background-color: rgba(194, 128, 255, 0.27); 
 }
@@ -65,6 +71,7 @@
 @media (max-width:1024px) {
     .details_list {
         width: 100%;
+        row-gap: 3.5vw;
     }
 }
 
@@ -94,4 +101,25 @@
     border: 1px solid rgba(128, 128, 128, 0.7);
     border-radius: 5px;
     padding: 1vw;
+}
+
+@media (max-width:1024px) {
+    .details_done_fault {
+        padding: 1vw 4vw;
+        margin-top: 2vw;
+        margin-bottom: 4vw;
+        width: 95%;
+    }
+
+    .details_done_fault > div {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 4vw;
+        margin-top: 4vw;
+        font-size: 90%;
+    }
+
+    .details_done_fault > div input {
+        max-width: 100%;
+    }
 }
