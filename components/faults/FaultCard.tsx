@@ -1,9 +1,16 @@
 import React from 'react'
 import style from "./FaultCard.module.css"
 import { ButtonEditItem } from '../UI/ButtonEditItem'
+import { FaultType } from '@/Types/objects_types';
 
 // TODO: Add Props with real data
-export function FaultCard() {
+export function FaultCard({
+    id,
+    faultName,
+}: {
+    id: number;
+    faultName: string;
+}) {
     return (
         <div className={style.fault_card}>
             <div className={style.icon_part}>
@@ -15,7 +22,7 @@ export function FaultCard() {
                 <div className={style.maih_details}>
                     <h2>
                         <span>תקלה</span>:
-                        שריפת נורות
+                        {" "}{faultName}
                     </h2>
                     <div className={style.details_list}>
                         <div className={style.detail}>
@@ -41,7 +48,7 @@ export function FaultCard() {
                     </div>
                 </div>
                 <div className={style.more_details}>
-                    <ButtonEditItem buttonLink='/faults/1/edit' buttonText='לעריכה לחצו כאן' />
+                    <ButtonEditItem buttonLink={`/faults/${id}/edit`} buttonText='לעריכה לחצו כאן' />
                     <div className={style.fault_img_container}>
                         <img src="/icons/preview_img.svg" alt="fault image" />
                         {/** TODO: Add condition with the real picture **/}
