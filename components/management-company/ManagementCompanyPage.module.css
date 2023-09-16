@@ -7,6 +7,7 @@
 
 @media (max-width: 1024px) {
     .links_container {
+        justify-content: center;
         margin-top: 20vw;
         row-gap: 15vw;
         margin-bottom: 15vw;
