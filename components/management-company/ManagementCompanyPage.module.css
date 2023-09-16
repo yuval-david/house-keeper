@@ -2,7 +2,15 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    /* row-gap: 15vw; */
+    margin-top: 6vw;
+}
+
+@media (max-width: 1024px) {
+    .links_container {
+        margin-top: 20vw;
+        row-gap: 15vw;
+        margin-bottom: 15vw;
+    }
 }
 
 .link {
@@ -14,14 +22,29 @@
     text-decoration: none;
 }
 
+@media (max-width: 1024px) {
+    .link {
+        flex: unset;
+        width: 50%;
+    }
+}
+
 .link span {
     display: inline-block;
     font-size: 130%;
     text-align: center;
     padding: 15px 20px;
-    font-size: 14px;
+    font-size: 110%;
     font-weight: 600;
     border-radius: 25px;
+}
+
+@media (max-width: 1024px) {
+    .link span {
+        font-size: 110%;
+        width: 90%;
+        padding: 4vw 0;
+    }
 }
 
 /***  COLORS  ***/
