@@ -1,0 +1,89 @@
+.links_container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    /* row-gap: 15vw; */
+}
+
+.link {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    text-decoration: none;
+}
+
+.link span {
+    display: inline-block;
+    font-size: 130%;
+    text-align: center;
+    padding: 15px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 25px;
+}
+
+/***  COLORS  ***/
+.green {
+    border: 1.5px solid rgba(0, 156, 100, 0.67);
+    background-color: rgba(1, 160, 93, 0.31);
+}
+.green:hover {
+    background-color: rgba(1, 160, 94, 0.213);
+    transition-duration: 0.25s;
+}
+
+.blue {
+    border: 1.5px solid rgba(0, 100, 156, 0.62);
+    background-color:  rgba(1, 111, 160, 0.31);
+}
+.blue:hover {
+    background-color:  rgba(1, 112, 160, 0.175);
+    transition-duration: 0.25s;
+}
+
+.turkiz {
+    border: 1.5px solid rgba(2, 186, 164, 0.59);
+    background-color:   rgba(6, 214, 191, 0.31);
+}
+.turkiz:hover {
+    background-color:   rgba(6, 214, 190, 0.207);
+    transition-duration: 0.25s;
+}
+
+.green_zit {
+    border: 1.5px solid rgba(99, 161, 3, 0.59);
+    background-color:rgba(149, 242, 4, 0.31);
+}
+.green_zit:hover {
+    background-color:rgba(151, 242, 4, 0.168);
+    transition-duration: 0.25s;
+}
+
+.yellow {
+    border: 1.5px solid  rgba(218, 214, 3, 0.6);
+    background-color: rgba(218, 214, 3, 0.31);
+}
+.yellow:hover {
+    background-color: rgba(218, 214, 3, 0.201);
+    transition-duration: 0.25s;
+}
+
+.red {
+    border: 1.5px solid  rgba(217, 0, 27, 0.72);
+    background-color: rgba(217, 0, 27, 0.31);
+}
+.red:hover {
+    background-color: rgba(217, 0, 25, 0.213);
+    transition-duration: 0.25s;
+}
+
+.orange {
+    border: 1.5px solid  rgba(245, 154, 35, 0.75);
+    background-color: rgba(245, 154, 35, 0.31);
+}
+.orange:hover {
+    background-color: rgba(245, 154, 35, 0.22);
+    transition-duration: 0.25s;
+}
