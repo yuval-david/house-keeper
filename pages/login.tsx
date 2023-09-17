@@ -58,7 +58,7 @@ export default function Login() {
                             <CustomInput value={password} onChange={(e) => setPassword(e.target.value)} label="סיסמה" dir='ltr' type='password' />
                         </div>
                         <button className={style.submit_btn} type='submit'>התחברות</button>
-                        <Link href="/register" className={style.register_text}>
+                        <Link href="#" className={style.register_text}>
                             עדיין לא רשום? לחץ כאן להרשמה
                         </Link>
                     </form>

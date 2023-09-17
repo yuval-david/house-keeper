@@ -44,7 +44,7 @@ export default function AddFaultPage() {
                 <div className={style.fault_card}>
                     <div className={style.icon_part}>
                         <div className={style.icon_container}>
-                            <img src="/icons/meeting-icon.png" alt="meeting" />
+                            <img src="/icons/fault-icon.png" alt="meeting" />
                         </div>
                     </div>
                     <div className={style.content_part}>
