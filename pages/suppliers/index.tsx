@@ -12,6 +12,9 @@ import { useEffect, useState } from 'react';
 import { Supplier } from '@/Types/objects_types';
 import { ButtonAddItem } from '@/components/UI/ButtonAddItem';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
+import { ModalAreYouSure } from '@/components/UI/Modals/ModalAreYouSure';
+import { useRouter } from 'next/router';
 
 
 // Hardcoded demo-data
@@ -55,6 +58,8 @@ function createData(
 
 export default function SuppliersPage() {
 
+    const router = useRouter();
+
     // Hardcoded - need to come from store after login
     const buildingID = 1;
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
@@ -62,6 +67,19 @@ export default function SuppliersPage() {
 
     // const [suppliers, setSuppliers] = useState<Supplier[] | null>(null);
     const [isLoading, setLoading] = useState(false);
+    const [deletedSupplierId, setDeletedSupplierId] = useState<number | undefined>(undefined);
+    const [showModalBeforeDelete, setShowModalBeforeDelete] = useState(false);
+    const [showModalAfterDelete, setShowModalAfterDelete] = useState(false);
+
+    // Handle close Are-you-sure modal
+    const handleCloseModalBeforeDelete = () => {
+        setShowModalBeforeDelete(false);
+    }
+
+    // Handle close message modal
+    const handleCloseModalAfterDelete = () => {
+        setShowModalAfterDelete(false);
+    }
 
     // // Fetch Meetings
     // useEffect(() => {
@@ -78,13 +96,22 @@ export default function SuppliersPage() {
     // if (!suppliers) return <p>Missing data about suppliers</p>;
 
 
-    const handleDeleteSupplier = (supplierID: number) => {
-        setLoading(true);
-        console.log("Delete supplier: ", supplierID);
-        setLoading(false);
-        alert("הספק נמחק בהצלחה");
+    // Handle click delete supplier button
+    const handleClickDelete = (supplierId: number) => {
+        setDeletedSupplierId(supplierId);
+        setShowModalBeforeDelete(true);
     }
 
+    // Delete Supplier Function
+    const handleDeleteSupplier = () => {
+        setShowModalBeforeDelete(false);
+        setLoading(true);
+        setLoading(false);
+        setShowModalAfterDelete(true);
+
+    }
+
+    // Create table rows (suppliers)
     const rows = suppliers?.map((
         supplier => createData(supplier.id, supplier.role, supplier.fullName, supplier.phone)
     ))
@@ -113,7 +140,7 @@ export default function SuppliersPage() {
                                 <TableCell className={style.content_cell} align="center">{row.fullName}</TableCell>
                                 <TableCell className={style.content_cell} align="center">{row.phone}</TableCell>
                                 <TableCell className={`${style.content_cell} ${style.delete_cell}`} align="center">
-                                    <button type='button' onClick={() => handleDeleteSupplier(row.id)}>
+                                    <button type='button' onClick={() => handleClickDelete(row.id)}>
                                         <DeleteIcon />
                                     </button>
                                 </TableCell>
@@ -122,6 +149,8 @@ export default function SuppliersPage() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <ModalAreYouSure message='את/ה בטוח/ה?' mainButtonText='כן' secondButtonText='לא' handleClickMainButton={handleDeleteSupplier} isOpen={showModalBeforeDelete} handleClose={handleCloseModalBeforeDelete} />
+            <ModalMessage message='הספק נמחק בהצלחה' buttonText='אישור' isOpen={showModalAfterDelete} handleClose={handleCloseModalAfterDelete} />
         </PageLayout>
     )
 }
