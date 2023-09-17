@@ -1,0 +1,35 @@
+.form {
+    width: 50%;
+}
+
+@media (max-width: 1024px) {
+    .form {
+        width: 95%;
+        margin: auto;
+        margin-top: 10vw;
+    }
+}
+
+.details_list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2vw;
+    width: 70%;
+}
+
+@media (max-width: 1024px) {
+   .details_list {
+    width: 100%;
+   } 
+}
+
+
+.btn_container {
+    margin-top: 4vw;
+}
+
+@media (max-width: 1024px) {
+    .btn_container {
+        margin-top: 15vw;
+    }
+}

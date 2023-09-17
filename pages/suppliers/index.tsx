@@ -10,6 +10,7 @@ import Paper from '@mui/material/Paper';
 import style from "../../styles/Suppliers.module.css"
 import { useEffect, useState } from 'react';
 import { Supplier } from '@/Types/objects_types';
+import { ButtonAddItem } from '@/components/UI/ButtonAddItem';
 
 
 // Hardcoded demo-data
@@ -81,6 +82,7 @@ export default function SuppliersPage() {
 
     return (
         <PageLayout pageTitle='רשימת ספקים'>
+            <ButtonAddItem buttonText='הוספת ספק' buttonLink='/suppliers/add' />
             <TableContainer component={Paper} className={style.table_container}>
                 <Table aria-label="suppliers table">
                     <TableHead>
