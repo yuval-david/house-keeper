@@ -11,6 +11,7 @@ import style from "../../styles/Suppliers.module.css"
 import { useEffect, useState } from 'react';
 import { Supplier } from '@/Types/objects_types';
 import { ButtonAddItem } from '@/components/UI/ButtonAddItem';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 // Hardcoded demo-data
@@ -60,7 +61,7 @@ export default function SuppliersPage() {
     const suppliersEndpoint = apiEndpoint + `/v1/buildings/${buildingID}/managment/contractors`;
 
     // const [suppliers, setSuppliers] = useState<Supplier[] | null>(null);
-    // const [isLoading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(false);
 
     // // Fetch Meetings
     // useEffect(() => {
@@ -76,6 +77,14 @@ export default function SuppliersPage() {
     // if (isLoading) return <p>Loading...</p>;
     // if (!suppliers) return <p>Missing data about suppliers</p>;
 
+
+    const handleDeleteSupplier = (supplierID: number) => {
+        setLoading(true);
+        console.log("Delete supplier: ", supplierID);
+        setLoading(false);
+        alert("הספק נמחק בהצלחה");
+    }
+
     const rows = suppliers?.map((
         supplier => createData(supplier.id, supplier.role, supplier.fullName, supplier.phone)
     ))
@@ -87,9 +96,10 @@ export default function SuppliersPage() {
                 <Table aria-label="suppliers table">
                     <TableHead>
                         <TableRow>
-                            <TableCell className={style.head_cells} align="right">תפקיד</TableCell>
-                            <TableCell className={style.head_cells} align="right">שם מלא</TableCell>
-                            <TableCell className={style.head_cells} align="right">טלפון</TableCell>
+                            <TableCell className={style.head_cells} align="center">תפקיד</TableCell>
+                            <TableCell className={style.head_cells} align="center">שם מלא</TableCell>
+                            <TableCell className={style.head_cells} align="center">טלפון</TableCell>
+                            <TableCell className={`${style.head_cells} ${style.head_delete}`} align="center"></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -99,9 +109,14 @@ export default function SuppliersPage() {
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 className={style.content_row}
                             >
-                                <TableCell className={style.content_cell} align="right">{row.role}</TableCell>
-                                <TableCell className={style.content_cell} align="right">{row.fullName}</TableCell>
-                                <TableCell className={style.content_cell} align="right">{row.phone}</TableCell>
+                                <TableCell className={style.content_cell} align="center">{row.role}</TableCell>
+                                <TableCell className={style.content_cell} align="center">{row.fullName}</TableCell>
+                                <TableCell className={style.content_cell} align="center">{row.phone}</TableCell>
+                                <TableCell className={`${style.content_cell} ${style.delete_cell}`} align="center">
+                                    <button type='button' onClick={() => handleDeleteSupplier(row.id)}>
+                                        <DeleteIcon />
+                                    </button>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
