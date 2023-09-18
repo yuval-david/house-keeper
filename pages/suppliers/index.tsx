@@ -70,6 +70,7 @@ export default function SuppliersPage() {
     const [deletedSupplierId, setDeletedSupplierId] = useState<number | undefined>(undefined);
     const [showModalBeforeDelete, setShowModalBeforeDelete] = useState(false);
     const [showModalAfterDelete, setShowModalAfterDelete] = useState(false);
+    const [showErrorDeleteModal, setShowErrorDeleteModal] = useState(false);
 
     // Handle close Are-you-sure modal
     const handleCloseModalBeforeDelete = () => {
@@ -81,6 +82,11 @@ export default function SuppliersPage() {
         setShowModalAfterDelete(false);
     }
 
+    // Handle close message modal
+    const handleCloseDeleteErrorModal = () => {
+        setShowErrorDeleteModal(false);
+    }
+
     // // Fetch Meetings
     // useEffect(() => {
     //     setLoading(true);
@@ -89,7 +95,7 @@ export default function SuppliersPage() {
     //         .then((data) => {
     //             setSuppliers(data.meetings);
     //             setLoading(false);
-    //         }).catch(err => { console.log(err); setLoading(false) });
+    //         }).catch(err => { console.log(err); setLoading(false); setShowErrorDeleteModal(true); });
     // }, []);
 
     // if (isLoading) return <p>Loading...</p>;
@@ -151,6 +157,7 @@ export default function SuppliersPage() {
             </TableContainer>
             <ModalAreYouSure message='את/ה בטוח/ה?' mainButtonText='כן' secondButtonText='לא' handleClickMainButton={handleDeleteSupplier} isOpen={showModalBeforeDelete} handleClose={handleCloseModalBeforeDelete} />
             <ModalMessage message='הספק נמחק בהצלחה' buttonText='אישור' isOpen={showModalAfterDelete} handleClose={handleCloseModalAfterDelete} type='success' />
+            <ModalMessage message='קרתה שגיאה במחיקת הספק' buttonText='אישור' isOpen={showErrorDeleteModal} handleClose={handleCloseDeleteErrorModal} type='error' />
         </PageLayout>
     )
 }
