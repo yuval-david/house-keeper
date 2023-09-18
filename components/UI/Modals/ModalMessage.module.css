@@ -39,7 +39,7 @@
 }
 
 .success {
-    border-color: rgb(133, 201, 31) v!important;
+    border-color: rgb(133, 201, 31) !important;
 }
 
 .error {
