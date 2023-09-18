@@ -54,11 +54,11 @@ export default function Login() {
                     <h1 className={`blue_title ${style.form_title}`}>התחברות</h1>
                     <form dir='rtl' onSubmit={(e) => handleLogin(e)}>
                         <div className={style.field_container}>
-                            <CustomInput value={email} onChange={(e) => setEmail(e.target.value)} label="כתובת אימייל" dir='ltr' type='text' />
-                            <CustomInput value={password} onChange={(e) => setPassword(e.target.value)} label="סיסמה" dir='ltr' type='password' />
+                            <CustomInput value={email} onChange={(e) => setEmail(e.target.value)} label="כתובת אימייל" dir='ltr' type='text' required />
+                            <CustomInput value={password} onChange={(e) => setPassword(e.target.value)} label="סיסמה" dir='ltr' type='password' required />
                         </div>
                         <button className={style.submit_btn} type='submit'>התחברות</button>
-                        <Link href="#" className={style.register_text}>
+                        <Link href="/register" className={style.register_text}>
                             עדיין לא רשום? לחץ כאן להרשמה
                         </Link>
                     </form>

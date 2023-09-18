@@ -28,6 +28,18 @@
     }
 }
 
+.register {
+    background: rgba(236, 250, 255, 1);
+    height: fit-content;
+    padding-bottom: 2vw;
+    padding-top: 2vw;
+}
+
+@media (max-width: 1024px) {
+    .register {
+        padding-top: 0;
+    }
+}
 
 .login_logo {
     position: relative;
@@ -38,6 +50,12 @@
     margin: auto;
     border: 2px solid #016fa0;
     opacity: 0.9;
+}
+
+.register .login_logo {
+    top: 1.5vw;
+    width: 15vw;
+    height: 6vw;
 }
 
 @media (max-width: 1024px) {
@@ -58,6 +76,10 @@
     padding: 1vw;
     padding-bottom: 2vw;
     text-align: center;
+}
+
+.register .login_form {
+    margin-top: 3vw;
 }
 
 @media (max-width: 1024px) {
@@ -104,6 +126,10 @@
     .submit_btn {
         margin-top: 6vw;
     }
+
+    .register .submit_btn {
+        margin-top: 10vw;
+    }
 }
 
 .field_container {
@@ -114,7 +140,7 @@
 
 @media (max-width: 1024px) {
     .field_container {
-        row-gap: 2vw;
+        row-gap: 5vw;
     }
 }
 
@@ -134,9 +160,21 @@
     transition: 0.2s;
 }
 
+.register .login_logo {
+    display: none;
+}
+
 
 @media (max-width: 1024px) {
     .register_text {
         margin-top: 5vw;
+    }
+
+    .register .login_logo {
+        display: block;
+        top: 5vw;
+        width: 70%;
+        height: 29vw;
+        margin-bottom: 10vw;
     }
 }
