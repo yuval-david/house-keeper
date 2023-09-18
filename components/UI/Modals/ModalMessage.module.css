@@ -39,15 +39,15 @@
 }
 
 .success {
-    border-color: rgb(133, 201, 31) !important;
+    border: 3px solid rgb(133, 201, 31) !important;
 }
 
 .error {
-    border-color: rgb(173, 12, 12) !important;
+    border: 3px solid rgb(173, 12, 12) !important;
 }
 
 .warning {
-    border-color: rgb(182, 172, 65) !important;
+    border: 3px solid rgb(182, 172, 65) !important;
 }
 
 .info {
