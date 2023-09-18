@@ -20,7 +20,7 @@ export default function addMeetingPage() {
     const [isLoadingAdd, setIsLoadingAdd] = useState<boolean>(false);
 
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    const addMeetingEndpoint = apiEndpoint + `/v1/buildings/${buildingID}/meetings`;
+    const addMeetingEndpoint = apiEndpoint + `/v2/buildings/${buildingID}/meetings`;
 
     // Sumbit ADD-MEETING form
     const handleSubmit = async (event: any) => {

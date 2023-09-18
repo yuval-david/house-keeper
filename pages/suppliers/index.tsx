@@ -63,7 +63,7 @@ export default function SuppliersPage() {
     // Hardcoded - need to come from store after login
     const buildingID = 1;
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    const suppliersEndpoint = apiEndpoint + `/v1/buildings/${buildingID}/managment/contractors`;
+    const suppliersEndpoint = apiEndpoint + `/v2/buildings/${buildingID}/managment/contractors`;
 
     // const [suppliers, setSuppliers] = useState<Supplier[] | null>(null);
     const [isLoading, setLoading] = useState(false);
