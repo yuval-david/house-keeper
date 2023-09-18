@@ -12,6 +12,7 @@ export function CustomInputRow({
     textareaRows = 3,
     options = [],
     numberMin = 0,
+    maxLength = 1000,
     fileTypesAccept,
     onChange,
 }: {
@@ -25,6 +26,7 @@ export function CustomInputRow({
     // Options can be strings array or objects array
     options?: InputOption[] | string[];
     numberMin?: number;
+    maxLength?: number;
     fileTypesAccept?: string;
     onChange: (event: any) => void,
 }) {
@@ -142,7 +144,7 @@ export function CustomInputRow({
     return (
         <div className={style.text_field_container}>
             <label>{displayedLabel}:</label>
-            <input required={required} value={value} onChange={onChange} dir={dir} type={type} placeholder={placeholder} className={style.text_field} min={numberMin} />
+            <input maxLength={maxLength} required={required} value={value} onChange={onChange} dir={dir} type={type} placeholder={placeholder} className={style.text_field} min={numberMin} />
         </div>
     )
 }

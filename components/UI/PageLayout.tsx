@@ -36,7 +36,7 @@ export function PageLayout({ pageTitle, children }: { pageTitle?: string; childr
                 </div>
                 <div className={style.hamburger_btn}>
                     <button type='button' onClick={handleClickHamburger}>
-                        <MenuIcon sx={{ fontSize: "350%" }} />
+                        <MenuIcon sx={{ fontSize: "350%" }} color='inherit' />
                     </button>
                 </div>
             </nav>
