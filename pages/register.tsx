@@ -14,6 +14,7 @@ export default function RegisterPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
+    const [buildingId, setBuildingId] = useState(undefined); // check if needed
 
     // Handle submit login function
     const handleRegisterSubmit = async (event: any) => {
@@ -62,6 +63,7 @@ export default function RegisterPage() {
                     <h1 className={`blue_title ${style.form_title}`}>הרשמה</h1>
                     <form dir='rtl' onSubmit={(e) => handleRegisterSubmit(e)}>
                         <div className={style.field_container}>
+                            {/* <CustomInput value={buildingId} onChange={(e) => setBuildingId(e.target.value)} required label="שם מלא" dir='ltr' type='select' /> */}
                             <CustomInput value={fullName} onChange={(e) => setFullName(e.target.value)} required label="שם מלא" dir='rtl' type='text' />
                             <CustomInput value={email} onChange={(e) => setEmail(e.target.value)} required label="כתובת אימייל" dir='ltr' type='email' />
                             <CustomInput value={password} onChange={(e) => setPassword(e.target.value)} required label="סיסמה" dir='ltr' type='password' />

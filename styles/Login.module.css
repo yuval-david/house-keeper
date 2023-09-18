@@ -30,6 +30,15 @@
 
 .register {
     background: rgba(236, 250, 255, 1);
+    height: fit-content;
+    padding-bottom: 2vw;
+    padding-top: 2vw;
+}
+
+@media (max-width: 1024px) {
+    .register {
+        padding-top: 0;
+    }
 }
 
 .login_logo {
@@ -117,6 +126,10 @@
     .submit_btn {
         margin-top: 6vw;
     }
+
+    .register .submit_btn {
+        margin-top: 10vw;
+    }
 }
 
 .field_container {
@@ -127,7 +140,7 @@
 
 @media (max-width: 1024px) {
     .field_container {
-        row-gap: 2vw;
+        row-gap: 5vw;
     }
 }
 
@@ -147,9 +160,21 @@
     transition: 0.2s;
 }
 
+.register .login_logo {
+    display: none;
+}
+
 
 @media (max-width: 1024px) {
     .register_text {
         margin-top: 5vw;
+    }
+
+    .register .login_logo {
+        display: block;
+        top: 5vw;
+        width: 70%;
+        height: 29vw;
+        margin-bottom: 10vw;
     }
 }
