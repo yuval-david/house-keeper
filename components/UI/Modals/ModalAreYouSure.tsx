@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import style from "./ModalMessage.module.css"
+import style from "./ModalAreYouSure.module.css"
 
 const styleModal = {
     position: 'absolute' as 'absolute',
@@ -12,9 +12,10 @@ const styleModal = {
     transform: 'translate(-50%, -50%)',
     width: 400,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    borderRadius: "10px",
     boxShadow: 24,
     p: 4,
+    textAlign: "center",
 };
 
 export function ModalAreYouSure({
@@ -41,11 +42,13 @@ export function ModalAreYouSure({
             aria-describedby="modal-modal-description"
         >
             <Box sx={styleModal}>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                <Typography id="modal-modal-description" className={style.message}>
                     {message}
                 </Typography>
-                <button onClick={handleClickMainButton} type='button'>{mainButtonText}</button>
-                <button onClick={handleClose} type='button'>{secondButtonText}</button>
+                <div className={style.btns_container}>
+                    <button onClick={handleClickMainButton} type='button'>{mainButtonText}</button>
+                    <button onClick={handleClose} type='button'>{secondButtonText}</button>
+                </div>
             </Box>
         </Modal>
     );
