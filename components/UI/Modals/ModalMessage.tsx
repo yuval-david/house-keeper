@@ -20,7 +20,6 @@ const styleModal = {
     textAlign: "center",
     p: 4,
     borderRadius: "10px",
-    border: "3px solid black",
 };
 
 export function ModalMessage({
