@@ -10,6 +10,13 @@
     font-size: 140%;
 }
 
+@media (max-width:1024px) {
+    .message {
+        margin-bottom: 12vw;
+        font-size: 180%;
+    }  
+}
+
 .button {
     width: 6vw;
     padding: 0.5vw 0;
@@ -21,6 +28,14 @@
     cursor: pointer;
     color: #020079;
     box-shadow: 0px 0px 5px #02007960;
+}
+
+@media (max-width:1024px) {
+    .button {
+        width: fit-content;
+        font-size: 150%;
+        padding: 3vw 5vw;
+    }
 }
 
 .success {
