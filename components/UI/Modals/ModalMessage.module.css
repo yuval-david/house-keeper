@@ -6,14 +6,14 @@
 }
 
 .message {
-    margin-bottom: 3vw;
-    font-size: 140%;
+    margin-bottom: 3vw !important;
+    font-size: 140% !important;
 }
 
 @media (max-width:1024px) {
     .message {
-        margin-bottom: 12vw;
-        font-size: 180%;
+        margin-bottom: 12vw !important;
+        font-size: 180% !important;
     }  
 }
 

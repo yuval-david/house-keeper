@@ -12,13 +12,13 @@
 }
 
 .message {
-    font-size: 140%;
+    font-size: 140% !important;
 }
 
 @media (max-width:1024px) {
     .message {
-        margin-bottom: 8vw;
-        font-size: 180%;
+        margin-bottom: 8vw !important;
+        font-size: 180% !important;
     }  
 }
 
