@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import style from "../styles/Login.module.css"
 import { CustomInput } from '@/components/UI/FormFields/CustomInput';
 import Link from 'next/link';
+import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -15,6 +16,14 @@ export default function RegisterPage() {
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [buildingId, setBuildingId] = useState(undefined); // check if needed
+
+    // Modals States
+    const [modalSuccessRegister, setModalSuccessRegister] = useState(false);
+
+    const handleCloseModalSuccess = () => {
+        setModalSuccessRegister(false);
+        router.push("/login");
+    }
 
     // Handle submit login function
     const handleRegisterSubmit = async (event: any) => {
@@ -32,6 +41,7 @@ export default function RegisterPage() {
         }
 
         console.log(data);
+        setModalSuccessRegister(true);
         // router.replace("/home");
 
         // Add after finish backned: 
@@ -72,6 +82,7 @@ export default function RegisterPage() {
                         <button className={style.submit_btn} type='submit'>להרשמה</button>
                     </form>
                 </div>
+                <ModalMessage isOpen={modalSuccessRegister} buttonText='לעמוד התחברות' handleClose={handleCloseModalSuccess} type='success' message="המשתמש נוצר בהצלחה" />
             </main>
         </>
     )

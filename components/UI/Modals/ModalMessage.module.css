@@ -18,8 +18,8 @@
 }
 
 .button {
-    width: 6vw;
-    padding: 0.5vw 0;
+    width: fit-content;
+    padding: 0.5vw 1.5vw;
     font-size: 120%;
     font-weight: 600;
     background-color: #b5e5f5;
