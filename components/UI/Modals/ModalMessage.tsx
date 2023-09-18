@@ -12,9 +12,11 @@ const styleModal = {
     transform: 'translate(-50%, -50%)',
     width: 400,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
     boxShadow: 24,
+    textAlign: "center",
     p: 4,
+    borderRadius: "10px",
+    border: "3px solid black",
 };
 
 export function ModalMessage({
@@ -22,11 +24,13 @@ export function ModalMessage({
     handleClose,
     message,
     buttonText,
+    type = "error",
 }: {
     isOpen: boolean;
     handleClose: () => void;
     message: string;
     buttonText: string;
+    type?: "success" | "error" | "warning" | "info";
 }) {
 
     return (
@@ -36,11 +40,11 @@ export function ModalMessage({
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={styleModal}>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            <Box sx={styleModal} className={style[type]}>
+                <Typography id="modal-modal-description" className={style.message}>
                     {message}
                 </Typography>
-                <button onClick={handleClose} type='button'>{buttonText}</button>
+                <button className={style.button} onClick={handleClose} type='button'>{buttonText}</button>
             </Box>
         </Modal>
     );
