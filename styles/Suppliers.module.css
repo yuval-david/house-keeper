@@ -1,0 +1,73 @@
+.table_container {
+    width: fit-content !important; 
+    max-width: 95% !important; 
+    margin: auto !important; 
+    margin-top: 3.5vw !important;
+}
+
+@media (max-width: 1024px) {
+    .table_container {
+        max-width: unset !important;
+        width: 100% !important;
+    }
+}
+
+.head_cells {
+    font-weight: bold !important;
+    font-size: 110% !important;
+    background-color: rgba(0, 50, 243, 0.18) !important;
+    border: 2px solid rgba(255, 255, 255, 0.5) !important;
+    text-align: center !important;
+    min-width: 15vw !important;
+}
+
+.head_delete {
+    min-width: unset !important;
+    width: 4vw !important;
+}
+
+@media (max-width: 1024px) {
+    .head_delete {
+        width: 2vw !important;
+    }
+}
+
+.content_cell {
+    font-size: 110% !important;
+    text-align: center !important;
+}
+
+@media (max-width: 1024px) {
+    .content_cell {
+        font-size: 106% !important;
+    }
+}
+
+
+.content_row:nth-child( odd ) {
+    background-color:rgba(242, 242, 242, 0.79) !important;
+}
+
+.content_row:nth-child( even ) {
+    background-color:rgba(129, 211, 248, 0.14) !important;
+}
+
+.delete_cell button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: rgb(86, 85, 85);
+    transition-duration: 0.25s;
+}
+
+@media (max-width: 1024px) {
+    .delete_cell {
+        font-size: 80% !important;
+    }
+}
+
+.delete_cell button:hover {
+    color: rgb(60, 58, 58);
+    transition-duration: 0.25s;
+}

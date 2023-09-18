@@ -31,3 +31,10 @@ export interface InputOption {
     label: string;
     value: string | number;
 }
+
+export interface Supplier {
+    id: number;
+    role: string;
+    fullName: string;
+    phone: number;
+}
