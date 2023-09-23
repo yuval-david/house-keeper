@@ -14,8 +14,8 @@
 }
 
 .logo_container {
-    width: 11vw;
-    height: 4.5vw;
+    width: 8.2vw;
+    height: 3.8vw;
     position: relative;
     top: 0vw;
     left: 0vw;
@@ -33,5 +33,42 @@
 }
 
 .nav_message {
-    font-size: 135%;
+    font-size: 130%;
+    display: flex;
+    align-items: center;
+    column-gap: 2vw;
+}
+
+@media (max-width: 1024px) {
+    .nav_message {
+        column-gap: 4vw;
+    }
+}
+
+.side_menu_item {
+    display: flex;
+    column-gap: 1vw;
+    align-items: center;
+}
+
+.side_menu_button {
+    margin-top: 0.5vw;
+}
+
+.side_menu_label {
+    font-size: 110%;
+}
+
+@media (max-width: 1024px) {
+    .side_menu_item {
+        column-gap: 3vw;
+    }
+
+    .side_menu_button {
+        margin-top: 1vw;
+    }
+
+    .side_menu_label {
+        font-size: 130%;
+    }
 }
