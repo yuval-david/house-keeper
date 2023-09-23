@@ -1,0 +1,46 @@
+.button {
+    background: none;
+    font-size: 115%;
+    font-weight: bold;
+    color:  #020079;
+    border: 1px solid  #020079;
+    border-radius: 5px;
+    padding: 0.6vw 1vw;
+    display: flex;
+    column-gap: 0.75vw;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition-duration: 0.25s;
+    width: fit-content;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: #d5f2fdcf;
+    transition-duration: 0.25s;
+}
+
+@media (max-width: 1024px) {
+    .button {
+        padding: 1.5vw 2.75vw;
+        font-size: 125%;
+        column-gap: 2.5vw;
+    }
+}
+
+.icon_container {
+    width: 1.4vw;
+    height: 1.4vw;
+}
+
+@media (max-width: 1024px) {
+    .icon_container {
+        width: 5vw;
+        height: 5vw;
+    }
+}
+
+.icon_container > img {
+    height: 100%;
+}

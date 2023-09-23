@@ -1,0 +1,38 @@
+.text_field {
+    width: 100%;
+    border:  1px solid #020079;
+    border-radius: 4px;
+    color: #020079;
+    font-size: 120%;
+    height: 3vw;
+    padding: 0 8px;
+} 
+
+textarea.text_field {
+    height: auto;
+}
+
+@media (max-width: 1024px) {
+    .text_field {
+        height: 12vw;
+        margin-top: 1vw;
+    }
+}
+
+.text_field_container {
+    text-align: right;
+}
+
+.text_field_container > label {
+    margin-bottom: 0.5vw;
+    display: block;
+    font-size: 100%;
+    font-weight: 600;
+    color: #020079;
+}
+
+@media (max-width: 1024px) {
+    .text_field_container > label {
+        font-size: 120%;
+    }
+}

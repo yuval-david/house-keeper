@@ -1,0 +1,102 @@
+.text_field {
+    width: 100%;
+    border:  1px solid #020079;
+    border-radius: 4px;
+    color: #020079;
+    font-size: 120%;
+    height: 3vw;
+    padding: 0 8px;
+} 
+
+textarea.text_field {
+    height: auto;
+}
+
+@media (max-width: 1024px) {
+    .text_field {
+        height: 10vw;
+    }
+}
+
+.text_field_container {
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.text_field_container > label {
+    margin-bottom: 0.5vw;
+    display: block;
+    font-size: 140%;
+    font-weight: 400;
+    color: #020079;
+}
+
+@media (max-width: 1024px) {
+    .text_field_container > label {
+        font-size: 120%;
+    }
+}
+
+
+.text_field_container input, .text_field_container textarea, .text_field_container select {
+    max-width: 70%;
+}
+
+@media (max-width: 1024px) {
+    .text_field_container input, .text_field_container textarea , .text_field_container select {
+        max-width: 75%;
+    }
+}
+
+.radio_container, .text_field_container .inp_file {
+    width: 70%;
+}
+
+@media (max-width:1024px) {
+    .radio_container, .text_field_container .inp_file {
+        width: 80%;
+    }
+    
+}
+
+.options_list {
+    display: flex;
+    column-gap: 1vw;
+}
+
+.radio_div {
+    display: flex;
+    align-items: center;
+    font-size: 115%;
+}
+
+.inp_file input {
+    max-width: unset;
+    width: 100%;
+    cursor: pointer;
+    border: none;
+}
+
+.inp_file input[type="file"]::file-selector-button {
+    border-radius: 4px;
+    padding: 0 12px;
+    height: 90%;
+    cursor: pointer;
+    background-color: white;
+    border: 1px solid #020079;
+    box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+    transition: background-color 200ms;
+    margin-left: 1vw;
+}
+
+/* file upload button hover state */
+.inp_file input[type="file"]::file-selector-button:hover {
+    background-color: #f3f4f6;
+}
+
+/* file upload button active state */
+.inp_file input[type="file"]::file-selector-button:active {
+    background-color: #e5e7eb;
+}
