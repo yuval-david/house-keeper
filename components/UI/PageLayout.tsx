@@ -5,7 +5,7 @@ import Link from 'next/link';
 import MenuIcon from '@mui/icons-material/Menu';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useRouter } from 'next/router';
-import { AccountSubMenu } from './AccountSubMenu';
+import { AccountSubMenu } from '../navbar/AccountSubMenu';
 
 // This is Layout component for all pages in the application (exclude Home Page)
 export function PageLayout({ pageTitle, children }: { pageTitle?: string; children: ReactNode }) {

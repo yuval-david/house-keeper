@@ -72,3 +72,9 @@
         font-size: 130%;
     }
 }
+
+.nav_actions {
+    display: flex;
+    flex-direction: row-reverse;
+    column-gap: 1vw;    
+}

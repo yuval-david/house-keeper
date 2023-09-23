@@ -2,7 +2,8 @@ import Image from 'next/image'
 import React, { ReactNode, useState } from 'react'
 import style from "./HomePageLayout.module.css"
 import { useRouter } from 'next/router';
-import { AccountSubMenu } from './AccountSubMenu';
+import { AccountSubMenu } from '../navbar/AccountSubMenu';
+import { UpdatesSubMenu } from '../navbar/UpdatesSubMenu';
 
 export function HomePageLayout({ name, children }: { name: string; children: ReactNode }) {
 
@@ -22,8 +23,9 @@ export function HomePageLayout({ name, children }: { name: string; children: Rea
                     </div>
                     בוקר טוב {name}
                 </div>
-                <div>
+                <div className={style.nav_actions}>
                     <AccountSubMenu handleClickLogout={handleClickLogout} />
+                    <UpdatesSubMenu />
                 </div>
 
             </nav >

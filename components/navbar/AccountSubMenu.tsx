@@ -58,7 +58,6 @@ export function AccountSubMenu({
                             padding: "0.75vw 1.5vw"
                         }
                     }
-
                 }}
             >
                 <MenuItem onClick={handleClickLogout} className={style.side_menu_item}>
