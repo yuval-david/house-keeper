@@ -5,14 +5,12 @@ import Link from 'next/link'
 export function HomePageComponent() {
     return (
         <div>
-            <div className={style.circle_container}>
-                <Link href="/" className={style.center}>
-                    <h2>במה תרצה להתחיל?</h2>
-                </Link>
+            <div className={style.home_menu_container}>
+                <h2>במה תרצה להתחיל?</h2>
+
                 <div className={style.links_container}>
                     <Link href="/" className={style.deg0}>
                         <span className={style.disabled}>דוחות</span>
-                        {/* <span className={style.yellow}>דוחות</span> */}
                     </Link>
                     <Link href="/faults" className={style.deg45}>
                         <span className={style.red}>תקלות</span>
