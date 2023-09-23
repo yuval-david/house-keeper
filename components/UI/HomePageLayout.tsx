@@ -18,10 +18,12 @@ export function HomePageLayout({ name, children }: { name: string; children: Rea
     };
     const handleClose = () => {
         setAnchorEl(null);
-        // Logout function - Need to add here
-        router.push("/login");
     };
 
+    const handleClickLogout = () => {
+        // Logout function - Need to add here
+        router.push("/login");
+    }
 
     return (
         <div>
@@ -70,7 +72,7 @@ export function HomePageLayout({ name, children }: { name: string; children: Rea
 
                         }}
                     >
-                        <MenuItem onClick={handleClose} className={style.side_menu_item}>
+                        <MenuItem onClick={handleClickLogout} className={style.side_menu_item}>
                             <span className={style.side_menu_label}>התנתקות</span>
                             <span className={style.side_menu_button}><LogoutIcon sx={{ height: "fit-content" }} /></span>
                         </MenuItem>
