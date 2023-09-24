@@ -4,6 +4,44 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { UpdateItem } from './UpdateItem';
+import style from "./UpdatesSubMenu.module.css"
+import { Update } from '@/Types/objects_types';
+
+const updates: Update[] = [
+    {
+        id: 1,
+        type: "meeting_update",
+        updated_item: {
+            name: "תקציב 2024",
+            date: "2023-10-17T21:00:00.000Z",
+        },
+        timestamp: "2023-09-24T21:00:00.000Z"
+    },
+    {
+        id: 2,
+        type: "fault_update",
+        updated_item: {
+            name: "נזילה בגג",
+        },
+        timestamp: "2023-09-23T21:00:00.000Z"
+    },
+    {
+        id: 3,
+        type: "fault_update",
+        updated_item: {
+            name: "צביעת הלובי",
+        },
+        timestamp: "2023-09-23T15:00:00.000Z"
+    },
+    {
+        id: 4,
+        type: "meeting_update",
+        updated_item: {
+            date: "2023-10-01T21:00:00.000Z",
+        },
+        timestamp: "2023-09-23T20:00:00.000Z"
+    },
+]
 
 export function UpdatesSubMenu() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -54,18 +92,13 @@ export function UpdatesSubMenu() {
                     }
                 }}
             >
-                <MenuItem>
-                    <UpdateItem />
-                </MenuItem>
-                <MenuItem>
-                    <UpdateItem />
-                </MenuItem>
-                <MenuItem>
-                    <UpdateItem />
-                </MenuItem>
-                <MenuItem>
-                    <UpdateItem />
-                </MenuItem>
+                {
+                    updates.length > 0 && updates.map((update: Update) => (
+                        <MenuItem className={style.menu_item} key={update.id}>
+                            <UpdateItem updateType={update.type} updateDate={update.timestamp} updatedItemData={update.updated_item} />
+                        </MenuItem>
+                    ))
+                }
             </Menu>
         </div>
     );

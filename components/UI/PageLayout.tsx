@@ -6,6 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useRouter } from 'next/router';
 import { AccountSubMenu } from '../navbar/AccountSubMenu';
+import { UpdatesSubMenu } from '../navbar/UpdatesSubMenu';
 
 // This is Layout component for all pages in the application (exclude Home Page)
 export function PageLayout({ pageTitle, children }: { pageTitle?: string; children: ReactNode }) {
@@ -49,6 +50,7 @@ export function PageLayout({ pageTitle, children }: { pageTitle?: string; childr
                 <div className={style.mobile_left_part}>
                     <div className={style.nav_actions}>
                         <AccountSubMenu handleClickLogout={handleClickLogout} />
+                        <UpdatesSubMenu />
                     </div>
 
                     {/** Mobile Hamburger button **/}

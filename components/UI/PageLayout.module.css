@@ -175,3 +175,9 @@
         align-items: center;
     }
 }
+
+.nav_actions {
+    display: flex;
+    flex-direction: row-reverse;
+    column-gap: 1vw;    
+}

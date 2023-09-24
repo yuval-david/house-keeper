@@ -1,0 +1,18 @@
+.update_card h4 {
+    display: flex;
+    align-items: center;
+    column-gap: 0.4vw;
+    font-size: 110%;
+    margin-bottom: 0vw;
+    margin-top: 0.7vw;
+}
+
+.update_card p {
+    margin-top: 0.55vw;
+    font-size: 100%;
+}
+
+.update_card .date {
+    display: inline-block;
+    font-size: 90%;
+}
