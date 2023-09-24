@@ -12,6 +12,10 @@
     font-size: 100%;
 }
 
+.update_card p a {
+    color: black;
+}
+
 .update_card .date {
     display: inline-block;
     font-size: 90%;
