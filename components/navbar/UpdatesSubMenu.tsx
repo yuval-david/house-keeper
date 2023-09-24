@@ -7,6 +7,7 @@ import { UpdateItem } from './UpdateItem';
 import style from "./UpdatesSubMenu.module.css"
 import { Update } from '@/Types/objects_types';
 
+// Updates demo data
 const updates: Update[] = [
     {
         id: 1,
@@ -76,7 +77,9 @@ export function UpdatesSubMenu() {
                     'aria-labelledby': 'basic-button',
                 }}
                 sx={{
-                    maxHeight: "40vw",
+                    maxHeight: {
+                        md: "40vw"
+                    },
                     "ul": {
                         padding: 0,
                         minHeight: "unset"
