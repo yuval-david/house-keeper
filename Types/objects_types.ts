@@ -38,3 +38,13 @@ export interface Supplier {
     fullName: string;
     phone: number;
 }
+
+export interface Update {
+    id: number;
+    type: string;
+    updated_item: {
+        name?: string;
+        date?: string; // timestamp
+    };
+    timestamp: string; // created date
+}
