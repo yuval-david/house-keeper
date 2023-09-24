@@ -1,21 +1,31 @@
-import mysql from 'mysql2/promise';
+import { Client } from 'pg';
 
+export default async function executeQuery({ query, values }: { query: string; values?: any[] }) {
+  // Create a new client instance
+  const client = new Client({
+    host: 'localhost',
+    database: 'housekeeper_db',
+    user: 'test',
+    password: 'test',
+    port: 5432, // Default port for PostgreSQL, change if necessary
+  });
 
-export default async function excuteQuery({ query, values }: {query:string; values?: any}) {
+  // Connect to the database
+  await client.connect();
 
-    // Create connection with DB
-    const dbconnection = await mysql.createConnection({
-        host:"localhost",
-        database: "housekeeper_db",
-        user: "root",
-        password: "",
-    });
+  try {
+    // Execute the query and retrieve the data
+    console.log(query, values)
+    const { rows } = await client.query(query, values);
 
-    try {
-        const [data] = await dbconnection.execute(query, values);
-        dbconnection.end();
-        return data;
-    } catch (error) {
-        return { error };
-    }
+    // End the database connection
+    await client.end();
+
+    return rows;
+  } catch (error) {
+    // End the database connection in case of an error
+    await client.end();
+
+    return { error };
+  }
 }
