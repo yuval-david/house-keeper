@@ -1,0 +1,28 @@
+.container {
+   position: relative;
+   width: 90vw; 
+   height: 800px;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   margin: auto;
+   margin-top: 1vw;
+   overflow-y: auto;
+   overflow-x: auto;
+}
+
+.navigation button {
+    background-color: #020079;
+    border: none;
+    font-size: 115%;
+    font-weight: 600;
+    padding: 8px 16px;
+    color: lightblue;
+    border-radius: 7px;
+}
+
+.navigation .buttons {
+    display: flex;
+    column-gap: 0.5vw;
+}

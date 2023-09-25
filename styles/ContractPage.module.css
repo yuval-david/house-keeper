@@ -1,0 +1,14 @@
+.upload_file_area {
+    background-color: white;
+    border: 1px solid gray;
+    width: 30vw;
+    height: 10vw;
+    margin: auto;
+    margin-top: 2vw;
+    border-radius: 10px;
+}
+
+.pdf_container {
+    width: 50%;
+    height: 500px;
+}
