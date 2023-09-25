@@ -1,0 +1,27 @@
+.side_menu_item {
+    display: flex;
+    column-gap: 1vw;
+    align-items: center;
+}
+
+.side_menu_button {
+    margin-top: 0.5vw;
+}
+
+.side_menu_label {
+    font-size: 110%;
+}
+
+@media (max-width: 1024px) {
+    .side_menu_item {
+        column-gap: 3vw;
+    }
+
+    .side_menu_button {
+        margin-top: 1vw;
+    }
+
+    .side_menu_label {
+        font-size: 130%;
+    }
+}

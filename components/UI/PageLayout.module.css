@@ -14,8 +14,8 @@
 }
 
 .logo_container {
-    width: 13.5vw;
-    height: 5.5vw;
+    width: 8.2vw;
+    height: 3.8vw;
     position: relative;
     top: 0vw;
     left: 0vw;
@@ -32,8 +32,10 @@
     }
 }
 
-.nav_message {
-    font-size: 150%;
+.nav_main_items {
+    display: flex;
+    align-items: center;
+    column-gap: 2vw;
 }
 
 .nav_items {
@@ -68,7 +70,7 @@
 
 .nav_link {
     text-decoration: none;
-    font-size: 120%;
+    font-size: 115%;
 }
 
 .nav_link:hover {
@@ -139,4 +141,43 @@
     border: none;
     padding: 0;
     color: black !important;
+}
+
+.side_menu_item {
+    display: flex;
+    column-gap: 1vw;
+    align-items: center;
+}
+
+.side_menu_button {
+    margin-top: 0.5vw;
+}
+
+.side_menu_label {
+    font-size: 110%;
+}
+
+@media (max-width: 1024px) {
+    .side_menu_item {
+        column-gap: 3vw;
+    }
+
+    .side_menu_button {
+        margin-top: 1vw;
+    }
+
+    .side_menu_label {
+        font-size: 130%;
+    }
+
+    .mobile_left_part {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.nav_actions {
+    display: flex;
+    flex-direction: row-reverse;
+    column-gap: 1vw;    
 }
