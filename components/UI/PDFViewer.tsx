@@ -5,12 +5,12 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import workerSrc from "../../pdf-worker";
 
 pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
-export  function PDFViewer() {
+export function PDFViewer() {
 
-    const [numPages, setNumPages] = useState<any>(null);
+	const [numPages, setNumPages] = useState<any>(null);
 	const [pageNumber, setPageNumber] = useState<number>(1);
 
-	const onDocumentLoadSuccess = ({ numPages }: {numPages: number}) => {
+	const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
 		setNumPages(numPages);
 	};
 
@@ -23,24 +23,23 @@ export  function PDFViewer() {
 		);
 
 	return (
-		<div>
+		<div className={style.area_container}>
 			<nav className={style.navigation}>
-                <div className={style.buttons}>
-					<button onClick={goToPrevPage}>הקודם</button>
-					<button onClick={goToNextPage}>הבא</button>
-                </div>
 				<p>
 					עמוד {pageNumber} מתוך {numPages}
 				</p>
+				<div className={style.buttons}>
+					<button onClick={goToPrevPage}>הקודם</button>
+					<button onClick={goToNextPage}>הבא</button>
+				</div>
 			</nav>
 
 			<div className={style.container}>
 				<Document
-					file="/contracts/1/sample.pdf"
+					file="/contracts/1/contract.pdf"
 					onLoadSuccess={onDocumentLoadSuccess}
-					
 				>
-					<Page pageNumber={pageNumber} />
+					<Page renderTextLayer={false} pageNumber={pageNumber} className={style.pdf_page} />
 				</Document>
 			</div>
 		</div>
