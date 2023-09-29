@@ -30,8 +30,9 @@ ALTER TABLE meetings
 ADD COLUMN time time;
 
 /***********************  USERS  ************************/
-CREATE TABLE **users** (
+CREATE TABLE users (
    id SERIAL PRIMARY KEY,
+   id_number INTEGER,
    name TEXT NOT NULL,
    phone INTEGER,
    isVahadBait BOOLEAN,
@@ -44,6 +45,31 @@ CREATE TABLE **users** (
    FOREIGN KEY (building_id) REFERENCES building(id)
 );
 
+INSERT INTO users (
+   id_number,
+   name,
+   phone,
+   isVahadBait,
+   isManagementCompany,
+   email,
+   apartment_floor,
+   apartment_number,
+   apartment_spm,
+   building_id
+)
+VALUES
+(209874512, 'לירון כהן', 0503455561, false, false, 'lironc@walla.com', 3, 7, 62, 1),
+(204715412, 'מאי יששכר', 0502220567, false, false, 'mayi@walla.com', 4, 13, 72, 1),
+(201478774, 'איתי פאר', 0521470567, false, false, 'itayp@gmail.com', 4, 14, 70, 1),
+(208000774, 'רון כהן', 0541470567, true, false, 'ronco@gmail.com', 6, 20, 72, 1),
+(207100970, 'דנה רון', 0530950567, false, true, 'dana_office@gmail.com', null, null, null, 1),
+(201118774, 'משה לוי', 0521411411, false, false, 'moshelevy@gmail.com', 1, 1, 60, 2),
+(208550774, 'לימור שרון', 0540070565, true, false, 'limori@gmail.com', 5, 18, 60, 2),
+(207122180, 'קובי עמר', 0500333567, false, true, 'kobi_office@gmail.com', null, null, null, 2),
+(204798034, 'אריה גלבוע', 0521418400, false, false, 'ariag@gmail.com', 1, 1, 65, 3),
+(205558034, 'ששון מזרחי', 0521418400, true, false, 'ariag@gmail.com', 3, 8, 60, 3),
+(310110080, 'עמיר עמר', 0500447507, false, true, 'amir_office@gmail.com', null, null, null, 2);
+
 /*****************  USERS <-> MEETINGS  ******************/
 CREATE TABLE user_meetings (
    user_id INTEGER,
@@ -52,6 +78,14 @@ CREATE TABLE user_meetings (
    FOREIGN KEY (user_id) REFERENCES users(id),
    FOREIGN KEY (meeting_id) REFERENCES meetings(id)
 );
+
+insert into user_meetings
+(user_id, meeting_id)
+VALUES
+(1, 2),
+(1, 1),
+(2, 1),
+(2, 2);
 
 /***********************  FAULTS  ************************/
 CREATE TABLE faults (

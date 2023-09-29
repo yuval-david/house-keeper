@@ -3,6 +3,7 @@ import { ButtonAddItem } from '../UI/ButtonAddItem'
 import style from "./MeetingsComponent.module.css"
 import { MeetingCard } from './MeetingCard'
 import { Meeting } from '@/Types/objects_types';
+import { Loader } from '../UI/Loader';
 
 export function MeetingsComponent() {
     // Hardcoded - need to come from store after login
@@ -21,10 +22,13 @@ export function MeetingsComponent() {
             .then((data) => {
                 setMeetings(data.meetings);
                 setLoading(false);
-            }).catch(err => { console.log(err); setLoading(false) });
+            }).catch(err => {
+                console.log(err);
+                setLoading(false);
+            });
     }, []);
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading) return <Loader />;
     if (!meetings) return <p>Missing data about meetings</p>;
 
     return (
