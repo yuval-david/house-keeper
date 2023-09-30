@@ -38,6 +38,17 @@ export interface editFaultRequest {
     price?: number;
 }
 
+export interface AddFaultRequest {
+    name: string;
+    severity: FaultSeveriry;
+    urgency: FaultUrgency;
+    location: string;
+    status: boolean;
+    handledby?: string;
+    vendor?: boolean;
+    price?: number;
+}
+
 export interface InputOption {
     label: string;
     value: string | number;

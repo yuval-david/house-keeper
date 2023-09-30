@@ -16,13 +16,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (req.method === 'POST') {
         try {
-            const { name, severity, urgency, location, status, handledBy, vendor, price } = req.body;
+            const { name, severity, urgency, location, status, handledby, vendor, price } = req.body;
 
             const data = await sql`
             INSERT INTO faults 
-            (name, severity, urgency, location, status, handledBy, vendor, price, building_id)
+            (name, severity, urgency, location, status, handledby, vendor, price, building_id)
             VALUES 
-            (${name}, ${severity}, ${urgency}, ${location}, ${status}, ${handledBy}, ${vendor}, ${price}, ${buildingId});
+            (${name}, ${severity}, ${urgency}, ${location}, ${status}, ${handledby}, ${vendor}, ${price}, ${buildingId});
             `;
 
             res.status(201).json({ message: 'Fault created.' });
