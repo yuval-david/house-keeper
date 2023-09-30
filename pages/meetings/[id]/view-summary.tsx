@@ -1,8 +1,59 @@
 import { PageLayout } from '@/components/UI/PageLayout'
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import style from "../../../styles/ViewMeeting.module.css"
+import { useRouter } from 'next/router';
+import { Meeting } from '@/Types/objects_types';
+import { getDate } from '@/utils/getDate';
+import { Loader } from '@/components/UI/Loader';
 
 export default function viewSummaryPage() {
+
+    const router = useRouter();
+
+    // Hardcoded - need to come from store after login
+    const buildingID = 1;
+    const { id: meetingId } = router.query;
+    const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
+
+    const meetingEndpoint = useMemo(() => {
+        return apiEndpoint + `/v2/buildings/${buildingID}/meetings/${meetingId}`;
+    }, [buildingID, meetingId]);
+
+    const [isLoadingMeetingData, setIsLoadingMeetingData] = useState<boolean>(false);
+    const [meetingData, setMeetingData] = useState<Meeting>();
+
+    // Fetch Meeting Data
+    useEffect(() => {
+        if (meetingId) {
+            setIsLoadingMeetingData(true);
+            fetch(meetingEndpoint)
+                .then((res) => res.json())
+                .then((data) => {
+                    setIsLoadingMeetingData(false);
+                    setMeetingData(data.meeting);
+                }).catch(err => {
+                    setIsLoadingMeetingData(false);
+                    console.log(err);
+                });
+        }
+    }, [meetingId]);
+
+
+    const meetingTitle = meetingData?.name || "פגישת דיירים";
+    const meetingDate = getDate(meetingData?.date || "");
+    const meetingTimeParts = meetingData?.time.split(":") || [];
+    const meetingTime = meetingTimeParts.length > 0 ? meetingTimeParts[0] + ":" + meetingTimeParts[1] : "";
+    const meetingLocation = meetingData?.location || "";
+    const meetingSummary = meetingData?.summary || "";
+
+
+    if (isLoadingMeetingData) return (
+        <PageLayout pageTitle='תקציר הפגישה'>
+            <Loader isShadow={false} message='טוען פרטי פגישה...' />
+        </PageLayout>
+    );
+
+
     return (
         <PageLayout pageTitle='תקציר הפגישה'>
             <div className={style.meeting_card}>
@@ -12,27 +63,27 @@ export default function viewSummaryPage() {
                     </div>
                 </div>
                 <div className={style.content_part}>
-                    <h2>פגישת ועד בית</h2>
+                    <h2>{meetingTitle}</h2>
                     <div className={style.card_flex}>
                         <div className={style.details_right}>
                             <h4>פרטי הפגישה</h4>
                             <div className={style.details_existing}>
                                 <div className={style.detail}>
                                     <span className={style.label}>תאריך:</span>
-                                    <span> 10.09.2023</span>
+                                    <span> {meetingDate}</span>
                                 </div>
                                 <div className={style.detail}>
                                     <span className={style.label}>שעה:</span>
-                                    <span> 16:00</span>
+                                    <span> {meetingTime}</span>
                                 </div>
                                 <div className={style.detail}>
                                     <span className={style.label}>מיקום:</span>
-                                    <span> דירה 3</span>
+                                    <span> {meetingLocation}</span>
                                 </div>
                             </div>
                         </div>
                         <div className={style.summary}>
-                            <p>בפגישה דנו בצביעת הבניין. החלטנו מה יהיו הגוונים הסופיים: סגול לילך, וכחול ים. למי שיש בעיה שיפנה לועד הבית.</p>
+                            <p>{meetingSummary}</p>
                         </div>
                     </div>
                 </div>
