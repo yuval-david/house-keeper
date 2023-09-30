@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method === 'PATCH') {
         try {
             // Destructure the optional fields from the request body
-            const { name, severity, urgency, location, status, handledBy, vendor, price } = req.body;
+            const { name, severity, urgency, location, status, handledby, vendor, price } = req.body;
 
             if (name) {
                 const nameUpdateResult = await sql`UPDATE faults SET name = ${name} WHERE id = ${faultId} AND building_id = ${buildingId};`;
@@ -40,15 +40,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const locationUpdateResult = await sql`UPDATE faults SET location = ${location} WHERE id = ${faultId} AND building_id = ${buildingId};`;
                 console.log(locationUpdateResult);
             }
-            if (status) {
+            if (status !== undefined && status !== null) {
                 const statusUpdateResult = await sql`UPDATE faults SET status = ${status} WHERE id = ${faultId} AND building_id = ${buildingId};`;
                 console.log(statusUpdateResult);
             }
-            if (handledBy) {
-                const handledByUpdateResult = await sql`UPDATE faults SET handledBy = ${handledBy} WHERE id = ${faultId} AND building_id = ${buildingId};`;
-                console.log(handledByUpdateResult);
+            if (handledby) {
+                const handledbyUpdateResult = await sql`UPDATE faults SET handledby = ${handledby} WHERE id = ${faultId} AND building_id = ${buildingId};`;
+                console.log(handledbyUpdateResult);
             }
-            if (vendor) {
+            if (vendor !== undefined && vendor !== null) {
                 const vendorUpdateResult = await sql`UPDATE faults SET vendor = ${vendor} WHERE id = ${faultId} AND building_id = ${buildingId};`;
                 console.log(vendorUpdateResult);
             }

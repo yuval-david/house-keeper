@@ -26,14 +26,14 @@ export default function EditPage() {
     const [isLoadingFaultData, setIsLoadingFaultData] = useState<boolean>(false);
     const [isLoadingEditFault, setIsLoadingEditFault] = useState<boolean>(false);
     const [faultName, setFaultName] = useState("");
-    const [faultType, setFaultType] = useState<FaultSeveriry>("");
-    const [faultUrgency, setFaultUrgency] = useState<FaultUrgency>("");
-    const [faultLocation, setFaultLocation] = useState<string>("");
-    const [faultStatus, setFaultStatus] = useState<FaultStatus>("");
-    const [doneBy, setDoneBy] = useState<string>("");
-    const [isSupplierInvolved, setIsSupplierInvolved] = useState<string>("");
+    const [faultType, setFaultType] = useState<FaultSeveriry>();
+    const [faultUrgency, setFaultUrgency] = useState<FaultUrgency>();
+    const [faultLocation, setFaultLocation] = useState<string>();
+    const [faultStatus, setFaultStatus] = useState<FaultStatus>();
+    const [doneBy, setDoneBy] = useState<string>();
+    const [isSupplierInvolved, setIsSupplierInvolved] = useState<string>();
     const [faultPrice, setFaultPrice] = useState<number>();
-    const [faultImage, setFaultImage] = useState(""); // Need to check how to implement image
+    const [faultImage, setFaultImage] = useState(); // Need to check how to implement image
     const [successModal, setSuccessModal] = useState(false);
     const [errorModal, setErrorModal] = useState(false);
     const [originalFaultData, setOriginalFaultData] = useState<Fault>();
@@ -41,7 +41,6 @@ export default function EditPage() {
 
     const handleCloseSuccessModal = () => {
         setSuccessModal(false);
-        router.push(`/faults`);
     }
     const handleCloseErrorModal = () => {
         setErrorModal(false);
@@ -56,7 +55,7 @@ export default function EditPage() {
                 .then((data) => {
                     setIsLoadingFaultData(false);
                     setOriginalFaultData(data.fault);
-
+                    console.log("data.fault: ", data.fault);
                     // Set form values
                     setFaultName(data.fault.name);
                     setFaultType(data.fault.severity);
