@@ -57,7 +57,7 @@ export interface InputOption {
 export interface Supplier {
     id: number;
     role: string;
-    fullName: string;
+    fullname: string;
     phone: number;
 }
 

@@ -15,44 +15,17 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
 import { ModalAreYouSure } from '@/components/UI/Modals/ModalAreYouSure';
 import { useRouter } from 'next/router';
+import { Loader } from '@/components/UI/Loader';
 
-
-// Hardcoded demo-data
-const suppliers = [
-    {
-        id: 1,
-        role: "גנן",
-        fullName: "שלומי זהבי",
-        phone: '0503455562'
-    },
-    {
-        id: 2,
-        role: "טכנאי",
-        fullName: "משה גבאי",
-        phone: '0543455562'
-    },
-    {
-        id: 3,
-        role: "מנקה",
-        fullName: "אבי זוהר",
-        phone: '0540005562'
-    },
-    {
-        id: 4,
-        role: "אינסטלטור",
-        fullName: "רון לוי",
-        phone: '0540005124'
-    }
-];
 
 // Create rows data function
 function createData(
     id: number,
     role: string,
-    fullName: string,
-    phone: string, // It will change back to int
+    fullname: string,
+    phone: number, // It will change back to int
 ) {
-    return { id, role, fullName, phone };
+    return { id, role, fullname, phone };
 }
 
 
@@ -65,7 +38,7 @@ export default function SuppliersPage() {
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
     const suppliersEndpoint = apiEndpoint + `/v2/buildings/${buildingID}/managment/contractors`;
 
-    // const [suppliers, setSuppliers] = useState<Supplier[] | null>(null);
+    const [suppliers, setSuppliers] = useState<Supplier[] | null>(null);
     const [isLoading, setLoading] = useState(false);
     const [deletedSupplierId, setDeletedSupplierId] = useState<number | undefined>(undefined);
     const [showModalBeforeDelete, setShowModalBeforeDelete] = useState(false);
@@ -87,39 +60,63 @@ export default function SuppliersPage() {
         setShowErrorDeleteModal(false);
     }
 
-    // // Fetch Meetings
-    // useEffect(() => {
-    //     setLoading(true);
-    //     fetch(suppliersEndpoint)
-    //         .then((res) => res.json())
-    //         .then((data) => {
-    //             setSuppliers(data.meetings);
-    //             setLoading(false);
-    //         }).catch(err => { console.log(err); setLoading(false); setShowErrorDeleteModal(true); });
-    // }, []);
+    // Fetch Contractors
+    useEffect(() => {
+        setLoading(true);
+        fetch(suppliersEndpoint)
+            .then((res) => res.json())
+            .then((data) => {
+                setSuppliers(data.contractors);
+                setLoading(false);
+            }).catch(err => { console.log(err); setLoading(false); setShowErrorDeleteModal(true); });
+    }, [showModalAfterDelete]);
 
-    // if (isLoading) return <p>Loading...</p>;
-    // if (!suppliers) return <p>Missing data about suppliers</p>;
+    if (isLoading) return (
+        <PageLayout pageTitle='רשימת ספקים'>
+            <Loader isShadow={false} message='טוען רשימת ספקים...' />
+        </PageLayout>
+    );
+
+    if (!suppliers) return (
+        <PageLayout pageTitle='רשימת ספקים'>
+            <p>לא נמצאו ספקים</p>
+        </PageLayout>
+    );
 
 
-    // Handle click delete supplier button
+    // Handle click delete supplier icon
     const handleClickDelete = (supplierId: number) => {
         setDeletedSupplierId(supplierId);
         setShowModalBeforeDelete(true);
     }
 
-    // Delete Supplier Function
-    const handleDeleteSupplier = () => {
+    // Delete Supplier Function (click - yes)
+    const handleDeleteSupplier = async () => {
         setShowModalBeforeDelete(false);
         setLoading(true);
-        setLoading(false);
-        setShowModalAfterDelete(true);
+        if (!deletedSupplierId) return;
+
+        try {
+
+            const response: any = await fetch(`${suppliersEndpoint}/${deletedSupplierId}`, {
+                method: "DELETE",
+            });
+            const resJson = await response.json();
+            setLoading(false);
+            if (response.ok) {
+                setShowModalAfterDelete(true);
+            }
+        } catch (error: any) {
+            setLoading(false);
+            setShowErrorDeleteModal(true);
+            console.log(error);
+        }
 
     }
 
     // Create table rows (suppliers)
     const rows = suppliers?.map((
-        supplier => createData(supplier.id, supplier.role, supplier.fullName, supplier.phone)
+        supplier => createData(supplier.id, supplier.role, supplier.fullname, supplier.phone)
     ))
 
     return (
@@ -138,13 +135,13 @@ export default function SuppliersPage() {
                     <TableBody>
                         {rows.map((row) => (
                             <TableRow
-                                key={row.fullName}
+                                key={row.fullname}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 className={style.content_row}
                             >
                                 <TableCell className={style.content_cell} align="center">{row.role}</TableCell>
-                                <TableCell className={style.content_cell} align="center">{row.fullName}</TableCell>
-                                <TableCell className={style.content_cell} align="center">{row.phone}</TableCell>
+                                <TableCell className={style.content_cell} align="center">{row.fullname}</TableCell>
+                                <TableCell className={style.content_cell} align="center">{"0" + row.phone}</TableCell>
                                 <TableCell className={`${style.content_cell} ${style.delete_cell}`} align="center">
                                     <button type='button' onClick={() => handleClickDelete(row.id)}>
                                         <DeleteIcon />
