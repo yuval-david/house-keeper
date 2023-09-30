@@ -29,7 +29,7 @@ export function MeetingsComponent() {
     }, []);
 
     if (isLoading) return <Loader isShadow={false} message="טוען פגישות דיירים..." />;
-    if (!meetings) return <p>Missing data about meetings</p>;
+    if (!meetings) return <p>לא נמצאו פגישות.</p>;
 
     return (
         <div>

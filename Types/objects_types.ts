@@ -1,6 +1,6 @@
 export type FaultStatus = "טופלה" | "לא טופלה" | "";
 export type FaultUrgency = "דחופה" | "לא דחופה" | "";
-export type FaultType = "קלה" | "בינונית" | "חמורה" | "";
+export type FaultSeveriry = "קלה" | "בינונית" | "חמורה" | "";
 export type YesNowAnswers = "כן" | "לא" | "";
 
 export interface Meeting {
@@ -16,15 +16,37 @@ export interface Meeting {
 
 export interface Fault {
     id: number;
-    faultName: string;
-    faultType: FaultType;
-    faultUrgency: FaultUrgency;
-    faultLocation: string;
-    faultStatus: FaultStatus;
-    doneBy?: string;
-    isSupplierInvolved?: YesNowAnswers;
-    faultPrice?: number;
-    faultImage?: string; // check about upload file
+    name: string;
+    severity: FaultSeveriry;
+    urgency: FaultUrgency;
+    location: string;
+    status: boolean;
+    handledby?: string;
+    vendor?: boolean;
+    price?: number;
+}
+
+export interface editFaultRequest {
+    id: number;
+    name?: string;
+    severity?: FaultSeveriry;
+    urgency?: FaultUrgency;
+    location?: string;
+    status?: boolean;
+    handledby?: string;
+    vendor?: boolean;
+    price?: number;
+}
+
+export interface AddFaultRequest {
+    name: string;
+    severity: FaultSeveriry;
+    urgency: FaultUrgency;
+    location: string;
+    status: boolean;
+    handledby?: string;
+    vendor?: boolean;
+    price?: number;
 }
 
 export interface InputOption {
