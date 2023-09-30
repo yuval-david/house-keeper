@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const usersData = await sql`SELECT user_id FROM user_meetings WHERE meeting_id = ${meetingId}`;
             meetingResult.rows[0].users = usersData.rows.map(row => row.user_id);
 
-            return res.status(200).json({ meetings: meetingResult.rows });
+            return res.status(200).json({ meeting: meetingResult.rows[0] });
         } catch (error: any) {
             res.status(500).json({ error: error.message });
         }
