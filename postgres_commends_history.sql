@@ -90,8 +90,9 @@ VALUES
 /***********************  FAULTS  ************************/
 CREATE TABLE faults (
    id SERIAL PRIMARY KEY,
-   details TEXT,
+   name VARCHAR(50),
    severity VARCHAR(50),
+   urgency VARCHAR(50),
    location VARCHAR(50),
    status BOOLEAN,
    handledBy VARCHAR(50),
@@ -100,6 +101,13 @@ CREATE TABLE faults (
    building_id INT,
    FOREIGN KEY (building_id) REFERENCES building(id)
 );
+
+INSERT INTO faults
+(name, severity, urgency, location, status, handledBy, vendor, price, building_id)
+VALUES
+('נזילה בגג', 'בינונית', 'דחופה', 'גג הבניין', false, null, null, null, 1),
+('צבע דהוי', 'קלה', 'לא דחופה', 'חדר המדרגות', false,  null, null, null, 1),
+('צבע דהוי', 'קלה', 'לא דחופה', 'לובי', false,  null, null, null, 2);
 
 /************  MANAGEMENT COMPANIES INFORMATION  ************/
 CREATE TABLE management_information (
