@@ -32,6 +32,7 @@ export default function addSummaryPage() {
 
     const handleCloseSuccessModal = () => {
         setSuccessModal(false);
+        router.push(`/meetings/${meetingId}/view-summary`);
     }
     const handleCloseErrorModal = () => {
         setErrorModal(false);
@@ -75,7 +76,6 @@ export default function addSummaryPage() {
                 setIsLoadingAddSummary(false);
                 if (response.ok) {
                     setSuccessModal(true);
-                    router.push(`/meetings/${meetingId}/view-summary`)
                 }
             } catch (error) {
                 setIsLoadingAddSummary(false);
