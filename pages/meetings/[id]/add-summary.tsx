@@ -37,7 +37,7 @@ export default function addSummaryPage() {
         setErrorModal(false);
     }
 
-    // Fetch Meetings
+    // Fetch Meeting Data
     useEffect(() => {
         if (meetingId) {
             setIsLoadingMeetingData(true);
