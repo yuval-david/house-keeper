@@ -12,6 +12,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         try {
             const meetingResult = await sql`SELECT * FROM meetings WHERE building_id=${buildingId} AND id=${meetingId};`;
+
+            // Fetch users associated with each meeting
+            const usersData = await sql`SELECT user_id FROM user_meetings WHERE meeting_id = ${meetingId}`;
+            meetingResult.rows[0].users = usersData.rows.map(row => row.user_id);
+
             return res.status(200).json({ meetings: meetingResult.rows });
         } catch (error: any) {
             res.status(500).json({ error: error.message });
@@ -24,49 +29,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             // Destructure the optional fields from the request body
             const { name, date, location, description, summary, users } = req.body;
 
-            // Initialize query parameters and values arrays
-            const queryParameters: string[] = [];
-            const queryValues: any[] = [];
-
             if (name) {
-                queryParameters.push('name = $' + (queryParameters.length + 1));
-                queryValues.push(name);
+                const nameUpdateResult = await sql`UPDATE meetings SET name = ${name} WHERE id = ${meetingId} AND building_id = ${buildingId};`;
+                console.log(nameUpdateResult);
             }
             if (date) {
-                queryParameters.push('date = $' + (queryParameters.length + 1));
-                queryValues.push(date);
+                const dateUpdateResult = await sql`UPDATE meetings SET date = ${date} WHERE id = ${meetingId} AND building_id = ${buildingId};`;
+                console.log(dateUpdateResult);
             }
             if (location) {
-                queryParameters.push('location = $' + (queryParameters.length + 1));
-                queryValues.push(location);
+                const locationUpdateResult = await sql`UPDATE meetings SET location = ${location} WHERE id = ${meetingId} AND building_id = ${buildingId};`;
+                console.log(locationUpdateResult);
             }
             if (description) {
-                queryParameters.push('description = $' + (queryParameters.length + 1));
-                queryValues.push(description);
+                const descriptionUpdateResult = await sql`UPDATE meetings SET description = ${description} WHERE id = ${meetingId} AND building_id = ${buildingId};`;
+                console.log(descriptionUpdateResult);
             }
             if (summary) {
-                queryParameters.push('summary = $' + (queryParameters.length + 1));
-                queryValues.push(summary);
-            }
-
-            // Build and execute the SQL query for updating the meeting
-            if (queryParameters.length > 0) {
-                const updateQuery = `UPDATE meetings SET ${queryParameters.join(', ')} WHERE id = $${queryParameters.length + 1} AND building_id = $${queryParameters.length + 2}`;
-                queryValues.push(meeting_id, building_id);
-                // await executeQuery({ query: updateQuery, values: queryValues });
+                const summaryUpdateResult = await sql`UPDATE meetings SET summary = ${summary} WHERE id = ${meetingId} AND building_id = ${buildingId};`;
+                console.log(summaryUpdateResult);
             }
 
             // Update user_meetings if "users" is provided
             if (Array.isArray(users)) {
                 // Delete existing relationships for the meeting
-                // await executeQuery({ query: `DELETE FROM user_meetings WHERE meeting_id = $1`, values: [meeting_id] });
+                const deleteResult = await sql`DELETE FROM user_meetings WHERE meeting_id = ${meetingId};`;
+                console.log(deleteResult);
 
                 // Insert new relationships
                 for (const user_id of users) {
-                    // await executeQuery({
-                    //     query: `INSERT INTO user_meetings (user_id, meeting_id) VALUES ($1, $2)`,
-                    //     values: [user_id, meeting_id]
-                    // });
+                    await sql`INSERT INTO user_meetings (user_id, meeting_id) VALUES (${user_id}, ${meetingId});`
                 }
             }
 
