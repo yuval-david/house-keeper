@@ -54,7 +54,7 @@ export default function addSummaryPage() {
         }
     }, [meetingId]);
 
-    // Need to add real request
+    // Submit add meeting summary
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         setIsLoadingAddSummary(true);
