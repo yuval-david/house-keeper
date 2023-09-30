@@ -20,9 +20,21 @@ export interface Fault {
     severity: FaultSeveriry;
     urgency: FaultUrgency;
     location: string;
-    status: FaultStatus;
-    handledBy?: string;
-    vendor?: YesNowAnswers;
+    status: boolean;
+    handledby?: string;
+    vendor?: boolean;
+    price?: number;
+}
+
+export interface editFaultRequest {
+    id: number;
+    name?: string;
+    severity?: FaultSeveriry;
+    urgency?: FaultUrgency;
+    location?: string;
+    status?: boolean;
+    handledby?: string;
+    vendor?: boolean;
     price?: number;
 }
 

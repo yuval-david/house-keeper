@@ -1,5 +1,4 @@
 import { sql } from '@vercel/postgres';
-import { Pool, Client } from 'pg'
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -12,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         try {
             const faultResult = await sql`SELECT * FROM faults WHERE building_id=${buildingId} AND id=${faultId};`;
-            return res.status(200).json({ meeting: faultResult.rows[0] });
+            return res.status(200).json({ fault: faultResult.rows[0] });
 
         } catch (error: any) {
             res.status(500).json({ error: error.message });
