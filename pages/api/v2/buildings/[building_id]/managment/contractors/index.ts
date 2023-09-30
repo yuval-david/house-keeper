@@ -9,8 +9,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // POST
     if (req.method === 'POST') {
         try {
-            const { role, fullName, phone } = req.body;
-            const data = await sql`INSERT INTO management_contractors (role, fullName, phone, building_id) VALUES (${role}, ${fullName}, ${phone}, ${buildingId})`;
+            const { role, fullname, phone } = req.body;
+            const data = await sql`INSERT INTO management_contractors (role, fullName, phone, building_id) VALUES (${role}, ${fullname}, ${phone}, ${buildingId})`;
             res.status(201).json({ message: 'Contractor created.' });
 
         } catch (error: any) {
