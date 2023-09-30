@@ -12,7 +12,7 @@ export function FaultCard({
     faultData: Fault;
 }) {
 
-    const { name, severity, urgency, status, location } = faultData;
+    const { name, severity, urgency, status, location, handledby, price } = faultData;
     const statusText = status ? "טופלה" : "לא טופלה";
 
     return (
@@ -38,13 +38,25 @@ export function FaultCard({
                             <span> {urgency}</span>
                         </div>
                         <div className={style.detail}>
-                            <span className={style.label}>סטטוס:</span>
-                            <span>  {statusText}</span>
-                        </div>
-                        <div className={style.detail}>
                             <span className={style.label}>מיקום:</span>
                             <span> {location}</span>
                         </div>
+                        <div className={style.detail}>
+                            <span className={style.label}>סטטוס:</span>
+                            <span>  {statusText}</span>
+                        </div>
+                        {statusText === "טופלה" && (
+                            <>
+                                <div className={style.detail}>
+                                    <span className={style.label}>טופלה ע"י:</span>
+                                    <span> {handledby}</span>
+                                </div>
+                                <div className={style.detail}>
+                                    <span className={style.label}>מחיר:</span>
+                                    <span> {price}</span>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
                 <div className={style.more_details}>
