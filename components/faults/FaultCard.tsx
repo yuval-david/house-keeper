@@ -1,16 +1,20 @@
 import React from 'react'
 import style from "./FaultCard.module.css"
 import { ButtonEditItem } from '../UI/ButtonEditItem'
-import { FaultType } from '@/Types/objects_types';
+import { Fault, FaultSeveriry } from '@/Types/objects_types';
 
 // TODO: Add Props with real data
 export function FaultCard({
     id,
-    faultName,
+    faultData,
 }: {
     id: number;
-    faultName: string;
+    faultData: Fault;
 }) {
+
+    const { name, severity, urgency, status, location } = faultData;
+    const statusText = status ? "טופלה" : "לא טופלה";
+
     return (
         <div className={style.fault_card}>
             <div className={style.icon_part}>
@@ -22,28 +26,24 @@ export function FaultCard({
                 <div className={style.maih_details}>
                     <h2>
                         <span>תקלה</span>:
-                        {" "}{faultName}
+                        {" "}{name}
                     </h2>
                     <div className={style.details_list}>
                         <div className={style.detail}>
                             <span className={style.label}>סוג:</span>
-                            <span> קלה</span>
+                            <span> {severity}</span>
                         </div>
                         <div className={style.detail}>
                             <span className={style.label}>רמת חשיבות:</span>
-                            <span> לא דחופה</span>
+                            <span> {urgency}</span>
                         </div>
                         <div className={style.detail}>
                             <span className={style.label}>סטטוס:</span>
-                            <span>  פתוחה</span>
-                        </div>
-                        <div className={style.detail}>
-                            <span className={style.label}>כתובת:</span>
-                            <span> משמר הירדן 11, נס ציונה</span>
+                            <span>  {statusText}</span>
                         </div>
                         <div className={style.detail}>
                             <span className={style.label}>מיקום:</span>
-                            <span> לובי</span>
+                            <span> {location}</span>
                         </div>
                     </div>
                 </div>

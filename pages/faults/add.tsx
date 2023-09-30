@@ -5,13 +5,13 @@ import { ButtonSave } from '@/components/UI/ButtonSave';
 import { Loader } from '@/components/UI/Loader';
 import { CustomInputRow } from '@/components/UI/FormFields/CustomInputRow';
 import { faultTypes, faultUrgencyLevels, faultStatuses } from "@/components/faults/FalutsFieldsOptions"
-import { FaultStatus, FaultType, FaultUrgency } from '@/Types/objects_types';
+import { FaultSeveriry, FaultStatus, FaultUrgency } from '@/Types/objects_types';
 
 export default function AddFaultPage() {
 
     const [isLoadingAddFault, setIsLoadingAddFault] = useState<boolean>(false);
     const [faultName, setFaultName] = useState<string>("");
-    const [faultType, setFaultType] = useState<FaultType>("");
+    const [faultSeveriry, setFaultSeveriry] = useState<FaultSeveriry>("");
     const [faultUrgency, setFaultUrgency] = useState<FaultUrgency>("");
     const [faultLocation, setFaultLocation] = useState<string>("");
     const [faultStatus, setFaultStatus] = useState<FaultStatus>("");
@@ -25,7 +25,7 @@ export default function AddFaultPage() {
         setIsLoadingAddFault(true);
         const data = {
             faultName,
-            faultType,
+            faultSeveriry,
             faultUrgency,
             faultLocation,
             faultStatus,
@@ -51,7 +51,7 @@ export default function AddFaultPage() {
                         <h2>פרטי תקלה חדשה</h2>
                         <div className={style.details_list}>
                             <CustomInputRow value={faultName} onChange={(e) => setFaultName(e.target.value)} label='שם התקלה' placeholder='' type='text' dir='rtl' required />
-                            <CustomInputRow value={faultType} onChange={(e) => setFaultType(e.target.value)} label='סוג התקלה' placeholder='' type='select' dir='rtl' required options={faultTypes} />
+                            <CustomInputRow value={faultSeveriry} onChange={(e) => setFaultSeveriry(e.target.value)} label='סוג התקלה' placeholder='' type='select' dir='rtl' required options={faultTypes} />
                             <CustomInputRow value={faultUrgency} onChange={(e) => setFaultUrgency(e.target.value)} label='רמת דחיפות' placeholder='' type='select' dir='rtl' required options={faultUrgencyLevels} />
                             <CustomInputRow value={faultLocation} onChange={(e) => setFaultLocation(e.target.value)} label='מיקום' placeholder='' type='text' dir='rtl' required />
                             <CustomInputRow value={faultStatus} onChange={(e) => setFaultStatus(e.target.value)} label='סטטוס' placeholder='' type='radio' dir='rtl' required options={faultStatuses} />

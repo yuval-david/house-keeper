@@ -6,16 +6,16 @@ import { ButtonSave } from '@/components/UI/ButtonSave';
 import { Loader } from '@/components/UI/Loader';
 import { faultTypes, faultUrgencyLevels, faultStatuses, faultDoneBySupplier } from "@/components/faults/FalutsFieldsOptions"
 import { useRouter } from 'next/router';
-import { Fault, FaultStatus, FaultType, FaultUrgency } from '@/Types/objects_types';
+import { Fault, FaultStatus, FaultSeveriry, FaultUrgency } from '@/Types/objects_types';
 
 // DEMO DATA (will be fetched by fault id)
 const EditedFault: Fault = {
     id: 1,
-    faultName: "נזילה בגג",
-    faultType: "חמורה",
-    faultUrgency: "דחופה",
-    faultLocation: "גג הבניין",
-    faultStatus: "לא טופלה",
+    name: "נזילה בגג",
+    severity: "חמורה",
+    urgency: "דחופה",
+    location: "גג הבניין",
+    status: "לא טופלה",
 }
 
 
@@ -25,15 +25,15 @@ export default function EditPage() {
     const { id: faultId } = router.query;
 
     const [isLoadingAddFault, setIsLoadingAddFault] = useState<boolean>(false);
-    const [faultName, setFaultName] = useState<string>(EditedFault?.faultName || "");
-    const [faultType, setFaultType] = useState<FaultType>(EditedFault?.faultType || "");
-    const [faultUrgency, setFaultUrgency] = useState<FaultUrgency>(EditedFault?.faultUrgency || "");
-    const [faultLocation, setFaultLocation] = useState<string>(EditedFault?.faultLocation || "");
-    const [faultStatus, setFaultStatus] = useState<FaultStatus>(EditedFault?.faultStatus || "");
-    const [doneBy, setDoneBy] = useState<string>(EditedFault?.doneBy || "");
-    const [isSupplierInvolved, setIsSupplierInvolved] = useState<string>(EditedFault?.isSupplierInvolved || "");
-    const [faultPrice, setFaultPrice] = useState<number>(EditedFault?.faultPrice || 0);
-    const [faultImage, setFaultImage] = useState(EditedFault?.faultImage || ""); // Need to check how to implement image
+    const [faultName, setFaultName] = useState<string>(EditedFault?.name || "");
+    const [faultType, setFaultType] = useState<FaultSeveriry>(EditedFault?.severity || "");
+    const [faultUrgency, setFaultUrgency] = useState<FaultUrgency>(EditedFault?.urgency || "");
+    const [faultLocation, setFaultLocation] = useState<string>(EditedFault?.location || "");
+    const [faultStatus, setFaultStatus] = useState<FaultStatus>(EditedFault?.status || "");
+    const [doneBy, setDoneBy] = useState<string>(EditedFault?.handledBy || "");
+    const [isSupplierInvolved, setIsSupplierInvolved] = useState<string>(EditedFault?.vendor || "");
+    const [faultPrice, setFaultPrice] = useState<number>(EditedFault?.price || 0);
+    const [faultImage, setFaultImage] = useState(""); // Need to check how to implement image
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
