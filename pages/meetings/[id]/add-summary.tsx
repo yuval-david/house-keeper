@@ -61,7 +61,7 @@ export default function addSummaryPage() {
         const data = {
             summary
         }
-        console.log("Data", data);
+
         if (meetingId) {
             try {
                 const response: any = await fetch(meetingEndpoint, {
