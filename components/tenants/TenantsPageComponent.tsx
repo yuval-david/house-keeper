@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { PageLayout } from '../UI/PageLayout'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { ModalAreYouSure } from '../UI/Modals/ModalAreYouSure';
@@ -7,55 +7,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Paper from '@mui/material/Paper';
 import style from "../../styles/TenantsPage.module.css"
 import { ModalMessage } from '../UI/Modals/ModalMessage';
+import { User } from '@/Types/objects_types';
+import { Loader } from '../UI/Loader';
 
-
-
-// Hardcoded demo-data
-const tenants = [
-    {
-        id: 209281282,
-        apartment_number: 1,
-        name: "לירון כהן",
-        phone: '0503455562'
-    },
-    {
-        id: 205471854,
-        apartment_number: 2,
-        name: "מאי יששכר",
-        phone: '0543455562'
-    },
-    {
-        id: 214787747,
-        apartment_number: 3,
-        name: "איתי פאר",
-        phone: '0540005562'
-    },
-    {
-        id: 269874573,
-        apartment_number: 5,
-        name: "רון כהן",
-        phone: '0540005124'
-    },
-    {
-        id: 269874573,
-        apartment_number: 7,
-        name: "עמית מזרחי",
-        phone: '0540005124'
-    },
-    {
-        id: 269874573,
-        apartment_number: 11,
-        name: "יובל לוי",
-        phone: '0540005124'
-    }
-];
 
 // Create rows data function
 function createData(
     id: number,
     apartment_number: number,
     name: string,
-    phone: string, // It will change back to int
+    phone: number,
 ) {
     return { id, apartment_number, name, phone };
 }
@@ -66,9 +27,9 @@ export function TenantsPageComponent() {
     // Hardcoded - need to come from store after login
     const buildingID = 1;
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    const suppliersEndpoint = apiEndpoint + `/v2/buildings/${buildingID}/managment/contractors`;
+    const usersEndpoint = apiEndpoint + `/v2/buildings/${buildingID}/users`;
 
-    // const [suppliers, setSuppliers] = useState<Supplier[] | null>(null);
+    const [users, setUsers] = useState<User[] | null>(null);
     const [isLoading, setLoading] = useState(false);
     const [deletedSupplierId, setDeletedSupplierId] = useState<number | undefined>(undefined);
     const [showModalBeforeDelete, setShowModalBeforeDelete] = useState(false);
@@ -90,19 +51,19 @@ export function TenantsPageComponent() {
         setShowErrorDeleteModal(false);
     }
 
-    // // Fetch Meetings
-    // useEffect(() => {
-    //     setLoading(true);
-    //     fetch(suppliersEndpoint)
-    //         .then((res) => res.json())
-    //         .then((data) => {
-    //             setSuppliers(data.meetings);
-    //             setLoading(false);
-    //         }).catch(err => { console.log(err); setLoading(false); setShowErrorDeleteModal(true); });
-    // }, []);
+    // Fetch Users
+    useEffect(() => {
+        setLoading(true);
+        fetch(usersEndpoint)
+            .then((res) => res.json())
+            .then((data) => {
+                setUsers(data.users);
+                setLoading(false);
+            }).catch(err => { console.log(err); setLoading(false); setShowErrorDeleteModal(true); });
+    }, []);
 
-    // if (isLoading) return <p>Loading...</p>;
-    // if (!suppliers) return <p>Missing data about suppliers</p>;
+    if (isLoading) return <Loader isShadow={false} message='טוען רשימת דיירים...' />;
+    if (!users) return <p>לא נמצאו דיירים</p>;
 
 
     // Handle click delete supplier button
@@ -120,10 +81,10 @@ export function TenantsPageComponent() {
 
     }
 
-    // Create table rows (suppliers)
-    const rows = tenants?.map((
-        tenant => createData(tenant.id, tenant.apartment_number, tenant.name, tenant.phone)
-    ))
+    // Create table rows (users) - show only tenants (hide Management company users)
+    const rows = users?.map(
+        (user => !user.ismanagementcompany ? createData(user.id, user.apartment_number, user.name, user.phone) : null)
+    )
 
     return (
         <div>
@@ -139,7 +100,7 @@ export function TenantsPageComponent() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
+                        {rows.map((row) => !!row && (
                             <TableRow
                                 key={row.id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -148,7 +109,7 @@ export function TenantsPageComponent() {
                                 <TableCell className={style.content_cell} align="center">{row.id}</TableCell>
                                 <TableCell className={style.content_cell} align="center">{row.name}</TableCell>
                                 <TableCell className={style.content_cell} align="center">{row.apartment_number}</TableCell>
-                                <TableCell className={style.content_cell} align="center">{row.phone}</TableCell>
+                                <TableCell className={style.content_cell} align="center">{'0' + row.phone}</TableCell>
                                 <TableCell className={`${style.content_cell} ${style.delete_cell}`} align="center">
                                     <button type='button' onClick={() => handleClickDelete(row.id)}>
                                         <DeleteIcon />
