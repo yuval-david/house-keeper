@@ -1,11 +1,11 @@
 import Head from 'next/head';
 import Image from 'next/image'
 import { useRouter } from 'next/router';
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import style from "../styles/Login.module.css"
 import { CustomInput } from '@/components/UI/FormFields/CustomInput';
-import Link from 'next/link';
 import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
+import { Loader } from '@/components/UI/Loader';
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -13,49 +13,68 @@ export default function RegisterPage() {
     // Form Fields
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState();
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
-    const [buildingId, setBuildingId] = useState(undefined); // check if needed
+    const [buildingId, setBuildingId] = useState(undefined);
+    const [id_number, setIdNumber] = useState();
+    const [apartment_floor, setApFlooer] = useState();
+    const [apartment_number, setApNumber] = useState();
+    const [apartment_spm, setApSpm] = useState();
+    // Form loading
+    const [isLoadingAdd, setIsLoadingAdd] = useState<boolean>(false);
+    const [successModal, setSuccessModal] = useState(false);
+    const [errorModal, setErrorModal] = useState(false);
 
-    // Modals States
-    const [modalSuccessRegister, setModalSuccessRegister] = useState(false);
-
-    const handleCloseModalSuccess = () => {
-        setModalSuccessRegister(false);
+    const handleCloseSuccessModal = () => {
+        setSuccessModal(false);
         router.push("/login");
     }
-
-    // Handle submit login function
-    const handleRegisterSubmit = async (event: any) => {
-        event.preventDefault();
-
-        if (password !== passwordConfirm) {
-            alert("אישור הסיסמה שונה מהסיסמה. נסו שוב.");
-            return;
-        }
-
-        const data = {
-            fullName,
-            email,
-            password,
-        }
-
-        console.log(data);
-        setModalSuccessRegister(true);
-        // router.replace("/home");
-
-        // Add after finish backned: 
-        // const url = "https://localhost:3000/api/login";
-        // const response = await fetch(url, {
-        //     method: "POST",
-        //     mode: "cors",
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: JSON.stringify(data)
-        // });
-        // console.log("response: ", response);
+    const handleCloseErrorModal = () => {
+        setErrorModal(false);
     }
+
+    const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
+    const addUserEndpoint = useMemo(() => {
+        return apiEndpoint + `/v2/buildings/${buildingId}/meetings`;
+    }, [buildingId])
+
+    // Handle submit register function
+    const handleRegisterSubmit = async (event: any) => {
+        setIsLoadingAdd(true);
+        event.preventDefault();
+        const data = {
+            id_number,
+            name: fullName,
+            phone,
+            isvahadbait: false,
+            ismanagementcompany: false,
+            email,
+            apartment_floor,
+            apartment_number,
+            apartment_spm,
+        }
+
+        try {
+            const response: any = await fetch(addUserEndpoint, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data)
+            });
+            const resJson = await response.json();
+            setIsLoadingAdd(false);
+            if (response.ok) {
+                setSuccessModal(true);
+            }
+        } catch (error) {
+            setIsLoadingAdd(false);
+            setErrorModal(true);
+            console.log(error);
+        }
+    }
+
 
     return (
         <>
@@ -72,17 +91,29 @@ export default function RegisterPage() {
                 <div className={style.login_form}>
                     <h1 className={`blue_title ${style.form_title}`}>הרשמה</h1>
                     <form dir='rtl' onSubmit={(e) => handleRegisterSubmit(e)}>
-                        <div className={style.field_container}>
-                            {/* <CustomInput value={buildingId} onChange={(e) => setBuildingId(e.target.value)} required label="שם מלא" dir='ltr' type='select' /> */}
-                            <CustomInput value={fullName} onChange={(e) => setFullName(e.target.value)} required label="שם מלא" dir='rtl' type='text' />
-                            <CustomInput value={email} onChange={(e) => setEmail(e.target.value)} required label="כתובת אימייל" dir='ltr' type='email' />
-                            <CustomInput value={password} onChange={(e) => setPassword(e.target.value)} required label="סיסמה" dir='ltr' type='password' />
-                            <CustomInput value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} required label="אישור סיסמה" dir='ltr' type='password' />
+                        <div className={style.fields_cols}>
+                            <div className={style.field_container}>
+                                <CustomInput value={buildingId} onChange={(e) => setBuildingId(e.target.value)} required label="קוד בניין" dir='rtl' type='select' options={["1", "2", "3"]} />
+                                <CustomInput value={fullName} onChange={(e) => setFullName(e.target.value)} required label="שם מלא" dir='rtl' type='text' />
+                                <CustomInput value={email} onChange={(e) => setEmail(e.target.value)} required label="כתובת אימייל" dir='ltr' type='email' />
+                                <CustomInput value={password} onChange={(e) => setPassword(e.target.value)} required label="סיסמה" dir='ltr' type='password' />
+                                <CustomInput value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} required label="אישור סיסמה" dir='ltr' type='password' />
+                            </div>
+                            <div className={style.field_container}>
+                                <CustomInput value={id_number} onChange={(e) => setIdNumber(e.target.value)} required label="תעודת זהות" dir='ltr' type='number' maxLength={9} />
+                                <CustomInput value={phone} onChange={(e) => setPhone(e.target.value)} required label="טלפון" dir='ltr' type='tel' maxLength={12} />
+                                <CustomInput value={apartment_number} onChange={(e) => setApNumber(e.target.value)} required label="מספר דירה" dir='rtl' type='number' maxLength={3} />
+                                <CustomInput value={apartment_floor} onChange={(e) => setApFlooer(e.target.value)} required label="מספר קומה" dir='ltr' type='email' />
+                                <CustomInput value={apartment_spm} onChange={(e) => setApSpm(e.target.value)} required label='גודל הדירה (מ"ר)' dir='ltr' type='password' />
+                            </div>
                         </div>
+
                         <button className={style.submit_btn} type='submit'>להרשמה</button>
                     </form>
                 </div>
-                <ModalMessage isOpen={modalSuccessRegister} buttonText='לעמוד התחברות' handleClose={handleCloseModalSuccess} type='success' message="המשתמש נוצר בהצלחה" />
+                {isLoadingAdd && <Loader />}
+                <ModalMessage isOpen={successModal} buttonText='לעמוד התחברות' handleClose={handleCloseSuccessModal} type='success' message="המשתמש נוצר בהצלחה" />
+                <ModalMessage isOpen={errorModal} buttonText='אישור' handleClose={handleCloseErrorModal} type='error' message="ישנה שגיאה ביצירת היוזר." />
             </main>
         </>
     )

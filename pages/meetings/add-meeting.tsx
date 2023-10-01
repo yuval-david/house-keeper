@@ -5,11 +5,12 @@ import { CustomInputRow } from '@/components/UI/FormFields/CustomInputRow'
 import { ButtonSave } from '@/components/UI/ButtonSave';
 import { Loader } from '@/components/UI/Loader';
 import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
+import { userStore } from '@/stores/UserStore';
 
 export default function addMeetingPage() {
 
-    // Hardcoded - need to come from store after login
-    const buildingID = 1;
+    // Get User Details
+    const { is_vahadbait, is_management_company, building_id } = userStore();
 
     // Form Values
     const [meetingName, setMeetingName] = useState<string>("");
@@ -30,7 +31,7 @@ export default function addMeetingPage() {
     }
 
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    const addMeetingEndpoint = apiEndpoint + `/v2/buildings/${buildingID}/meetings`;
+    const addMeetingEndpoint = apiEndpoint + `/v2/buildings/${building_id}/meetings`;
 
     // Sumbit ADD-MEETING form
     const handleSubmit = async (event: any) => {
