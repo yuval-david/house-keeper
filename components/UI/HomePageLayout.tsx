@@ -4,14 +4,20 @@ import style from "./HomePageLayout.module.css"
 import { useRouter } from 'next/router';
 import { AccountSubMenu } from '../navbar/AccountSubMenu';
 import { UpdatesSubMenu } from '../navbar/UpdatesSubMenu';
+import { setUserData } from '@/stores/UserStore';
 
 export function HomePageLayout({ name, children }: { name: string; children: ReactNode }) {
 
     const router = useRouter();
 
     const handleClickLogout = () => {
-        // Logout function - Need to add here
-        router.push("/login");
+        setUserData({
+            name: "",
+            building_id: 0,
+            is_vahadbait: false,
+            is_management_company: false,
+            is_logged_in: false,
+        });
     }
 
     return (
@@ -21,7 +27,7 @@ export function HomePageLayout({ name, children }: { name: string; children: Rea
                     <div className={style.logo_container}>
                         <Image src="/housekeeper.jpg" alt="house-kkeper" fill />
                     </div>
-                    בוקר טוב {name}
+                    שלום {name}
                 </div>
                 <div className={style.nav_actions}>
                     <AccountSubMenu handleClickLogout={handleClickLogout} />

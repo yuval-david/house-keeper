@@ -76,7 +76,7 @@ export interface User {
     id_number: number;
     name: string;
     phone: number;
-    isVahadBait: boolean;
+    isvahadbait: boolean;
     ismanagementcompany: boolean;
     email: string;
     apartment_floor: number;

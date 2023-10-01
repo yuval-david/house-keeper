@@ -53,7 +53,7 @@ export default function Login() {
                 await setUserData({
                     name: resJson.name,
                     building_id: resJson.building_id,
-                    is_vahadbait: resJson.isVahadBait,
+                    is_vahadbait: resJson.isvahadbait,
                     is_management_company: resJson.ismanagementcompany,
                     is_logged_in: true
                 });

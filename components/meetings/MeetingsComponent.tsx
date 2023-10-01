@@ -4,12 +4,14 @@ import style from "./MeetingsComponent.module.css"
 import { MeetingCard } from './MeetingCard'
 import { Meeting } from '@/Types/objects_types';
 import { Loader } from '../UI/Loader';
+import { userStore } from '@/stores/UserStore';
 
 export function MeetingsComponent() {
-    // Hardcoded - need to come from store after login
-    const buildingID = 1;
+
+    // Get User details
+    const { is_vahadbait, building_id } = userStore();
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    const meetingsEndpoint = apiEndpoint + `/v2/buildings/${buildingID}/meetings`;
+    const meetingsEndpoint = apiEndpoint + `/v2/buildings/${building_id}/meetings`;
 
     const [meetings, setMeetings] = useState<Meeting[] | null>(null);
     const [isLoading, setLoading] = useState(false);
@@ -33,7 +35,7 @@ export function MeetingsComponent() {
 
     return (
         <div>
-            <ButtonAddItem buttonLink="/meetings/add-meeting" buttonText='להוספת פגישה חדשה' />
+            {is_vahadbait && <ButtonAddItem buttonLink="/meetings/add-meeting" buttonText='להוספת פגישה חדשה' />}
             <div className={style.meetings_cards_container}>
                 {meetings.length > 0 && meetings.map((meetingItem) => {
                     return (

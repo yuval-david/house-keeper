@@ -9,6 +9,7 @@ import style from "../../styles/TenantsPage.module.css"
 import { ModalMessage } from '../UI/Modals/ModalMessage';
 import { User } from '@/Types/objects_types';
 import { Loader } from '../UI/Loader';
+import { userStore } from '@/stores/UserStore';
 
 
 // Create rows data function
@@ -17,17 +18,18 @@ function createData(
     apartment_number: number,
     name: string,
     phone: number,
+    is_vaad: boolean,
 ) {
-    return { id, apartment_number, name, phone };
+    return { id, apartment_number, name, phone, is_vaad };
 }
 
 export function TenantsPageComponent() {
     const router = useRouter();
+    // Get User Details
+    const { is_vahadbait, is_management_company, building_id } = userStore();
 
-    // Hardcoded - need to come from store after login
-    const buildingID = 1;
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    const usersEndpoint = apiEndpoint + `/v2/buildings/${buildingID}/users`;
+    const usersEndpoint = apiEndpoint + `/v2/buildings/${building_id}/users`;
 
     const [users, setUsers] = useState<User[] | null>(null);
     const [isLoading, setLoading] = useState(false);
@@ -83,7 +85,7 @@ export function TenantsPageComponent() {
 
     // Create table rows (users) - show only tenants (hide Management company users)
     const rows = users?.map(
-        (user => !user.ismanagementcompany ? createData(user.id, user.apartment_number, user.name, user.phone) : null)
+        (user => !user.ismanagementcompany ? createData(user.id_number, user.apartment_number, user.name, user.phone, user.isvahadbait) : null)
     )
 
     return (
@@ -92,11 +94,12 @@ export function TenantsPageComponent() {
                 <Table aria-label="suppliers table">
                     <TableHead>
                         <TableRow>
+                            <TableCell className={style.head_cells} align="center">חבר ועד</TableCell>
                             <TableCell className={style.head_cells} align="center">ת"ז</TableCell>
                             <TableCell className={style.head_cells} align="center">שם דייר</TableCell>
                             <TableCell className={style.head_cells} align="center">מספר דירה</TableCell>
                             <TableCell className={style.head_cells} align="center">מספר נייד</TableCell>
-                            <TableCell className={`${style.head_cells} ${style.head_delete}`} align="center"></TableCell>
+                            {is_vahadbait && <TableCell className={`${style.head_cells} ${style.head_delete}`} align="center"></TableCell>}
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -106,15 +109,16 @@ export function TenantsPageComponent() {
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 className={style.content_row}
                             >
+                                <TableCell className={style.content_cell} align="center">{row.is_vaad ? "כן" : "לא"}</TableCell>
                                 <TableCell className={style.content_cell} align="center">{row.id}</TableCell>
                                 <TableCell className={style.content_cell} align="center">{row.name}</TableCell>
                                 <TableCell className={style.content_cell} align="center">{row.apartment_number}</TableCell>
                                 <TableCell className={style.content_cell} align="center">{'0' + row.phone}</TableCell>
-                                <TableCell className={`${style.content_cell} ${style.delete_cell}`} align="center">
+                                {is_vahadbait && <TableCell className={`${style.content_cell} ${style.delete_cell}`} align="center">
                                     <button type='button' onClick={() => handleClickDelete(row.id)}>
                                         <DeleteIcon />
                                     </button>
-                                </TableCell>
+                                </TableCell>}
                             </TableRow>
                         ))}
                     </TableBody>

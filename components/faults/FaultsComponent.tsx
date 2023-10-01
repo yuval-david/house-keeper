@@ -4,14 +4,14 @@ import style from "./FaultsComponent.module.css"
 import { FaultCard } from './FaultCard'
 import { Fault } from '@/Types/objects_types'
 import { Loader } from '../UI/Loader'
+import { userStore } from '@/stores/UserStore'
 
 export function FaultsComponent() {
 
-
-    // Hardcoded - need to come from store after login
-    const buildingID = 1;
+    // Get User details
+    const { is_vahadbait, building_id } = userStore();
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    const faultsEndpoint = apiEndpoint + `/v2/buildings/${buildingID}/faults`;
+    const faultsEndpoint = apiEndpoint + `/v2/buildings/${building_id}/faults`;
 
     const [faults, setFaults] = useState<Fault[] | null>(null);
     const [isLoading, setLoading] = useState(false);
