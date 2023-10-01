@@ -70,6 +70,9 @@ VALUES
 (205558034, 'ששון מזרחי', 0521418400, true, false, 'ariag@gmail.com', 3, 8, 60, 3),
 (310110080, 'עמיר עמר', 0500447507, false, true, 'amir_office@gmail.com', null, null, null, 2);
 
+ALTER TABLE users
+ADD COLUMN password VARCHAR(255);
+
 /*****************  USERS <-> MEETINGS  ******************/
 CREATE TABLE user_meetings (
    user_id INTEGER,
