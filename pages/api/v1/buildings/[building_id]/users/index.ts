@@ -23,19 +23,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 name,
                 phone,
                 isVahadBait,
+                is_management_company,
                 email,
+                password,
                 apartment_floor,
                 apartment_number,
                 apartment_spm,
             } = req.body;
             const data = await executeQuery(
                 {
-                    query: `INSERT INTO users (name, phone, isVahadBait, email, apartment_floor, apartment_number, apartment_spm, building_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-                    values: [name, phone, isVahadBait, email, apartment_floor, apartment_number, apartment_spm, building_id]
+                    query: `INSERT INTO users (name, phone, isVahadBait, email, apartment_floor, apartment_number, apartment_spm, building_id, is_management_company, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+                    values: [name, phone, isVahadBait, email, apartment_floor, apartment_number, apartment_spm, building_id, is_management_company, password]
                 }
             );
             console.log(data)
-            res.status(201).json({message: 'building created.'});
+            res.status(201).json({message: 'user created.'});
         } catch (error: any) {
             res.status(500).json({error: error.message});
         }
