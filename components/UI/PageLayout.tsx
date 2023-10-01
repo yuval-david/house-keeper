@@ -7,6 +7,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { useRouter } from 'next/router';
 import { AccountSubMenu } from '../navbar/AccountSubMenu';
 import { UpdatesSubMenu } from '../navbar/UpdatesSubMenu';
+import { setUserData } from '@/stores/UserStore';
 
 // This is Layout component for all pages in the application (exclude Home Page)
 export function PageLayout({ pageTitle, children }: { pageTitle?: string; children: ReactNode }) {
@@ -24,8 +25,14 @@ export function PageLayout({ pageTitle, children }: { pageTitle?: string; childr
     const [openHamburgerNav, setOpenHamburgerNav] = useState(false);
 
     const handleClickLogout = () => {
-        // Logout function - Need to add here
-        router.push("/login");
+        setUserData({
+            name: "",
+            building_id: 0,
+            is_vahadbait: false,
+            is_management_company: false,
+            is_logged_in: false,
+        });
+        // router.push("/login");
     }
 
     return (

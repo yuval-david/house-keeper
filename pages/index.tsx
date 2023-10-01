@@ -1,21 +1,18 @@
-import Head from 'next/head'
-import { HomePageComponent } from '@/components/home/HomePageComponent'
-import { HomePageLayout } from '@/components/UI/HomePageLayout'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { userStore } from '@/stores/UserStore';
 
 
 export default function IndexPage() {
 
   const router = useRouter();
-  // Change to store with local storage
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const { is_logged_in } = userStore();
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (!is_logged_in) {
       router.replace("/login");
     }
-  }, []);
+  }, [is_logged_in]);
 
   return null;
 }
