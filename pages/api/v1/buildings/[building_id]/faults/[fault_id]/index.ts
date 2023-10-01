@@ -1,9 +1,9 @@
 // faults.ts
 import executeQuery from '@/DB/connectDB'; // Adjust this import to your project structure
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type {NextApiRequest, NextApiResponse} from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { building_id, fault_id } = req.query;
+    const {building_id, fault_id} = req.query;
 
     if (req.method === 'PATCH') {
         try {
@@ -68,17 +68,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             // If there are no fields to update, return an error
             if (updateFields === '') {
-                return res.status(400).json({ error: 'No fields to update' });
+                return res.status(400).json({error: 'No fields to update'});
             }
 
             values.push(fault_id, building_id);
             const query = `UPDATE faults SET ${updateFields} WHERE id = $${placeholderCount} AND building_id = $${placeholderCount + 1}`;
 
-            await executeQuery({ query, values });
+            await executeQuery({query, values});
 
-            res.status(200).json({ message: 'Fault updated.' });
+            res.status(200).json({message: 'Fault updated.'});
         } catch (error: any) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({error: error.message});
         }
+    } else if (req.method === 'DELETE') {
+        try {
+            await executeQuery({
+                query: 'DELETE FROM faults WHERE id = $1 AND building_id = $2',
+                values: [fault_id, building_id],
+            });
+            res.status(200).json({message: 'Fault deleted.'});
+        } catch (error: any) {
+            res.status(500).json({error: error.message});
+        }
+    } else {
+        res.status(405).end();  // Method Not Allowed
     }
 }
