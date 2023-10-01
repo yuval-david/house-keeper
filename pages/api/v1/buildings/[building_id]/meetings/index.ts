@@ -1,25 +1,49 @@
 import executeQuery from '@/DB/connectDB';
 import type {NextApiRequest, NextApiResponse} from 'next';
+import {createMeeting} from "@/DB/meeting";
+import {Simulate} from "react-dom/test-utils";
+import error = Simulate.error;
+
+export async function getMeeting(building_id, meeting_id) {
+    const meeting_result = await executeQuery({
+        query: `SELECT * FROM meetings WHERE building_id = $1 AND id = $2`,
+        values: [building_id, meeting_id]
+    });
+    const meeting = meeting_result[0];
+
+    // Fetch users associated with each meeting
+    const usersData = await executeQuery({
+        query: `SELECT email FROM user_meetings WHERE meeting_id = $1`,
+        values: [meeting.id]
+    });
+    meeting.users = usersData.map(row => row.email);
+
+    return meeting;
+}
+
+export async function getMeetings(building_id) {
+    const data = await executeQuery({
+        query: `SELECT * FROM meetings WHERE building_id = $1`,
+        values: [building_id]
+    });
+
+    // Fetch users associated with each meeting
+    for (const meeting of data) {
+        const usersData = await executeQuery({
+            query: `SELECT user_id FROM user_meetings WHERE meeting_id = $1`,
+            values: [meeting.id]
+        });
+        meeting.users = usersData.map(row => row.user_id);
+    }
+    return data
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const {building_id} = req.query;
 
     if (req.method === 'GET') {
         try {
-            const data = await executeQuery({
-                query: `SELECT * FROM meetings WHERE building_id = $1`,
-                values: [building_id]
-            });
-
-            // Fetch users associated with each meeting
-            for (const meeting of data) {
-                const usersData = await executeQuery({
-                    query: `SELECT user_id FROM user_meetings WHERE meeting_id = $1`,
-                    values: [meeting.id]
-                });
-                meeting.users = usersData.map(row => row.user_id);
-            }
-
+            const data = await getMeetings(building_id);
             res.status(200).json({meetings: data});
         } catch (error: any) {
             res.status(500).json({error: error.message});
@@ -40,8 +64,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             // Insert users into user_meetings
             for (const user_id of users) {
                 await executeQuery({
-                    query: `INSERT INTO user_meetings (user_id, meeting_id) VALUES ($1, $2)`,
-                    values: [user_id, meeting_id]
+                    query: `INSERT INTO user_meetings (meeting_id, email) VALUES ($1, $2)`,
+                    values: [meeting_id, user_id]
                 });
             }
 
