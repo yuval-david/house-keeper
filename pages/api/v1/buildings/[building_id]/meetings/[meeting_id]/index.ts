@@ -47,10 +47,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 await executeQuery({ query: `DELETE FROM user_meetings WHERE meeting_id = $1`, values: [meeting_id] });
 
                 // Insert new relationships
-                for (const user_id of users) {
+                for (const email of users) {
                     await executeQuery({
-                        query: `INSERT INTO user_meetings (user_id, meeting_id) VALUES ($1, $2)`,
-                        values: [user_id, meeting_id]
+                        query: `INSERT INTO user_meetings (email, meeting_id) VALUES ($1, $2)`,
+                        values: [email, meeting_id]
                     });
                 }
             }
