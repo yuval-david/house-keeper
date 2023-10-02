@@ -2,6 +2,7 @@ import React from 'react'
 import style from "./FaultCard.module.css"
 import { ButtonEditItem } from '../UI/ButtonEditItem'
 import { Fault, FaultSeveriry } from '@/Types/objects_types';
+import { userStore } from '@/stores/UserStore';
 
 // TODO: Add Props with real data
 export function FaultCard({
@@ -12,6 +13,8 @@ export function FaultCard({
     faultData: Fault;
 }) {
 
+    // Get User Details
+    const { is_vahadbait, is_management_company } = userStore();
     const { name, severity, urgency, status, location, handledby, price } = faultData;
     const statusText = status ? "טופלה" : "לא טופלה";
 
@@ -60,7 +63,7 @@ export function FaultCard({
                     </div>
                 </div>
                 <div className={style.more_details}>
-                    <ButtonEditItem buttonLink={`/faults/${id}/edit`} buttonText='לעריכה לחצו כאן' />
+                    {(is_vahadbait || is_management_company) && <ButtonEditItem buttonLink={`/faults/${id}/edit`} buttonText='לעריכה לחצו כאן' />}
                     <div className={style.fault_img_container}>
                         <img src="/icons/preview_img.svg" alt="fault image" />
                         {/** TODO: Add condition with the real picture **/}
