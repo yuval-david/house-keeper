@@ -46,15 +46,16 @@ export default function Login() {
                 },
                 body: JSON.stringify(data)
             });
-            const resJson: User = await response.json();
+            const resJson = await response.json();
+            const userData: User = resJson.user;
 
             if (response.ok) {
                 setIsLoading(false);
                 await setUserData({
-                    name: resJson.name,
-                    building_id: resJson.building_id,
-                    is_vahadbait: resJson.isvahadbait,
-                    is_management_company: resJson.ismanagementcompany,
+                    name: userData.name,
+                    building_id: userData.building_id,
+                    is_vahadbait: userData.isvahadbait,
+                    is_management_company: userData.ismanagementcompany,
                     is_logged_in: true
                 });
                 router.push("/home");

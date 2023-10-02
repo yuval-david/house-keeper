@@ -9,14 +9,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method === 'POST') {
         try {
             const data = await sql`SELECT * FROM users WHERE email = ${email};`;
-            if (data.rows.length === 0) {
-                res.status(400).json("user not found.");
-            }
             const actual_password = data.rows[0].password;
-            if (password == actual_password) {
-                res.status(200).json(data.rows[0]);
+            if (password !== actual_password) {
+                throw new Error("Wrong password.");
             }
-            res.status(400).json("invalid user credentials");
+            res.status(200).json({ user: data.rows[0] });
         } catch (error: any) {
             res.status(500).json({ error: error.message });
         }
