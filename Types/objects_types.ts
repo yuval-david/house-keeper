@@ -64,10 +64,9 @@ export interface Supplier {
 export interface Update {
     id: number;
     type: string;
-    updated_item: {
-        name?: string;
-        date?: string; // timestamp
-    };
+    item_id: string;
+    item_name: string;
+    item_date: string;
     timestamp: string; // created date
 }
 

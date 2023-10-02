@@ -2,3 +2,21 @@
     cursor: default !important;
     border-bottom: 1px solid rgba(128, 128, 128, 0.29) !important;
 }
+
+.updates_loader {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    column-gap: 2vw; 
+    width: 25vw; 
+    height: 12vw; 
+    color: #4996b3;
+}
+
+@media (max-width: 1024px) {
+    .updates_loader {
+        width: 60vw;
+        height: 40vw;
+        column-gap: 5vw;
+    }
+}

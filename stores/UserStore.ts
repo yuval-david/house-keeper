@@ -6,6 +6,7 @@ interface UserState {
     building_id: number;
     is_vahadbait: boolean;
     is_management_company: boolean;
+    user_id: number;
     is_logged_in: boolean;
 }
 
@@ -18,6 +19,7 @@ export const userStore = create<UserState>()(
                 building_id: 0,
                 is_vahadbait: false,
                 is_management_company: false,
+                user_id: 0,
                 is_logged_in: false
             }),
             {

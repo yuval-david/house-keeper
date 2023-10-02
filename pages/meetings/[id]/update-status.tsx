@@ -7,19 +7,20 @@ import { Meeting } from '@/Types/objects_types';
 import { useRouter } from 'next/router';
 import { getDate } from '@/utils/getDate';
 import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
+import { userStore } from '@/stores/UserStore';
 
 export default function updateStatusPage() {
 
     const router = useRouter();
 
     // Hardcoded - need to come from store after login
-    const buildingID = 1;
+    const { building_id, user_id } = userStore();
     const { id: meetingId } = router.query;
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
 
     const meetingEndpoint = useMemo(() => {
-        return apiEndpoint + `/v2/buildings/${buildingID}/meetings/${meetingId}`;
-    }, [buildingID, meetingId]);
+        return apiEndpoint + `/v2/buildings/${building_id}/meetings/${meetingId}`;
+    }, [building_id, meetingId]);
 
 
     // Form loading
@@ -29,6 +30,7 @@ export default function updateStatusPage() {
     const [successModal, setSuccessModal] = useState(false);
     const [errorModal, setErrorModal] = useState(false);
     const [meetingData, setMeetingData] = useState<Meeting>();
+    const [meetingUsers, setMeetingUsers] = useState<[]>([]);
 
     const handleCloseSuccessModal = () => {
         setSuccessModal(false);
@@ -47,6 +49,7 @@ export default function updateStatusPage() {
                 .then((data) => {
                     setIsLoadingMeetingData(false);
                     setMeetingData(data.meeting);
+                    setMeetingUsers(data.meeting.users);
                 }).catch(err => {
                     setIsLoadingMeetingData(false);
                     console.log(err);
@@ -54,17 +57,47 @@ export default function updateStatusPage() {
         }
     }, [meetingId]);
 
-    // Need to add real request
-    const handleSubmit = (event: any) => {
+    // Edit meeting request (send updated users array)
+    const handleSubmit = async (event: any) => {
         event.preventDefault();
         setIsLoadingUpdateStatus(true);
 
-        const data = {
-            attending
+        let data = {};
+        if (attending) {
+            data = {
+                users: [...meetingUsers, user_id]
+            }
+        } else {
+            data = {
+                users: meetingUsers.filter(user => user !== user_id)
+            }
         }
-        console.log("Data", data);
-        setIsLoadingUpdateStatus(false);
-        setSuccessModal(true);
+
+        try {
+            const response = await fetch(meetingEndpoint, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data)
+            });
+            const resJson = await response.json();
+            setIsLoadingUpdateStatus(false);
+            if (response.ok) {
+                setSuccessModal(true);
+            } else {
+                setErrorModal(true);
+            }
+        } catch (error) {
+            console.log(error);
+            setIsLoadingUpdateStatus(false);
+            setErrorModal(true);
+        }
+
+
+
+
+
     }
 
 

@@ -133,3 +133,15 @@ CREATE TABLE management_contractors (
    fullName VARCHAR(255),
    phone INTEGER
 );
+
+
+/***********************  UPDATES  ************************/
+CREATE TABLE updates (
+   id SERIAL PRIMARY KEY,
+   building_id INT,
+   type VARCHAR(20),
+   item_id INT,
+   item_name VARCHAR(40),
+   item_date DATE,
+   timestemp TIMESTAMPTZ DEFAULT Now() 
+);
