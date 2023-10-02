@@ -62,7 +62,7 @@ export function CustomInput({
             <div className={style.text_field_container}>
                 <label htmlFor={label}>{displayedLabel}: </label>
                 <select name={label} id={label} value={value} onChange={onChange} dir={dir} className={style.text_field} required={required}>
-                    <option value="" disabled>בחר/י</option>
+                    <option value="" disabled selected>בחר/י</option>
                     {options.map((optionItem, index) => {
 
                         if (typeof optionItem === "string") {

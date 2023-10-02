@@ -29,13 +29,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 apartment_floor,
                 apartment_number,
                 apartment_spm,
+                selected_building_id,
+                password,
             } = req.body;
 
             const data = await sql`
             INSERT INTO users 
-            (id_number, name, phone, isvahadbait, ismanagementcompany, email, apartment_floor, apartment_number, apartment_spm, building_id) 
+            (id_number, name, phone, isvahadbait, ismanagementcompany, email, apartment_floor, apartment_number, apartment_spm, building_id, password) 
             VALUES 
-            (${id_number}, ${name}, ${phone}, ${isvahadbait}, ${ismanagementcompany}, ${email}, ${apartment_floor}, ${apartment_number}, ${apartment_spm}, ${buildingId})
+            (${id_number}, ${name}, ${phone}, ${isvahadbait}, ${ismanagementcompany}, ${email}, ${apartment_floor}, ${apartment_number}, ${apartment_spm}, ${selected_building_id}, ${password})
             ;`;
             console.log(data);
 

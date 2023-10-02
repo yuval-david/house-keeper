@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Image from 'next/image'
 import { useRouter } from 'next/router';
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import style from "../styles/Login.module.css"
 import { CustomInput } from '@/components/UI/FormFields/CustomInput';
 import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
@@ -16,7 +16,7 @@ export default function RegisterPage() {
     const [phone, setPhone] = useState();
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
-    const [buildingId, setBuildingId] = useState(undefined);
+    const [buildingId, setBuildingId] = useState();
     const [id_number, setIdNumber] = useState();
     const [apartment_floor, setApFlooer] = useState();
     const [apartment_number, setApNumber] = useState();
@@ -25,6 +25,7 @@ export default function RegisterPage() {
     const [isLoadingAdd, setIsLoadingAdd] = useState<boolean>(false);
     const [successModal, setSuccessModal] = useState(false);
     const [errorModal, setErrorModal] = useState(false);
+    const [passwordsModal, setPasswordsModal] = useState(false);
 
     const handleCloseSuccessModal = () => {
         setSuccessModal(false);
@@ -33,29 +34,45 @@ export default function RegisterPage() {
     const handleCloseErrorModal = () => {
         setErrorModal(false);
     }
+    const handleClosePasswordsModal = () => {
+        setPasswordsModal(false);
+    }
 
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    const addUserEndpoint = useMemo(() => {
-        return apiEndpoint + `/v2/buildings/${buildingId}/meetings`;
-    }, [buildingId])
+    const addUserEndpoint = apiEndpoint + `/v2/buildings/${buildingId}/users`;
 
     // Handle submit register function
     const handleRegisterSubmit = async (event: any) => {
-        setIsLoadingAdd(true);
         event.preventDefault();
+
+        if (!buildingId) {
+            alert("בחרו קוד בניין.");
+            return;
+        };
+
+        setIsLoadingAdd(true);
         const data = {
-            id_number,
+            id_number: id_number ? parseInt(id_number) : null,
             name: fullName,
-            phone,
+            phone: phone ? parseInt(phone) : null,
             isvahadbait: false,
             ismanagementcompany: false,
             email,
-            apartment_floor,
-            apartment_number,
-            apartment_spm,
+            apartment_floor: apartment_floor ? parseInt(apartment_floor) : null,
+            apartment_number: apartment_number ? parseInt(apartment_number) : null,
+            apartment_spm: apartment_spm ? parseInt(apartment_spm) : null,
+            selected_building_id: buildingId ? parseInt(buildingId) : null,
+            password
         }
 
         try {
+
+            if (password !== passwordConfirm) {
+                setIsLoadingAdd(false);
+                setPasswordsModal(true);
+                return;
+            };
+
             const response: any = await fetch(addUserEndpoint, {
                 method: "POST",
                 headers: {
@@ -64,9 +81,12 @@ export default function RegisterPage() {
                 body: JSON.stringify(data)
             });
             const resJson = await response.json();
+
             setIsLoadingAdd(false);
             if (response.ok) {
                 setSuccessModal(true);
+            } else {
+                setErrorModal(true);
             }
         } catch (error) {
             setIsLoadingAdd(false);
@@ -90,7 +110,7 @@ export default function RegisterPage() {
                 </div>
                 <div className={style.login_form}>
                     <h1 className={`blue_title ${style.form_title}`}>הרשמה</h1>
-                    <form dir='rtl' onSubmit={(e) => handleRegisterSubmit(e)}>
+                    <form dir='rtl' onSubmit={handleRegisterSubmit}>
                         <div className={style.fields_cols}>
                             <div className={style.field_container}>
                                 <CustomInput value={buildingId} onChange={(e) => setBuildingId(e.target.value)} required label="קוד בניין" dir='rtl' type='select' options={["1", "2", "3"]} />
@@ -103,8 +123,8 @@ export default function RegisterPage() {
                                 <CustomInput value={id_number} onChange={(e) => setIdNumber(e.target.value)} required label="תעודת זהות" dir='ltr' type='number' maxLength={9} />
                                 <CustomInput value={phone} onChange={(e) => setPhone(e.target.value)} required label="טלפון" dir='ltr' type='tel' maxLength={12} />
                                 <CustomInput value={apartment_number} onChange={(e) => setApNumber(e.target.value)} required label="מספר דירה" dir='rtl' type='number' maxLength={3} />
-                                <CustomInput value={apartment_floor} onChange={(e) => setApFlooer(e.target.value)} required label="מספר קומה" dir='ltr' type='email' />
-                                <CustomInput value={apartment_spm} onChange={(e) => setApSpm(e.target.value)} required label='גודל הדירה (מ"ר)' dir='ltr' type='password' />
+                                <CustomInput value={apartment_floor} onChange={(e) => setApFlooer(e.target.value)} required label="מספר קומה" dir='ltr' type='number' />
+                                <CustomInput value={apartment_spm} onChange={(e) => setApSpm(e.target.value)} required label='גודל הדירה (מ"ר)' dir='ltr' type='number' />
                             </div>
                         </div>
 
@@ -114,6 +134,7 @@ export default function RegisterPage() {
                 {isLoadingAdd && <Loader />}
                 <ModalMessage isOpen={successModal} buttonText='לעמוד התחברות' handleClose={handleCloseSuccessModal} type='success' message="המשתמש נוצר בהצלחה" />
                 <ModalMessage isOpen={errorModal} buttonText='אישור' handleClose={handleCloseErrorModal} type='error' message="ישנה שגיאה ביצירת היוזר." />
+                <ModalMessage isOpen={passwordsModal} buttonText='אישור' handleClose={handleClosePasswordsModal} type='warning' message="הסיסמאות אינן זהות. אנא הקלידו שוב את הסיסמה." />
             </main>
         </>
     )
