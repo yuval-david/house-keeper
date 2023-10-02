@@ -3,6 +3,7 @@ import style from "./MeetingCard.module.css"
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { getDate } from '@/utils/getDate';
+import { userStore } from '@/stores/UserStore';
 
 export function MeetingCard({
     id,
@@ -21,6 +22,10 @@ export function MeetingCard({
     description?: string;
     isSummary?: boolean;
 }) {
+
+    // Get User details
+    const { is_vahadbait } = userStore();
+
     const router = useRouter();
 
     const handleClickViewShortBtn = () => {
@@ -71,19 +76,19 @@ export function MeetingCard({
                 </div>
 
                 <div className={style.meeting_actions}>
-                    <div>
+                    <div style={is_vahadbait ? {} : { flexDirection: "row-reverse" }}>
                         <button type='button' onClick={handleClickAddCalender} className={style.btn_add_calendar}>
                             הוספה ליומן
                         </button>
-                        <button type='button' className={style.btn_send_alert}>
+                        {is_vahadbait && <button type='button' className={style.btn_send_alert}>
                             שליחת תזכור לפגישה
-                        </button>
+                        </button>}
                     </div>
-                    <div>
+                    <div style={is_vahadbait ? {} : { flexDirection: "row-reverse" }}>
                         {isSummary && <button type='button' onClick={handleClickViewShortBtn} className={style.btn_view_short}>
                             לצפייה בתקציר הפגישה
                         </button>}
-                        {!isSummary && <button type='button' onClick={handleClickAddShortBtn} className={style.btn_add_short}>
+                        {!isSummary && is_vahadbait && <button type='button' onClick={handleClickAddShortBtn} className={style.btn_add_short}>
                             הוספת תקציר לפגישה
                         </button>}
                     </div>

@@ -8,15 +8,16 @@ import { faultTypes, faultUrgencyLevels, faultStatuses } from "@/components/faul
 import { AddFaultRequest, FaultSeveriry, FaultStatus, FaultUrgency } from '@/Types/objects_types';
 import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
 import { useRouter } from 'next/router';
+import { userStore } from '@/stores/UserStore';
 
 export default function AddFaultPage() {
 
     const router = useRouter();
 
-    // Hardcoded - need to come from store after login
-    const buildingID = 1;
+    // Get User details
+    const { is_vahadbait, building_id } = userStore();
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    const faultEndpoint = `${apiEndpoint}/v2/buildings/${buildingID}/faults`;
+    const faultEndpoint = `${apiEndpoint}/v2/buildings/${building_id}/faults`;
 
 
     const [isLoadingAddFault, setIsLoadingAddFault] = useState<boolean>(false);

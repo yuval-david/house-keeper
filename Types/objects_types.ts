@@ -70,3 +70,17 @@ export interface Update {
     };
     timestamp: string; // created date
 }
+
+export interface User {
+    id: number;
+    id_number: number;
+    name: string;
+    phone: number;
+    isvahadbait: boolean;
+    ismanagementcompany: boolean;
+    email: string;
+    apartment_floor: number;
+    apartment_number: number;
+    apartment_spm: number;
+    building_id: number;
+}

@@ -16,6 +16,7 @@ import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
 import { ModalAreYouSure } from '@/components/UI/Modals/ModalAreYouSure';
 import { useRouter } from 'next/router';
 import { Loader } from '@/components/UI/Loader';
+import { userStore } from '@/stores/UserStore';
 
 
 // Create rows data function
@@ -32,6 +33,9 @@ function createData(
 export default function SuppliersPage() {
 
     const router = useRouter();
+
+    // Get User Details
+    const { is_vahadbait, is_management_company } = userStore();
 
     // Hardcoded - need to come from store after login
     const buildingID = 1;
@@ -121,7 +125,7 @@ export default function SuppliersPage() {
 
     return (
         <PageLayout pageTitle='רשימת ספקים'>
-            <ButtonAddItem buttonText='הוספת ספק' buttonLink='/suppliers/add' />
+            {(is_vahadbait || is_management_company) && <ButtonAddItem buttonText='הוספת ספק' buttonLink='/suppliers/add' />}
             <TableContainer component={Paper} className={style.table_container}>
                 <Table aria-label="suppliers table">
                     <TableHead>
@@ -129,7 +133,7 @@ export default function SuppliersPage() {
                             <TableCell className={style.head_cells} align="center">תפקיד</TableCell>
                             <TableCell className={style.head_cells} align="center">שם מלא</TableCell>
                             <TableCell className={style.head_cells} align="center">טלפון</TableCell>
-                            <TableCell className={`${style.head_cells} ${style.head_delete}`} align="center"></TableCell>
+                            {(is_vahadbait || is_management_company) && <TableCell className={`${style.head_cells} ${style.head_delete}`} align="center"></TableCell>}
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -142,11 +146,11 @@ export default function SuppliersPage() {
                                 <TableCell className={style.content_cell} align="center">{row.role}</TableCell>
                                 <TableCell className={style.content_cell} align="center">{row.fullname}</TableCell>
                                 <TableCell className={style.content_cell} align="center">{"0" + row.phone}</TableCell>
-                                <TableCell className={`${style.content_cell} ${style.delete_cell}`} align="center">
+                                {(is_vahadbait || is_management_company) && <TableCell className={`${style.content_cell} ${style.delete_cell}`} align="center">
                                     <button type='button' onClick={() => handleClickDelete(row.id)}>
                                         <DeleteIcon />
                                     </button>
-                                </TableCell>
+                                </TableCell>}
                             </TableRow>
                         ))}
                     </TableBody>

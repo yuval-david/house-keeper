@@ -1,14 +1,13 @@
 import Link from 'next/link'
 import React from 'react'
 import style from "./ManagementCompanyPage.module.css"
+import { userStore } from '@/stores/UserStore';
 
 export function ManagementCompanyPageComponent() {
 
-    // Now hardcoded - need to change to store / local storage
-    const isTenant: boolean = false;
-    const isManager: boolean = false;
-    const isCompanyUser: boolean = true;
-    const displayFaults: boolean = isCompanyUser;
+    // Get User details
+    const { is_management_company } = userStore();
+    const displayFaults: boolean = is_management_company;
 
     return (
         <div>

@@ -11,6 +11,7 @@ export function CustomInput({
     required = false,
     textareaRows = 3,
     options = [],
+    maxLength,
     onChange,
 }: {
     label?: string;
@@ -22,6 +23,7 @@ export function CustomInput({
     textareaRows?: number;
     // Options can be strings array or objects array
     options?: InputOption[] | string[];
+    maxLength?: number;
     onChange: (event: any) => void,
 }) {
 
@@ -49,7 +51,7 @@ export function CustomInput({
         return (
             <div className={style.text_field_container}>
                 <label>{displayedLabel}: </label>
-                <textarea required={required} rows={textareaRows} value={value} onChange={onChange} dir={dir} placeholder={placeholder} className={style.text_field} />
+                <textarea required={required} rows={textareaRows} value={value} onChange={onChange} dir={dir} placeholder={placeholder} className={style.text_field} maxLength={maxLength} />
             </div>
 
         )
@@ -60,7 +62,7 @@ export function CustomInput({
             <div className={style.text_field_container}>
                 <label htmlFor={label}>{displayedLabel}: </label>
                 <select name={label} id={label} value={value} onChange={onChange} dir={dir} className={style.text_field} required={required}>
-                    <option value="" disabled>בחר/י</option>
+                    <option value="" disabled selected>בחר/י</option>
                     {options.map((optionItem, index) => {
 
                         if (typeof optionItem === "string") {
@@ -86,7 +88,7 @@ export function CustomInput({
     return (
         <div className={style.text_field_container}>
             <label>{displayedLabel}</label>
-            <input required={required} value={value} onChange={onChange} dir={dir} type={type} placeholder={placeholder} className={style.text_field} />
+            <input required={required} value={value} onChange={onChange} dir={dir} type={type} placeholder={placeholder} className={style.text_field} maxLength={maxLength} />
         </div>
     )
 }

@@ -35,9 +35,18 @@
     padding-top: 2vw;
 }
 
+.register .fields_cols {
+    display: flex;
+    justify-content: space-around;
+}
+
 @media (max-width: 1024px) {
     .register {
         padding-top: 0;
+    }
+
+    .register .fields_cols  {
+        flex-direction: column;
     }
 }
 
@@ -79,7 +88,8 @@
 }
 
 .register .login_form {
-    margin-top: 3vw;
+    width: 80vw;
+    margin-top: 0vw;
 }
 
 @media (max-width: 1024px) {
@@ -104,6 +114,10 @@
     font-size: 160%;
 }
 
+.register .form_title {
+    margin-bottom: 2vw;
+}
+
 .submit_btn {
     margin-top: 2vw;
     background-color: rgba(30, 152, 215, 0.69);
@@ -122,6 +136,10 @@
     transition: 0.25s;
 }
 
+.register .submit_btn {
+    min-width: 25%;
+}
+
 @media (max-width: 1024px) {
     .submit_btn {
         margin-top: 6vw;
@@ -138,9 +156,17 @@
     row-gap: 1vw;
 }
 
+.register .field_container {
+    width: 40%;
+}
+
 @media (max-width: 1024px) {
     .field_container {
         row-gap: 5vw;
+    }
+
+    .register .field_container {
+        width: 100%;
     }
 }
 

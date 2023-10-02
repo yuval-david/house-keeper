@@ -5,37 +5,69 @@ import { CustomInput } from "../components/UI/FormFields/CustomInput"
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
+import { Loader } from '@/components/UI/Loader';
+import { setUserData } from '@/stores/UserStore';
+import { User } from '@/Types/objects_types';
 
 export default function Login() {
 
     const router = useRouter();
+    const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
+    const loginEndpoint = apiEndpoint + "/v2/login";
 
     // Form Fields
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    // Form loading
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [errorModal, setErrorModal] = useState(false);
+
+    const handleCloseErrorModal = () => {
+        setErrorModal(false);
+    }
 
     // Handle submit login function
     const handleLogin = async (event: any) => {
         event.preventDefault();
+        setIsLoading(true);
+
         const data = {
             email,
             password,
         }
 
-        console.log(data);
-        router.replace("/home");
+        try {
+            const response = await fetch(loginEndpoint, {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+            const resJson: User = await response.json();
 
-        // Add after finish backned: 
-        // const url = "https://localhost:3000/api/login";
-        // const response = await fetch(url, {
-        //     method: "POST",
-        //     mode: "cors",
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: JSON.stringify(data)
-        // });
-        // console.log("response: ", response);
+            if (response.ok) {
+                setIsLoading(false);
+                await setUserData({
+                    name: resJson.name,
+                    building_id: resJson.building_id,
+                    is_vahadbait: resJson.isvahadbait,
+                    is_management_company: resJson.ismanagementcompany,
+                    is_logged_in: true
+                });
+                router.push("/home");
+            } else {
+                setIsLoading(false);
+                setErrorModal(true);
+            }
+
+        } catch (error) {
+            console.log(error);
+            setIsLoading(false);
+            setErrorModal(true);
+        }
     }
 
     return (
@@ -64,6 +96,8 @@ export default function Login() {
                     </form>
                 </div>
             </main>
+            <ModalMessage isOpen={errorModal} handleClose={handleCloseErrorModal} message="שם המשתמש או הסיסמה לא נכונים. אנא נסו שנית." buttonText='אישור' type='error' />
+            {isLoading && <Loader />}
         </>
     )
 }
