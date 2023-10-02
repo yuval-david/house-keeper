@@ -16,6 +16,7 @@ export function HomePageLayout({ name, children }: { name: string; children: Rea
             building_id: 0,
             is_vahadbait: false,
             is_management_company: false,
+            user_id: 0,
             is_logged_in: false,
         });
     }

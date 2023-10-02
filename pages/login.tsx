@@ -56,6 +56,7 @@ export default function Login() {
                     building_id: userData.building_id,
                     is_vahadbait: userData.isvahadbait,
                     is_management_company: userData.ismanagementcompany,
+                    user_id: userData.id,
                     is_logged_in: true
                 });
                 router.push("/home");

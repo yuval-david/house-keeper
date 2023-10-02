@@ -33,6 +33,7 @@ export function PageLayout({ pageTitle, children }: { pageTitle?: string; childr
             building_id: 0,
             is_vahadbait: false,
             is_management_company: false,
+            user_id: 0,
             is_logged_in: false,
         });
     }
