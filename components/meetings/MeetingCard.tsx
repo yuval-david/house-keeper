@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import style from "./MeetingCard.module.css"
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { getDate } from '@/utils/getDate';
 import { userStore } from '@/stores/UserStore';
+import { ModalMessage } from '../UI/Modals/ModalMessage';
+import { Loader } from '../UI/Loader';
 
 export function MeetingCard({
     id,
@@ -24,7 +26,21 @@ export function MeetingCard({
 }) {
 
     // Get User details
-    const { is_vahadbait } = userStore();
+    const { building_id, is_vahadbait } = userStore();
+    const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
+    const updatesEndpoint = apiEndpoint + `/v2/buildings/${building_id}/updates`;
+
+    // Form loading
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [successModal, setSuccessModal] = useState(false);
+    const [errorModal, setErrorModal] = useState(false);
+
+    const handleCloseSuccessModal = () => {
+        setSuccessModal(false);
+    }
+    const handleCloseErrorModal = () => {
+        setErrorModal(false);
+    }
 
     const router = useRouter();
 
@@ -38,6 +54,38 @@ export function MeetingCard({
 
     const handleClickAddCalender = () => {
         alert("הוספה ליומן");
+    }
+
+    const handleClickSendUpdate = async () => {
+
+        if (!building_id) alert("User not allowed, missing building code.");
+
+        setIsLoading(true);
+        const data = {
+            type: "meeting",
+            item_id: id,
+            item_name: name,
+            item_date: date
+        };
+
+        const response = await fetch(updatesEndpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        setIsLoading(false);
+
+        if (response.ok) {
+            const resJson = response.json();
+            setSuccessModal(true);
+        } else {
+            console.log(response);
+            setErrorModal(true);
+        }
+
     }
 
     const meetingTitle = name || "פגישת דיירים";
@@ -80,7 +128,7 @@ export function MeetingCard({
                         <button type='button' onClick={handleClickAddCalender} className={style.btn_add_calendar}>
                             הוספה ליומן
                         </button>
-                        {is_vahadbait && <button type='button' className={style.btn_send_alert}>
+                        {is_vahadbait && <button type='button' className={style.btn_send_alert} onClick={handleClickSendUpdate}>
                             שליחת תזכור לפגישה
                         </button>}
                     </div>
@@ -94,6 +142,9 @@ export function MeetingCard({
                     </div>
                 </div>
             </div>
+            <ModalMessage isOpen={successModal} handleClose={handleCloseSuccessModal} message="נשלחה תזכורת לפגישה! תוכלו למצוא אותה באזור העדכונים." buttonText='אישור' type='success' />
+            <ModalMessage isOpen={errorModal} handleClose={handleCloseErrorModal} message="ישנה שגיאה בשליחת התזכורת, אנא נסו שוב." buttonText='אישור' type='error' />
+            {isLoading && <Loader />}
         </div>
     )
 }

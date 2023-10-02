@@ -23,14 +23,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 type,
                 item_id,
                 item_name,
-                item_date
+                item_date,
             } = req.body;
 
             const data = await sql`
             INSERT INTO updates 
-            (type, item_id, item_name, item_date) 
+            (type, item_id, item_name, item_date, building_id) 
             VALUES 
-            (${type}, ${item_id}, ${item_name}, ${item_date})
+            (${type}, ${item_id}, ${item_name}, ${item_date}, ${buildingId})
             ;`;
             console.log(data);
 

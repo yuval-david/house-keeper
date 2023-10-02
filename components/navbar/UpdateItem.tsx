@@ -4,18 +4,12 @@ import Link from 'next/link'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import EventIcon from '@mui/icons-material/Event';
 import { getDate } from '@/utils/getDate';
+import { Update } from '@/Types/objects_types';
 
 export function UpdateItem({
-    updateType,
-    updatedItemData,
-    updateDate
+    update
 }: {
-    updateType: string;
-    updatedItemData: {
-        name?: string;
-        date?: string;
-    };
-    updateDate: string;
+    update: Update
 }) {
 
     let title = "הודעה";
@@ -23,22 +17,22 @@ export function UpdateItem({
     let page = "";
     let message = "";
 
-    if (updateType === "meeting_update") {
+    if (update.type === "meeting") {
         title = "תזכורת לפגישת דיירים";
         link = "/meetings";
         page = "הפגישות";
         message = `
-            פגישת דיירים ${updatedItemData?.name ? `"${updatedItemData?.name}"` : ""}
+            פגישת דיירים ${update?.item_name ? `"${update?.item_name}"` : ""}
             תתקיים ב-
-            ${updatedItemData.date ? getDate(updatedItemData.date) : "קרוב"}.
+            ${update.item_date ? getDate(update.item_date) : "קרוב"}.
         `
     }
-    if (updateType === "fault_update") {
+    if (update.type === "fault") {
         title = "תקלה טופלה";
         link = "/faults";
         page = "התקלות";
         message = `
-            התקלה "${updatedItemData.name}"
+            התקלה "${update.item_name}"
             טופלה.
         `
     }
@@ -46,7 +40,7 @@ export function UpdateItem({
     return (
         <div className={style.update_card}>
             <h4>
-                {updateType === "fault_update" ? <CheckCircleOutlineIcon /> : <EventIcon />}
+                {update.type === "fault" ? <CheckCircleOutlineIcon /> : <EventIcon />}
                 <span>
                     {title}
                 </span>
@@ -59,7 +53,7 @@ export function UpdateItem({
                 <Link href={link}>בעמוד {page}</Link>
                 .
             </p>
-            <span className={style.date}>{getDate(updateDate)}</span>
+            <span className={style.date}>{getDate(update.timestamp)}</span>
         </div>
     )
 }
