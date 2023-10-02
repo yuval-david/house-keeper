@@ -8,19 +8,23 @@ import { faultTypes, faultUrgencyLevels, faultStatuses, faultDoneBySupplier } fr
 import { useRouter } from 'next/router';
 import { Fault, FaultStatus, FaultSeveriry, FaultUrgency, editFaultRequest } from '@/Types/objects_types';
 import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
+import { userStore } from '@/stores/UserStore';
 
 
 export default function EditPage() {
 
-    // Hardcoded - need to come from store after login
-    const buildingID = 1;
+    // Get User details
+    const { building_id, is_vahadbait, is_management_company } = userStore();
     const router = useRouter();
     const { id: faultId } = router.query;
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
 
     const faultEndpoint = useMemo(() => {
-        return apiEndpoint + `/v2/buildings/${buildingID}/faults/${faultId}`;
-    }, [buildingID, faultId]);
+        return apiEndpoint + `/v2/buildings/${building_id}/faults/${faultId}`;
+    }, [building_id, faultId]);
+    const updatesEndpoint = useMemo(() => {
+        return apiEndpoint + `/v2/buildings/${building_id}/updates`;
+    }, [building_id]);
 
 
     const [isLoadingFaultData, setIsLoadingFaultData] = useState<boolean>(false);
@@ -36,6 +40,7 @@ export default function EditPage() {
     const [faultImage, setFaultImage] = useState(); // Need to check how to implement image
     const [successModal, setSuccessModal] = useState(false);
     const [errorModal, setErrorModal] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("פרטי התקלה עודכנו בהצלחה");
     const [originalFaultData, setOriginalFaultData] = useState<Fault>();
 
 
@@ -77,6 +82,12 @@ export default function EditPage() {
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         setIsLoadingEditFault(true);
+
+        if (!(is_vahadbait || is_management_company)) {
+            alert("User not allowed to edit fault.");
+            setIsLoadingEditFault(false);
+            return;
+        }
 
         const data: editFaultRequest = {
             id: parseInt(faultId as string),
@@ -124,6 +135,10 @@ export default function EditPage() {
                 setIsLoadingEditFault(false);
                 if (response.ok) {
                     setSuccessModal(true);
+                    if (faultStatus === "טופלה") {
+                        setSuccessMessage("פרטי התקלה עודכנו בהצלחה! נשלח לדיירים עדכון על הטיפול בתקלה.");
+                        handleClickSendUpdate()
+                    };
                 }
             } catch (error: any) {
                 console.log(error);
@@ -132,6 +147,32 @@ export default function EditPage() {
             }
         }
     }
+
+
+    const handleClickSendUpdate = async () => {
+
+        if (!building_id) alert("User not allowed, missing building code.");
+
+        const data = {
+            type: "fault",
+            item_id: faultId,
+            item_name: faultName,
+            item_date: null
+        };
+
+        const response = await fetch(updatesEndpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        console.log("Create update res", response);
+
+    }
+
+
 
     if (isLoadingFaultData) return (
         <PageLayout pageTitle='עריכת תקלה'>
@@ -175,7 +216,7 @@ export default function EditPage() {
                 </div>
             </form>
             {isLoadingEditFault && <Loader />}
-            <ModalMessage isOpen={successModal} handleClose={handleCloseSuccessModal} message="פרטי התקלה עודכנו בהצלחה" buttonText='אישור' type='success' />
+            <ModalMessage isOpen={successModal} handleClose={handleCloseSuccessModal} message={successMessage} buttonText='אישור' type='success' />
             <ModalMessage isOpen={errorModal} handleClose={handleCloseErrorModal} message="ישנה שגיאה בעריכת פרטי התקלה, אנא נסו שוב." buttonText='אישור' type='error' />
         </PageLayout>
     )
