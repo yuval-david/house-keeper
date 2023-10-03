@@ -1,6 +1,12 @@
 import { sql } from '@vercel/postgres';
 import { NextApiResponse, NextApiRequest } from 'next';
 
+// GET single meeting
+export async function getMeeting(building_id: any, meeting_id: any) {
+    const meeting_result = await sql`SELECT * FROM meetings WHERE building_id = ${building_id} AND id = ${meeting_id}`;
+    const meeting = meeting_result.rows[0];
+    return meeting;
+}
 
 // Handler
 export default async function handler(
@@ -46,18 +52,6 @@ export default async function handler(
             VALUES (${meetingName}, ${meetingDate}, ${time}, ${location}, ${description}, ${summary}, ${buildingId}) 
             RETURNING id;
             `;
-
-            // CHECK IF THIS PART NEEDED
-            // const resultData = result.rows;
-            // const meeting_id = resultData[0]?.id;
-
-            // Insert users into user_meetings
-            // for (const user_id of users) {
-            //     await executeQuery({
-            //         query: `INSERT INTO user_meetings (user_id, meeting_id) VALUES ($1, $2)`,
-            //         values: [user_id, meeting_id]
-            //     });
-            // }
 
             res.status(201).json({ message: 'Meeting created.' });
         } catch (error: any) {
