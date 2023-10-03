@@ -3,6 +3,13 @@ export type FaultUrgency = "דחופה" | "לא דחופה" | "";
 export type FaultSeveriry = "קלה" | "בינונית" | "חמורה" | "";
 export type YesNowAnswers = "כן" | "לא" | "";
 
+export interface Building {
+    id: number;
+    street: string;
+    number: number;
+    city: string;
+}
+
 export interface Meeting {
     id: number;
     name: string;
