@@ -39,7 +39,7 @@ export function MeetingsComponent() {
             <div className={style.meetings_cards_container}>
                 {meetings.length > 0 && meetings.map((meetingItem) => {
                     return (
-                        <MeetingCard key={meetingItem.id} id={meetingItem.id} name={meetingItem?.name} date={meetingItem.date} time={meetingItem.time} location={meetingItem.location} description={meetingItem?.description} isSummary={!!(meetingItem?.summary)} />
+                        <MeetingCard key={meetingItem.id} id={meetingItem.id} users={meetingItem?.users || []} name={meetingItem?.name} date={meetingItem.date} time={meetingItem.time} location={meetingItem.location} description={meetingItem?.description} isSummary={!!(meetingItem?.summary)} />
                     )
                 })}
 

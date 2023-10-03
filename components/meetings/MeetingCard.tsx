@@ -15,12 +15,14 @@ export function MeetingCard({
     location,
     description,
     isSummary,
+    users,
 }: {
     id: number;
     name?: string;
     date: string;
     time: string;
     location: string;
+    users: number[];
     description?: string;
     isSummary?: boolean;
 }) {
@@ -123,6 +125,7 @@ export function MeetingCard({
     const meetingDate = getDate(date);
     const meetingTimeParts = time.split(":");
     const meetingTime = meetingTimeParts[0] + ":" + meetingTimeParts[1];
+    const attendingUsers = users.length;
 
     return (
         <div className={style.meeting_card}>
@@ -152,6 +155,10 @@ export function MeetingCard({
                             </Link>
                         </div>
                     </div>
+                    {is_vahadbait && <div className={style.meeting_users}>
+                        ✅
+                        {attendingUsers} דיירים אישרו הגעה.
+                    </div>}
                 </div>
 
                 <div className={style.meeting_actions}>
