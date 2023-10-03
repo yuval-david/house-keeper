@@ -38,6 +38,7 @@ export function FaultsComponent() {
         <div>
             <ButtonAddItem buttonLink="/faults/add" buttonText='להוספת תקלה חדשה' />
             <div className={style.faults_cards_container}>
+                {faults.length < 1 && <p>לא קיימות תקלות לבניין.</p>}
                 {
                     faults.length > 0 && faults.map((faultItem) => (
                         <FaultCard key={faultItem.id} id={faultItem.id} faultData={faultItem} />

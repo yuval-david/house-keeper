@@ -1,5 +1,5 @@
 import { PageLayout } from '@/components/UI/PageLayout'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import style from "../../styles/AddCompanyDetails.module.css"
 import { CustomInputRow } from '@/components/UI/FormFields/CustomInputRow';
 import { ButtonSave } from '@/components/UI/ButtonSave';
@@ -7,19 +7,21 @@ import { Loader } from '@/components/UI/Loader';
 import { userStore } from '@/stores/UserStore';
 import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
 import { useRouter } from 'next/router';
+import { CompanyInformation, EditCompanyInformationRequest } from '@/Types/objects_types';
 
 export default function AddDetailsPage() {
 
     const router = useRouter();
 
     const [name, setName] = useState<string>("");
-    const [representativeName, setRepresentativeName] = useState<string>("");
+    const [representativename, setRepresentativeName] = useState<string>("");
     const [phone, setPhone] = useState<number | undefined>(undefined);
     const [email, setEmail] = useState<string>("");
-    const [paymentName, setPaymentName] = useState<string>("");
-    const [paymentAccountNumber, setPaymentAccountNumber] = useState<number | undefined>(undefined);
-    const [paymentBankName, setPaymentBankName] = useState<string>("");
-    const [paymentBranch, setPaymentBranch] = useState<string>("");
+    const [paymentname, setPaymentName] = useState<string>("");
+    const [paymentaccountnumber, setPaymentAccountNumber] = useState<number | undefined>(undefined);
+    const [paymentbankname, setPaymentBankName] = useState<string>("");
+    const [paymentbranch, setPaymentBranch] = useState<string>("");
+    const [information, setInformation] = useState<CompanyInformation>();
 
     // Form loading
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -40,23 +42,48 @@ export default function AddDetailsPage() {
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
     const managementEndpoint = apiEndpoint + `/v2/buildings/${building_id}/managment/information`;
 
+    // Fetch Details
+    useEffect(() => {
+        setIsLoading(true);
+        fetch(managementEndpoint)
+            .then((res) => res.json())
+            .then((data) => {
+                const company: CompanyInformation = data.information[0];
+                setInformation(company);
+                setName(company.name);
+                setRepresentativeName(company.representativename);
+                setPhone(company.phone);
+                setEmail(company.email);
+                setPaymentName(company.paymentname);
+                setPaymentAccountNumber(company.paymentaccountnumber);
+                setPaymentBankName(company.paymentbankname);
+                setPaymentBranch(company.paymentbranch);
+
+                setIsLoading(false);
+            }).catch(err => {
+                console.log(err);
+                setIsLoading(false);
+            });
+    }, []);
+
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         setIsLoading(true);
-        const data = {
+        const data: EditCompanyInformationRequest = {
+            building_id,
             name,
-            representativeName,
+            representativename,
             phone,
             email,
-            paymentName,
-            paymentAccountNumber,
-            paymentBankName,
-            paymentBranch
+            paymentname,
+            paymentaccountnumber,
+            paymentbankname,
+            paymentbranch
         }
 
         const response = await fetch(managementEndpoint, {
-            method: "POST",
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -81,16 +108,16 @@ export default function AddDetailsPage() {
                         <h2>פרטי חברת ניהול חדשה</h2>
                         <div className={style.details_list}>
                             <CustomInputRow value={name} onChange={(e) => setName(e.target.value)} label='שם חברת הניהול' placeholder='' type='text' dir='rtl' required />
-                            <CustomInputRow value={representativeName} onChange={(e) => setRepresentativeName(e.target.value)} label='שם הנציג' placeholder='' type='text' dir='rtl' required />
+                            <CustomInputRow value={representativename} onChange={(e) => setRepresentativeName(e.target.value)} label='שם הנציג' placeholder='' type='text' dir='rtl' required />
                             <CustomInputRow value={phone} onChange={(e) => setPhone(e.target.value)} label='מספר טלפון' placeholder='' type='tel' dir='ltr' required />
                             <CustomInputRow value={email} onChange={(e) => setEmail(e.target.value)} label='כתובת מייל' placeholder='' type='email' dir='ltr' required />
                             <div className={style.sub_details}>
                                 <h2>פרטי חשבון לתשלום</h2>
                                 <div className={style.sub_fields_container}>
-                                    <CustomInputRow value={paymentName} onChange={(e) => setPaymentName(e.target.value)} label='שם המוטב' placeholder='' type='text' dir='rtl' required />
-                                    <CustomInputRow value={paymentAccountNumber} onChange={(e) => setPaymentAccountNumber(e.target.value)} label='מספר חשבון' placeholder='' type='number' numberMin={0} dir='rtl' required />
-                                    <CustomInputRow value={paymentBankName} onChange={(e) => setPaymentBankName(e.target.value)} label='שם הבנק' placeholder='' type='text' dir='rtl' required />
-                                    <CustomInputRow value={paymentBranch} onChange={(e) => setPaymentBranch(e.target.value)} label='מספר סניף' placeholder='' type='text' dir='rtl' required />
+                                    <CustomInputRow value={paymentname} onChange={(e) => setPaymentName(e.target.value)} label='שם המוטב' placeholder='' type='text' dir='rtl' required />
+                                    <CustomInputRow value={paymentaccountnumber} onChange={(e) => setPaymentAccountNumber(e.target.value)} label='מספר חשבון' placeholder='' type='number' numberMin={0} dir='rtl' required />
+                                    <CustomInputRow value={paymentbankname} onChange={(e) => setPaymentBankName(e.target.value)} label='שם הבנק' placeholder='' type='text' dir='rtl' required />
+                                    <CustomInputRow value={paymentbranch} onChange={(e) => setPaymentBranch(e.target.value)} label='מספר סניף' placeholder='' type='text' dir='rtl' required />
                                 </div>
                             </div>
                         </div>

@@ -125,6 +125,11 @@ CREATE TABLE management_information (
    paymentBranch VARCHAR(255)
 );
 
+INSERT INTO management_information 
+(building_id, name, representativeName, phone, email, paymentName, paymentAccountNumber, paymentBankName, paymentBranch) 
+VALUES 
+(1, 'ניהולי בניינים בע"מ', 'עמי גולדמן', 032411627, 'amig@walla.com', 'ניהולי בניינים בע"מ', 4255110, 'מזרחי טפחות', 201);
+
 /************  MANAGEMENT COMPANIES CONTRACTORS  ************/
 CREATE TABLE management_contractors (
    id SERIAL PRIMARY KEY,

@@ -37,6 +37,7 @@ export function MeetingsComponent() {
         <div>
             {is_vahadbait && <ButtonAddItem buttonLink="/meetings/add-meeting" buttonText='להוספת פגישה חדשה' />}
             <div className={style.meetings_cards_container}>
+                {meetings.length < 1 && <p>לא קיימות פגישות לבניין.</p>}
                 {meetings.length > 0 && meetings.map((meetingItem) => {
                     return (
                         <MeetingCard key={meetingItem.id} id={meetingItem.id} users={meetingItem?.users || []} name={meetingItem?.name} date={meetingItem.date} time={meetingItem.time} location={meetingItem.location} description={meetingItem?.description} isSummary={!!(meetingItem?.summary)} />

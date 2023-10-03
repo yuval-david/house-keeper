@@ -35,12 +35,10 @@ export default function SuppliersPage() {
     const router = useRouter();
 
     // Get User Details
-    const { is_vahadbait, is_management_company } = userStore();
+    const { building_id, is_vahadbait, is_management_company } = userStore();
 
-    // Hardcoded - need to come from store after login
-    const buildingID = 1;
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    const suppliersEndpoint = apiEndpoint + `/v2/buildings/${buildingID}/managment/contractors`;
+    const suppliersEndpoint = apiEndpoint + `/v2/buildings/${building_id}/managment/contractors`;
 
     const [suppliers, setSuppliers] = useState<Supplier[] | null>(null);
     const [isLoading, setLoading] = useState(false);
@@ -126,7 +124,8 @@ export default function SuppliersPage() {
     return (
         <PageLayout pageTitle='רשימת ספקים'>
             {(is_vahadbait || is_management_company) && <ButtonAddItem buttonText='הוספת ספק' buttonLink='/suppliers/add' />}
-            <TableContainer component={Paper} className={style.table_container}>
+            {suppliers.length < 1 && <p>לא קיימים ספקים לבניין.</p>}
+            {suppliers.length > 0 && <TableContainer component={Paper} className={style.table_container}>
                 <Table aria-label="suppliers table">
                     <TableHead>
                         <TableRow>
@@ -155,7 +154,7 @@ export default function SuppliersPage() {
                         ))}
                     </TableBody>
                 </Table>
-            </TableContainer>
+            </TableContainer>}
             <ModalAreYouSure message='את/ה בטוח/ה?' mainButtonText='כן' secondButtonText='לא' handleClickMainButton={handleDeleteSupplier} isOpen={showModalBeforeDelete} handleClose={handleCloseModalBeforeDelete} />
             <ModalMessage message='הספק נמחק בהצלחה' buttonText='אישור' isOpen={showModalAfterDelete} handleClose={handleCloseModalAfterDelete} type='success' />
             <ModalMessage message='קרתה שגיאה במחיקת הספק' buttonText='אישור' isOpen={showErrorDeleteModal} handleClose={handleCloseDeleteErrorModal} type='error' />
