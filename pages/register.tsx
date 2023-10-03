@@ -1,14 +1,18 @@
 import Head from 'next/head';
 import Image from 'next/image'
 import { useRouter } from 'next/router';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import style from "../styles/Login.module.css"
 import { CustomInput } from '@/components/UI/FormFields/CustomInput';
 import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
 import { Loader } from '@/components/UI/Loader';
+import { Building } from '@/Types/objects_types';
 
 export default function RegisterPage() {
     const router = useRouter();
+
+    const [buildings, setBuildings] = useState<Building[]>([]);
+    const [buildingsOptions, setBuildingOptions] = useState<string[]>(['1', '2']);
 
     // Form Fields
     const [fullName, setFullName] = useState("");
@@ -40,6 +44,19 @@ export default function RegisterPage() {
 
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
     const addUserEndpoint = apiEndpoint + `/v2/buildings/${buildingId}/users`;
+    const buildingsEndpoint = apiEndpoint + `/v2/buildings`;
+
+    // Fetch buildings list
+    useEffect(() => {
+        fetch(buildingsEndpoint)
+            .then((res) => res.json())
+            .then((data) => {
+                setBuildings(data.buildings);
+                const buildingsIds = data.buildings.map((building: Building) => building.id.toString());
+                setBuildingOptions(buildingsIds)
+            })
+            .catch(error => console.log(error));
+    }, []);
 
     // Handle submit register function
     const handleRegisterSubmit = async (event: any) => {
@@ -113,7 +130,7 @@ export default function RegisterPage() {
                     <form dir='rtl' onSubmit={handleRegisterSubmit}>
                         <div className={style.fields_cols}>
                             <div className={style.field_container}>
-                                <CustomInput value={buildingId} onChange={(e) => setBuildingId(e.target.value)} required label="קוד בניין" dir='rtl' type='select' options={["1", "2", "3"]} />
+                                <CustomInput value={buildingId} onChange={(e) => setBuildingId(e.target.value)} required label="קוד בניין" dir='rtl' type='select' options={buildingsOptions} />
                                 <CustomInput value={fullName} onChange={(e) => setFullName(e.target.value)} required label="שם מלא" dir='rtl' type='text' />
                                 <CustomInput value={email} onChange={(e) => setEmail(e.target.value)} required label="כתובת אימייל" dir='ltr' type='email' />
                                 <CustomInput value={password} onChange={(e) => setPassword(e.target.value)} required label="סיסמה" dir='ltr' type='password' />
