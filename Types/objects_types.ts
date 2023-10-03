@@ -95,3 +95,15 @@ export interface CompanyInformation {
     paymentbankname: string;
     paymentbranch: string;
 }
+
+export interface EditCompanyInformationRequest {
+    building_id: number;
+    name?: string;
+    representativename?: string;
+    phone?: number;
+    email?: string;
+    paymentname?: string;
+    paymentaccountnumber?: number;
+    paymentbankname?: string;
+    paymentbranch?: string;
+}

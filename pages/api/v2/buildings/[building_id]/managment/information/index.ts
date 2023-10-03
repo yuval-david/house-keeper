@@ -30,7 +30,60 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(500).json({ error: error.message });
         }
 
-    } else {
+        // PUT
+    } else if (req.method === "PUT") {
+        try {
+            const {
+                name,
+                representativename,
+                phone,
+                email,
+                paymentname,
+                paymentaccountnumber,
+                paymentbankname,
+                paymentbranch
+            } = req.body;
+
+            if (name) {
+                const nameUpdateResult = await sql`UPDATE management_information SET name = ${name} WHERE building_id = ${buildingId};`;
+                console.log(nameUpdateResult);
+            }
+            if (representativename) {
+                const representativeNameUpdateResult = await sql`UPDATE management_information SET representativename = ${representativename} WHERE building_id = ${buildingId};`;
+                console.log(representativeNameUpdateResult);
+            }
+            if (phone) {
+                const phoneUpdateResult = await sql`UPDATE management_information SET phone = ${phone} WHERE building_id = ${buildingId};`;
+                console.log(phoneUpdateResult);
+            }
+            if (email) {
+                const emailUpdateResult = await sql`UPDATE management_information SET email = ${email} WHERE building_id = ${buildingId};`;
+                console.log(emailUpdateResult);
+            }
+            if (paymentname) {
+                const paymentNameUpdateResult = await sql`UPDATE management_information SET paymentname = ${paymentname} WHERE building_id = ${buildingId};`;
+                console.log(paymentNameUpdateResult);
+            }
+            if (paymentaccountnumber) {
+                const paymentAccountNumberUpdateResult = await sql`UPDATE management_information SET paymentaccountnumber = ${paymentaccountnumber} WHERE building_id = ${buildingId};`;
+                console.log(paymentAccountNumberUpdateResult);
+            }
+            if (paymentbankname) {
+                const paymentBankNameUpdateResult = await sql`UPDATE management_information SET paymentbankname = ${paymentbankname} WHERE building_id = ${buildingId};`;
+                console.log(paymentBankNameUpdateResult);
+            }
+            if (paymentbranch) {
+                const paymentBranchUpdateResult = await sql`UPDATE management_information SET paymentbranch = ${paymentbranch} WHERE building_id = ${buildingId};`;
+                console.log(paymentBranchUpdateResult);
+            }
+
+            res.status(200).json({ message: 'Company information updated.' });
+        } catch (error: any) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+    else {
         res.status(405).end();  // Method Not Allowed
     }
 }

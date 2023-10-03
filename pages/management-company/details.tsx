@@ -8,8 +8,6 @@ import React, { useEffect, useState } from 'react'
 
 export default function DetailsPage() {
 
-
-
     // Get User details
     const { is_vahadbait, building_id } = userStore();
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
@@ -18,7 +16,7 @@ export default function DetailsPage() {
     const [isLoading, setLoading] = useState(false);
     const [information, setInformation] = useState();
 
-    // Fetch Meetings
+    // Fetch Details
     useEffect(() => {
         setLoading(true);
         fetch(companyEndpoint)
