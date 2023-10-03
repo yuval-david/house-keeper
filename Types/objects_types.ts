@@ -83,3 +83,15 @@ export interface User {
     apartment_spm: number;
     building_id: number;
 }
+
+export interface CompanyInformation {
+    building_id: number;
+    name: string;
+    representativename: string;
+    phone: number;
+    email: string;
+    paymentname: string;
+    paymentaccountnumber: number;
+    paymentbankname: string;
+    paymentbranch: string;
+}

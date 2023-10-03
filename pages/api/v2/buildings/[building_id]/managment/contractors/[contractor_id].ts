@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method === 'GET') {
         try {
             const data = await sql`SELECT * FROM management_contractors WHERE building_id = ${buildingId} AND id = ${contractorId};`;
-            res.status(201).json({ contractor: data.rows[0] });
+            res.status(200).json({ contractor: data.rows[0] });
 
         } catch (error: any) {
             res.status(500).json({ error: error.message });
