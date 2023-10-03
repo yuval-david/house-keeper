@@ -57,6 +57,7 @@ export default function Login() {
                     is_vahadbait: userData.isvahadbait,
                     is_management_company: userData.ismanagementcompany,
                     user_id: userData.id,
+                    email: userData.email,
                     is_logged_in: true
                 });
                 router.push("/home");
