@@ -15,31 +15,39 @@ export function MeetingCard({
     location,
     description,
     isSummary,
+    users,
 }: {
     id: number;
     name?: string;
     date: string;
     time: string;
     location: string;
+    users: number[];
     description?: string;
     isSummary?: boolean;
 }) {
 
     // Get User details
-    const { building_id, is_vahadbait } = userStore();
+    const { building_id, is_vahadbait, email } = userStore();
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
     const updatesEndpoint = apiEndpoint + `/v2/buildings/${building_id}/updates`;
+    const meetingCalendarEndpoint = apiEndpoint + `/v2/buildings/${building_id}/meetings/${id}/google`;
 
     // Form loading
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [successModal, setSuccessModal] = useState(false);
     const [errorModal, setErrorModal] = useState(false);
+    const [addCalendarModal, setAddCalendarModal] = useState(false);
 
     const handleCloseSuccessModal = () => {
         setSuccessModal(false);
     }
     const handleCloseErrorModal = () => {
         setErrorModal(false);
+    }
+    const handleCloseAddCalendarModal = () => {
+        setAddCalendarModal(false);
+        createMeetingOnCalendar();
     }
 
     const router = useRouter();
@@ -53,7 +61,32 @@ export function MeetingCard({
     }
 
     const handleClickAddCalender = () => {
-        alert("הוספה ליומן");
+        setAddCalendarModal(true);
+    }
+
+    const createMeetingOnCalendar = async () => {
+        setIsLoading(true);
+
+        const data = {
+            email
+        };
+
+        const response = await fetch(meetingCalendarEndpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        console.log(response.json());
+        setIsLoading(false);
+        if (response.ok) {
+            alert("הפגישה נוספה בהצלחה");
+        } else {
+
+            alert("ישנה בעיה בהוספת הפגישה ליומן.");
+        }
     }
 
     const handleClickSendUpdate = async () => {
@@ -92,6 +125,7 @@ export function MeetingCard({
     const meetingDate = getDate(date);
     const meetingTimeParts = time.split(":");
     const meetingTime = meetingTimeParts[0] + ":" + meetingTimeParts[1];
+    const attendingUsers = users.length;
 
     return (
         <div className={style.meeting_card}>
@@ -121,6 +155,10 @@ export function MeetingCard({
                             </Link>
                         </div>
                     </div>
+                    {is_vahadbait && <div className={style.meeting_users}>
+                        ✅
+                        {attendingUsers} דיירים אישרו הגעה.
+                    </div>}
                 </div>
 
                 <div className={style.meeting_actions}>
@@ -144,6 +182,7 @@ export function MeetingCard({
             </div>
             <ModalMessage isOpen={successModal} handleClose={handleCloseSuccessModal} message="נשלחה תזכורת לפגישה! תוכלו למצוא אותה באזור העדכונים." buttonText='אישור' type='success' />
             <ModalMessage isOpen={errorModal} handleClose={handleCloseErrorModal} message="ישנה שגיאה בשליחת התזכורת, אנא נסו שוב." buttonText='אישור' type='error' />
+            <ModalMessage isOpen={addCalendarModal} handleClose={handleCloseAddCalendarModal} message={`ברצונך להוסיף את הפגישה ביומן של כתובת המייל: ${email} ?`} buttonText='כן' type='info' />
             {isLoading && <Loader />}
         </div>
     )

@@ -7,6 +7,7 @@ interface UserState {
     is_vahadbait: boolean;
     is_management_company: boolean;
     user_id: number;
+    email: string;
     is_logged_in: boolean;
 }
 
@@ -20,6 +21,7 @@ export const userStore = create<UserState>()(
                 is_vahadbait: false,
                 is_management_company: false,
                 user_id: 0,
+                email: "",
                 is_logged_in: false
             }),
             {

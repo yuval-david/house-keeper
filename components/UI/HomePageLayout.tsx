@@ -17,6 +17,7 @@ export function HomePageLayout({ name, children }: { name: string; children: Rea
             is_vahadbait: false,
             is_management_company: false,
             user_id: 0,
+            email: "",
             is_logged_in: false,
         });
     }
