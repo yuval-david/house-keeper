@@ -3,12 +3,15 @@ import { ButtonAddItem } from '../UI/ButtonAddItem'
 import style from "./MeetingsComponent.module.css"
 import { MeetingCard } from './MeetingCard'
 import { Meeting } from '@/Types/objects_types';
+import { Loader } from '../UI/Loader';
+import { userStore } from '@/stores/UserStore';
 
 export function MeetingsComponent() {
-    // Hardcoded - need to come from store after login
-    const buildingID = 1;
+
+    // Get User details
+    const { is_vahadbait, building_id } = userStore();
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    const meetingsEndpoint = apiEndpoint + `/v2/buildings/${buildingID}/meetings`;
+    const meetingsEndpoint = apiEndpoint + `/v2/buildings/${building_id}/meetings`;
 
     const [meetings, setMeetings] = useState<Meeting[] | null>(null);
     const [isLoading, setLoading] = useState(false);
@@ -21,19 +24,23 @@ export function MeetingsComponent() {
             .then((data) => {
                 setMeetings(data.meetings);
                 setLoading(false);
-            }).catch(err => { console.log(err); setLoading(false) });
+            }).catch(err => {
+                console.log(err);
+                setLoading(false);
+            });
     }, []);
 
-    if (isLoading) return <p>Loading...</p>;
-    if (!meetings) return <p>Missing data about meetings</p>;
+    if (isLoading) return <Loader isShadow={false} message="טוען פגישות דיירים..." />;
+    if (!meetings) return <p>לא נמצאו פגישות.</p>;
 
     return (
         <div>
-            <ButtonAddItem buttonLink="/meetings/add-meeting" buttonText='להוספת פגישה חדשה' />
+            {is_vahadbait && <ButtonAddItem buttonLink="/meetings/add-meeting" buttonText='להוספת פגישה חדשה' />}
             <div className={style.meetings_cards_container}>
+                {meetings.length < 1 && <p>לא קיימות פגישות לבניין.</p>}
                 {meetings.length > 0 && meetings.map((meetingItem) => {
                     return (
-                        <MeetingCard key={meetingItem.id} id={meetingItem.id} name={meetingItem?.name} date={meetingItem.date} time={meetingItem.time} location={meetingItem.location} description={meetingItem?.description} isSummary={!!(meetingItem?.summary)} />
+                        <MeetingCard key={meetingItem.id} id={meetingItem.id} users={meetingItem?.users || []} name={meetingItem?.name} date={meetingItem.date} time={meetingItem.time} location={meetingItem.location} description={meetingItem?.description} isSummary={!!(meetingItem?.summary)} />
                     )
                 })}
 

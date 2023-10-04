@@ -1,9 +1,18 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+
 .details_container {
     display: flex;
     column-gap: 15vw;
 }
 
 @media (max-width: 1024px) {
+    .container {
+        flex-direction: column-reverse;
+    }
+
     .details_container {
         flex-direction: column;
         row-gap: 10vw;

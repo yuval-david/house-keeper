@@ -1,12 +1,17 @@
-import Reac from 'react'
+import React from 'react'
 import style from "./HomePageComponent.module.css"
 import Link from 'next/link'
+import { userStore } from '@/stores/UserStore';
 
 export function HomePageComponent() {
+
+    // Get User Details
+    const { is_vahadbait, is_management_company } = userStore();
+
     return (
         <div>
             <div className={style.home_menu_container}>
-                <h2>במה תרצה להתחיל?</h2>
+                <h2>במה תרצו להתחיל?</h2>
 
                 <div className={style.links_container}>
                     <Link href="/" className={style.deg0}>
@@ -27,12 +32,12 @@ export function HomePageComponent() {
                     <Link href="/tenants" className={style.deg225}>
                         <span className={style.blue}>ניהול דיירים</span>
                     </Link>
-                    <Link href="/" className={style.deg270}>
+                    {!is_management_company && <Link href="/" className={style.deg270}>
                         <span className={style.disabled}>סקרים</span>
-                    </Link>
-                    <Link href="/meetings" className={style.deg315}>
+                    </Link>}
+                    {!is_management_company && <Link href="/meetings" className={style.deg315}>
                         <span className={style.green}>פגישות דיירים</span>
-                    </Link>
+                    </Link>}
                 </div>
             </div>
         </div>

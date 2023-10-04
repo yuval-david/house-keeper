@@ -4,9 +4,14 @@ import style from "../../styles/AddCompanyDetails.module.css"
 import { CustomInputRow } from '@/components/UI/FormFields/CustomInputRow';
 import { ButtonSave } from '@/components/UI/ButtonSave';
 import { Loader } from '@/components/UI/Loader';
+import { userStore } from '@/stores/UserStore';
+import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
+import { useRouter } from 'next/router';
 
 export default function AddDetailsPage() {
-    const [isLoadingAddDetails, setIsLoadingAddDetails] = useState<boolean>(false);
+
+    const router = useRouter();
+
     const [name, setName] = useState<string>("");
     const [representativeName, setRepresentativeName] = useState<string>("");
     const [phone, setPhone] = useState<number | undefined>(undefined);
@@ -16,11 +21,29 @@ export default function AddDetailsPage() {
     const [paymentBankName, setPaymentBankName] = useState<string>("");
     const [paymentBranch, setPaymentBranch] = useState<string>("");
 
+    // Form loading
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [successModal, setSuccessModal] = useState(false);
+    const [errorModal, setErrorModal] = useState(false);
+
+    const handleCloseSuccessModal = () => {
+        setSuccessModal(false);
+        router.push("/management-company/details");
+    }
+    const handleCloseErrorModal = () => {
+        setErrorModal(false);
+    }
+
+    // Get User Details
+    const { is_vahadbait, is_management_company, building_id } = userStore();
+
+    const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
+    const managementEndpoint = apiEndpoint + `/v2/buildings/${building_id}/managment/information`;
 
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
-        setIsLoadingAddDetails(true);
+        setIsLoading(true);
         const data = {
             name,
             representativeName,
@@ -31,8 +54,23 @@ export default function AddDetailsPage() {
             paymentBankName,
             paymentBranch
         }
-        console.log("Submitted form data:", data);
-        setIsLoadingAddDetails(false);
+
+        const response = await fetch(managementEndpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        setIsLoading(false);
+
+        if (response.ok) {
+            setSuccessModal(true);
+        } else {
+            console.log(response.json());
+            setErrorModal(true);
+        }
     }
 
     return (
@@ -62,7 +100,9 @@ export default function AddDetailsPage() {
                     <ButtonSave text='לשמירת הפרטים' type='submit' />
                 </div>
             </form>
-            {isLoadingAddDetails && <Loader />}
+            {isLoading && <Loader />}
+            <ModalMessage isOpen={successModal} handleClose={handleCloseSuccessModal} message="פרטי חברת הניהול נוצרו בהצלחה" buttonText='אישור' type='success' />
+            <ModalMessage isOpen={errorModal} handleClose={handleCloseErrorModal} message="ישנה שגיאה בהוספת הפרטים, אנא נסו שוב." buttonText='אישור' type='error' />
         </PageLayout>
     )
 }

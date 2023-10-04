@@ -1,38 +1,62 @@
 import { sql } from '@vercel/postgres';
 import { NextApiResponse, NextApiRequest } from 'next';
 
+// GET single meeting
+export async function getMeeting(building_id: any, meeting_id: any) {
+    const meeting_result = await sql`SELECT * FROM meetings WHERE building_id = ${building_id} AND id = ${meeting_id}`;
+    const meeting = meeting_result.rows[0];
+    return meeting;
+}
+
+// Handler
 export default async function handler(
-    request: NextApiRequest,
-    response: NextApiResponse,
+    req: NextApiRequest,
+    res: NextApiResponse,
 ) {
 
-    try {
-        // GET 
-        if (request.method === 'GET') {
-            const meetings = await sql`SELECT * FROM meetings;`;
-            return response.status(200).json({ meetings: meetings.rows });
-        }
+    // Get Query Parameters
+    const { building_id } = req.query;
+    const buildingId = building_id as string;
 
-        // POST
-        if (request.method === 'POST') {
-            const { name: meetingName, date: meetingDate, time, location, description, summary } = request.body;
-            // if (!meetingDate || !location) throw new Error('Meeting details are missing.'); // Another way to handle validation
+
+    // GET 
+    if (req.method === 'GET') {
+        try {
+            const meetings = await sql`SELECT * FROM meetings WHERE building_id = ${buildingId};`;
+
+            // Fetch users associated with each meeting
+            for (const meeting of meetings.rows) {
+                const usersData = await sql`SELECT user_id FROM user_meetings WHERE meeting_id = ${meeting.id}`;
+                meeting.users = usersData.rows.map(row => row.user_id);
+            }
+
+
+            return res.status(200).json({ meetings: meetings.rows });
+
+        } catch (error: any) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+    // POST
+    if (req.method === 'POST') {
+
+        try {
+            const { name: meetingName, date: meetingDate, time, location, description, summary } = req.body;
             if (!meetingDate || !location || !time) {
-                return response.status(400).json({ message: 'Meeting details are missing.' });
+                return res.status(400).json({ message: 'Meeting details are missing.' });
             }
 
-            const res = await sql`INSERT INTO meetings (name, date, time, location, description, summary) VALUES (${meetingName}, ${meetingDate}, ${time}, ${location}, ${description}, ${summary});`;
+            const result = await sql`
+            INSERT INTO meetings (name, date, time, location, description, summary, building_id) 
+            VALUES (${meetingName}, ${meetingDate}, ${time}, ${location}, ${description}, ${summary}, ${buildingId}) 
+            RETURNING id;
+            `;
 
-            // INSERT successfully
-            if (res.rowCount > 0) {
-                return response.status(200).json({ response: res, message: "Meeting created succesfuly" });
-            } else {
-                throw new Error('There is sql error during adding new meeting.')
-            }
+            res.status(201).json({ message: 'Meeting created.' });
+        } catch (error: any) {
+            res.status(500).json({ error: error.message });
         }
-
-    } catch (error) {
-        return response.status(500).json({ error });
     }
 
 }

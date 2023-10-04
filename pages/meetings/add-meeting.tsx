@@ -4,11 +4,13 @@ import style from "../../styles/AddMeeting.module.css"
 import { CustomInputRow } from '@/components/UI/FormFields/CustomInputRow'
 import { ButtonSave } from '@/components/UI/ButtonSave';
 import { Loader } from '@/components/UI/Loader';
+import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
+import { userStore } from '@/stores/UserStore';
 
 export default function addMeetingPage() {
 
-    // Hardcoded - need to come from store after login
-    const buildingID = 1;
+    // Get User Details
+    const { is_vahadbait, is_management_company, building_id } = userStore();
 
     // Form Values
     const [meetingName, setMeetingName] = useState<string>("");
@@ -18,9 +20,18 @@ export default function addMeetingPage() {
     const [description, setDescription] = useState<string>("");
     // Form loading
     const [isLoadingAdd, setIsLoadingAdd] = useState<boolean>(false);
+    const [successModal, setSuccessModal] = useState(false);
+    const [errorModal, setErrorModal] = useState(false);
+
+    const handleCloseSuccessModal = () => {
+        setSuccessModal(false);
+    }
+    const handleCloseErrorModal = () => {
+        setErrorModal(false);
+    }
 
     const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    const addMeetingEndpoint = apiEndpoint + `/v2/buildings/${buildingID}/meetings`;
+    const addMeetingEndpoint = apiEndpoint + `/v2/buildings/${building_id}/meetings`;
 
     // Sumbit ADD-MEETING form
     const handleSubmit = async (event: any) => {
@@ -44,12 +55,13 @@ export default function addMeetingPage() {
             });
             const resJson = await response.json();
             setIsLoadingAdd(false);
-            alert(resJson.message);
             if (response.ok) {
+                setSuccessModal(true);
                 resetForm();
             }
         } catch (error) {
             setIsLoadingAdd(false);
+            setErrorModal(true);
             console.log(error);
         }
     }
@@ -88,6 +100,8 @@ export default function addMeetingPage() {
                     <ButtonSave text='לחץ לשמירה' type='submit' />
                 </div>
             </form>
+            <ModalMessage isOpen={successModal} handleClose={handleCloseSuccessModal} message="הפגישה נוצרה בהצלחה" buttonText='אישור' type='success' />
+            <ModalMessage isOpen={errorModal} handleClose={handleCloseErrorModal} message="ישנה שגיאה ביצירת הפגישה, אנא נסו שוב." buttonText='אישור' type='error' />
             {isLoadingAdd && <Loader />}
         </PageLayout>
     )

@@ -170,7 +170,14 @@
         font-size: 130%;
     }
 
-    .btn_user_actions {
-        margin-right: 31vw !important;
+    .mobile_left_part {
+        display: flex;
+        align-items: center;
     }
+}
+
+.nav_actions {
+    display: flex;
+    flex-direction: row-reverse;
+    column-gap: 1vw;    
 }

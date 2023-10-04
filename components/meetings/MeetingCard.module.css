@@ -104,6 +104,16 @@
     }
 }
 
+.meeting_users {
+    margin-top: 1.5vw;
+}
+
+@media (max-width:1024px) {
+    .meeting_users {
+        margin-top: 5vw;
+    }
+}
+
 .desc {
     font-size: 105%;
     color: rgb(46, 44, 44);

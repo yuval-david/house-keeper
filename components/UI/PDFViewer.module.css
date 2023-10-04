@@ -1,0 +1,44 @@
+.area_container{
+    padding-bottom: 3vw;
+}
+
+.container {
+   position: relative;
+   width: 90vw; 
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   margin: auto;
+   margin-top: 1vw;
+   overflow-y: auto;
+   overflow-x: auto;
+}
+
+.pdf_page > div {
+    display: none !important;
+}
+
+.navigation {
+    text-align: center;
+    margin: auto;
+    width: 90vw;
+}
+
+.navigation button {
+    background-color: #020079;
+    border: none;
+    font-size: 115%;
+    font-weight: 600;
+    padding: 8px 16px;
+    color: lightblue;
+    border-radius: 7px;
+    cursor: pointer;
+    min-width: 6vw;
+}
+
+.navigation .buttons {
+    display: flex;
+    column-gap: 0.5vw;
+    justify-content: center;
+}

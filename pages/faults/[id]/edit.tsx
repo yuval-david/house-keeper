@@ -1,58 +1,185 @@
 import { PageLayout } from '@/components/UI/PageLayout'
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import style from "../../../styles/AddFault.module.css"
 import { CustomInputRow } from '@/components/UI/FormFields/CustomInputRow';
 import { ButtonSave } from '@/components/UI/ButtonSave';
 import { Loader } from '@/components/UI/Loader';
 import { faultTypes, faultUrgencyLevels, faultStatuses, faultDoneBySupplier } from "@/components/faults/FalutsFieldsOptions"
 import { useRouter } from 'next/router';
-import { Fault, FaultStatus, FaultType, FaultUrgency } from '@/Types/objects_types';
-
-// DEMO DATA (will be fetched by fault id)
-const EditedFault: Fault = {
-    id: 1,
-    faultName: "נזילה בגג",
-    faultType: "חמורה",
-    faultUrgency: "דחופה",
-    faultLocation: "גג הבניין",
-    faultStatus: "לא טופלה",
-}
+import { Fault, FaultStatus, FaultSeveriry, FaultUrgency, editFaultRequest } from '@/Types/objects_types';
+import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
+import { userStore } from '@/stores/UserStore';
 
 
 export default function EditPage() {
 
+    // Get User details
+    const { building_id, is_vahadbait, is_management_company } = userStore();
     const router = useRouter();
     const { id: faultId } = router.query;
+    const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
 
-    const [isLoadingAddFault, setIsLoadingAddFault] = useState<boolean>(false);
-    const [faultName, setFaultName] = useState<string>(EditedFault?.faultName || "");
-    const [faultType, setFaultType] = useState<FaultType>(EditedFault?.faultType || "");
-    const [faultUrgency, setFaultUrgency] = useState<FaultUrgency>(EditedFault?.faultUrgency || "");
-    const [faultLocation, setFaultLocation] = useState<string>(EditedFault?.faultLocation || "");
-    const [faultStatus, setFaultStatus] = useState<FaultStatus>(EditedFault?.faultStatus || "");
-    const [doneBy, setDoneBy] = useState<string>(EditedFault?.doneBy || "");
-    const [isSupplierInvolved, setIsSupplierInvolved] = useState<string>(EditedFault?.isSupplierInvolved || "");
-    const [faultPrice, setFaultPrice] = useState<number>(EditedFault?.faultPrice || 0);
-    const [faultImage, setFaultImage] = useState(EditedFault?.faultImage || ""); // Need to check how to implement image
+    const faultEndpoint = useMemo(() => {
+        return apiEndpoint + `/v2/buildings/${building_id}/faults/${faultId}`;
+    }, [building_id, faultId]);
+    const updatesEndpoint = useMemo(() => {
+        return apiEndpoint + `/v2/buildings/${building_id}/updates`;
+    }, [building_id]);
 
+
+    const [isLoadingFaultData, setIsLoadingFaultData] = useState<boolean>(false);
+    const [isLoadingEditFault, setIsLoadingEditFault] = useState<boolean>(false);
+    const [faultName, setFaultName] = useState("");
+    const [faultType, setFaultType] = useState<FaultSeveriry>();
+    const [faultUrgency, setFaultUrgency] = useState<FaultUrgency>();
+    const [faultLocation, setFaultLocation] = useState<string>();
+    const [faultStatus, setFaultStatus] = useState<FaultStatus>();
+    const [doneBy, setDoneBy] = useState<string>();
+    const [isSupplierInvolved, setIsSupplierInvolved] = useState<string>();
+    const [faultPrice, setFaultPrice] = useState<number>();
+    const [faultImage, setFaultImage] = useState(); // Need to check how to implement image
+    const [successModal, setSuccessModal] = useState(false);
+    const [errorModal, setErrorModal] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("פרטי התקלה עודכנו בהצלחה");
+    const [originalFaultData, setOriginalFaultData] = useState<Fault>();
+
+
+    const handleCloseSuccessModal = () => {
+        setSuccessModal(false);
+    }
+    const handleCloseErrorModal = () => {
+        setErrorModal(false);
+    }
+
+    // Fetch Fault Data
+    useEffect(() => {
+        if (faultId) {
+            setIsLoadingFaultData(true);
+            fetch(faultEndpoint)
+                .then((res) => res.json())
+                .then((data) => {
+                    setIsLoadingFaultData(false);
+                    setOriginalFaultData(data.fault);
+                    console.log("data.fault: ", data.fault);
+                    // Set form values
+                    setFaultName(data.fault.name);
+                    setFaultType(data.fault.severity);
+                    setFaultUrgency(data.fault.urgency);
+                    setFaultLocation(data.fault.location);
+                    setFaultStatus(data.fault.status ? "טופלה" : "לא טופלה");
+                    setDoneBy(data.fault.handledby);
+                    setIsSupplierInvolved(data.fault.vendor ? "כן" : "לא");
+                    setFaultPrice(data.fault.price);
+
+                }).catch(err => {
+                    setIsLoadingFaultData(false);
+                    console.log(err);
+                });
+        }
+    }, [faultId]);
+
+    // Handle submit edit-fault form
     const handleSubmit = async (event: any) => {
         event.preventDefault();
-        setIsLoadingAddFault(true);
-        const data = {
-            id: faultId,
-            faultName,
-            faultType,
-            faultUrgency,
-            faultLocation,
-            faultStatus,
-            doneBy,
-            supplierInvolved: isSupplierInvolved === "כן" || false,
-            price: typeof faultPrice === "string" ? parseInt(faultPrice) : faultPrice,
-            faultImage, // check how to upload file
+        setIsLoadingEditFault(true);
+
+        if (!(is_vahadbait || is_management_company)) {
+            alert("User not allowed to edit fault.");
+            setIsLoadingEditFault(false);
+            return;
         }
-        console.log("Submitted form data:", data);
-        setIsLoadingAddFault(false);
+
+        const data: editFaultRequest = {
+            id: parseInt(faultId as string),
+        }
+
+        // Check updates
+        if (faultName !== originalFaultData?.name) {
+            data.name = faultName;
+        }
+        if (faultType !== originalFaultData?.severity) {
+            data.severity = faultType;
+        }
+        if (faultUrgency !== originalFaultData?.urgency) {
+            data.urgency = faultUrgency;
+        }
+        if (faultLocation !== originalFaultData?.location) {
+            data.location = faultLocation;
+        }
+        const originalStatus = originalFaultData?.status ? "טופלה" : "לא טופלה";
+        if (faultStatus !== originalStatus) {
+            data.status = faultStatus === "טופלה";
+        }
+        if (doneBy !== originalFaultData?.handledby) {
+            data.handledby = doneBy;
+        }
+        const originalIsVendor = originalFaultData?.vendor ? "כן" : "לא";
+        if (isSupplierInvolved !== originalIsVendor) {
+            data.vendor = isSupplierInvolved === "כן";
+        }
+        if (faultPrice !== originalFaultData?.price) {
+            data.price = faultPrice;
+        }
+
+
+        if (faultId) {
+            try {
+                const response: any = await fetch(faultEndpoint, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data)
+                });
+                const resJson = await response.json();
+                setIsLoadingEditFault(false);
+                if (response.ok) {
+                    setSuccessModal(true);
+                    if (faultStatus === "טופלה") {
+                        setSuccessMessage("פרטי התקלה עודכנו בהצלחה! נשלח לדיירים עדכון על הטיפול בתקלה.");
+                        handleClickSendUpdate()
+                    };
+                }
+            } catch (error: any) {
+                console.log(error);
+                setIsLoadingEditFault(false);
+                setErrorModal(true);
+            }
+        }
     }
+
+
+    const handleClickSendUpdate = async () => {
+
+        if (!building_id) alert("User not allowed, missing building code.");
+
+        const data = {
+            type: "fault",
+            item_id: faultId,
+            item_name: faultName,
+            item_date: null
+        };
+
+        const response = await fetch(updatesEndpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        console.log("Create update res", response);
+
+    }
+
+
+
+    if (isLoadingFaultData) return (
+        <PageLayout pageTitle='עריכת תקלה'>
+            <Loader isShadow={false} message='טוען פרטי תקלה...' />
+        </PageLayout>
+    );
+
 
     return (
         <PageLayout pageTitle='עריכת תקלה'>
@@ -88,7 +215,9 @@ export default function EditPage() {
                     <ButtonSave text='לחץ לשמירה' type='submit' />
                 </div>
             </form>
-            {isLoadingAddFault && <Loader />}
+            {isLoadingEditFault && <Loader />}
+            <ModalMessage isOpen={successModal} handleClose={handleCloseSuccessModal} message={successMessage} buttonText='אישור' type='success' />
+            <ModalMessage isOpen={errorModal} handleClose={handleCloseErrorModal} message="ישנה שגיאה בעריכת פרטי התקלה, אנא נסו שוב." buttonText='אישור' type='error' />
         </PageLayout>
     )
 }

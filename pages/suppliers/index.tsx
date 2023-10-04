@@ -15,44 +15,18 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
 import { ModalAreYouSure } from '@/components/UI/Modals/ModalAreYouSure';
 import { useRouter } from 'next/router';
+import { Loader } from '@/components/UI/Loader';
+import { userStore } from '@/stores/UserStore';
 
-
-// Hardcoded demo-data
-const suppliers = [
-    {
-        id: 1,
-        role: "גנן",
-        fullName: "שלומי זהבי",
-        phone: '0503455562'
-    },
-    {
-        id: 2,
-        role: "טכנאי",
-        fullName: "משה גבאי",
-        phone: '0543455562'
-    },
-    {
-        id: 3,
-        role: "מנקה",
-        fullName: "אבי זוהר",
-        phone: '0540005562'
-    },
-    {
-        id: 4,
-        role: "אינסטלטור",
-        fullName: "רון לוי",
-        phone: '0540005124'
-    }
-];
 
 // Create rows data function
 function createData(
     id: number,
     role: string,
-    fullName: string,
-    phone: string, // It will change back to int
+    fullname: string,
+    phone: number, // It will change back to int
 ) {
-    return { id, role, fullName, phone };
+    return { id, role, fullname, phone };
 }
 
 
@@ -60,12 +34,13 @@ export default function SuppliersPage() {
 
     const router = useRouter();
 
-    // Hardcoded - need to come from store after login
-    const buildingID = 1;
-    const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    const suppliersEndpoint = apiEndpoint + `/v2/buildings/${buildingID}/managment/contractors`;
+    // Get User Details
+    const { building_id, is_vahadbait, is_management_company } = userStore();
 
-    // const [suppliers, setSuppliers] = useState<Supplier[] | null>(null);
+    const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
+    const suppliersEndpoint = apiEndpoint + `/v2/buildings/${building_id}/managment/contractors`;
+
+    const [suppliers, setSuppliers] = useState<Supplier[] | null>(null);
     const [isLoading, setLoading] = useState(false);
     const [deletedSupplierId, setDeletedSupplierId] = useState<number | undefined>(undefined);
     const [showModalBeforeDelete, setShowModalBeforeDelete] = useState(false);
@@ -87,74 +62,99 @@ export default function SuppliersPage() {
         setShowErrorDeleteModal(false);
     }
 
-    // // Fetch Meetings
-    // useEffect(() => {
-    //     setLoading(true);
-    //     fetch(suppliersEndpoint)
-    //         .then((res) => res.json())
-    //         .then((data) => {
-    //             setSuppliers(data.meetings);
-    //             setLoading(false);
-    //         }).catch(err => { console.log(err); setLoading(false); setShowErrorDeleteModal(true); });
-    // }, []);
+    // Fetch Contractors
+    useEffect(() => {
+        setLoading(true);
+        fetch(suppliersEndpoint)
+            .then((res) => res.json())
+            .then((data) => {
+                setSuppliers(data.contractors);
+                setLoading(false);
+            }).catch(err => { console.log(err); setLoading(false); setShowErrorDeleteModal(true); });
+    }, [showModalAfterDelete]);
 
-    // if (isLoading) return <p>Loading...</p>;
-    // if (!suppliers) return <p>Missing data about suppliers</p>;
+    if (isLoading) return (
+        <PageLayout pageTitle='רשימת ספקים'>
+            <Loader isShadow={false} message='טוען רשימת ספקים...' />
+        </PageLayout>
+    );
+
+    if (!suppliers) return (
+        <PageLayout pageTitle='רשימת ספקים'>
+            <p>לא נמצאו ספקים</p>
+        </PageLayout>
+    );
 
 
-    // Handle click delete supplier button
+    // Handle click delete supplier icon
     const handleClickDelete = (supplierId: number) => {
         setDeletedSupplierId(supplierId);
         setShowModalBeforeDelete(true);
     }
 
-    // Delete Supplier Function
-    const handleDeleteSupplier = () => {
+    // Delete Supplier Function (click - yes)
+    const handleDeleteSupplier = async () => {
         setShowModalBeforeDelete(false);
         setLoading(true);
-        setLoading(false);
-        setShowModalAfterDelete(true);
+        if (!deletedSupplierId) return;
+
+        try {
+
+            const response: any = await fetch(`${suppliersEndpoint}/${deletedSupplierId}`, {
+                method: "DELETE",
+            });
+            const resJson = await response.json();
+            setLoading(false);
+            if (response.ok) {
+                setShowModalAfterDelete(true);
+            }
+        } catch (error: any) {
+            setLoading(false);
+            setShowErrorDeleteModal(true);
+            console.log(error);
+        }
 
     }
 
     // Create table rows (suppliers)
     const rows = suppliers?.map((
-        supplier => createData(supplier.id, supplier.role, supplier.fullName, supplier.phone)
+        supplier => createData(supplier.id, supplier.role, supplier.fullname, supplier.phone)
     ))
 
     return (
         <PageLayout pageTitle='רשימת ספקים'>
-            <ButtonAddItem buttonText='הוספת ספק' buttonLink='/suppliers/add' />
-            <TableContainer component={Paper} className={style.table_container}>
+            {(is_vahadbait || is_management_company) && <ButtonAddItem buttonText='הוספת ספק' buttonLink='/suppliers/add' />}
+            {suppliers.length < 1 && <p>לא קיימים ספקים לבניין.</p>}
+            {suppliers.length > 0 && <TableContainer component={Paper} className={style.table_container}>
                 <Table aria-label="suppliers table">
                     <TableHead>
                         <TableRow>
                             <TableCell className={style.head_cells} align="center">תפקיד</TableCell>
                             <TableCell className={style.head_cells} align="center">שם מלא</TableCell>
                             <TableCell className={style.head_cells} align="center">טלפון</TableCell>
-                            <TableCell className={`${style.head_cells} ${style.head_delete}`} align="center"></TableCell>
+                            {(is_vahadbait || is_management_company) && <TableCell className={`${style.head_cells} ${style.head_delete}`} align="center"></TableCell>}
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {rows.map((row) => (
                             <TableRow
-                                key={row.fullName}
+                                key={row.fullname}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 className={style.content_row}
                             >
                                 <TableCell className={style.content_cell} align="center">{row.role}</TableCell>
-                                <TableCell className={style.content_cell} align="center">{row.fullName}</TableCell>
-                                <TableCell className={style.content_cell} align="center">{row.phone}</TableCell>
-                                <TableCell className={`${style.content_cell} ${style.delete_cell}`} align="center">
+                                <TableCell className={style.content_cell} align="center">{row.fullname}</TableCell>
+                                <TableCell className={style.content_cell} align="center">{"0" + row.phone}</TableCell>
+                                {(is_vahadbait || is_management_company) && <TableCell className={`${style.content_cell} ${style.delete_cell}`} align="center">
                                     <button type='button' onClick={() => handleClickDelete(row.id)}>
                                         <DeleteIcon />
                                     </button>
-                                </TableCell>
+                                </TableCell>}
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
-            </TableContainer>
+            </TableContainer>}
             <ModalAreYouSure message='את/ה בטוח/ה?' mainButtonText='כן' secondButtonText='לא' handleClickMainButton={handleDeleteSupplier} isOpen={showModalBeforeDelete} handleClose={handleCloseModalBeforeDelete} />
             <ModalMessage message='הספק נמחק בהצלחה' buttonText='אישור' isOpen={showModalAfterDelete} handleClose={handleCloseModalAfterDelete} type='success' />
             <ModalMessage message='קרתה שגיאה במחיקת הספק' buttonText='אישור' isOpen={showErrorDeleteModal} handleClose={handleCloseDeleteErrorModal} type='error' />
