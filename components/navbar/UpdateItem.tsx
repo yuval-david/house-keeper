@@ -53,7 +53,7 @@ export function UpdateItem({
                 <Link href={link}>בעמוד {page}</Link>
                 .
             </p>
-            <span className={style.date}>{getDate(update.timestamp)}</span>
+            <span className={style.date}>{getDate(update.timestemp)}</span>
         </div>
     )
 }
