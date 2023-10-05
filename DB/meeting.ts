@@ -102,7 +102,7 @@ export async function createMeeting(body: any) {
         console.log('id:', id);
         return id;
     } catch (error) {
-        console.log("Error insert evento to calendar.", error);
-        throw new Error("Error insert evento to calendar.");
+        console.log("Error insert event to calendar.", error);
+        throw new Error("Error insert event to calendar.");
     }
 }
