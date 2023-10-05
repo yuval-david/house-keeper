@@ -65,18 +65,17 @@ export default function AddFaultPage() {
 
     // Upload fault image
     const uploadImage = async (faultId: number) => {
+        console.log("upload image: ", faultId);
 
         if (!selectedFile) return;
 
         const formdata = new FormData();
-        formdata.append("myImage", selectedFile);
+        formdata.append("fault_img", selectedFile);
 
-        const endpointUpload = apiEndpoint + faultEndpoint + `/${faultId}/image`;
+        const endpointUpload = faultEndpoint + `/${faultId}/image`;
         const responseUpload = await fetch(endpointUpload, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { 'Content-Type': 'multipart/form-data' },
             body: JSON.stringify(formdata)
         });
 
@@ -87,7 +86,6 @@ export default function AddFaultPage() {
         } else {
             console.log("error uploading image");
         }
-        // const imageLocation = `/faults/${building_id}/${faultId}`;
     }
 
     // Submit add fault form

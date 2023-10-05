@@ -1,6 +1,8 @@
 import { sql } from '@vercel/postgres';
 import type { NextApiRequest, NextApiResponse } from 'next';
-// import formidable from "formidable";
+import formidable from "formidable";
+import path from "path";
+import fs from "fs/promises";
 
 export const config = {
     api: {
@@ -9,30 +11,57 @@ export const config = {
 }
 
 
-const readFile = (req: NextApiRequest) => {
-    // const form = formidable();
-}
+const readFile = (req: NextApiRequest, saveLocally: boolean)
+    : Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
 
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { building_id, fault_id } = req.query;
     const faultId = fault_id as string;
     const buildingId = building_id as string;
 
-    // const form = formidable({
-
-    // })
-
-    // POST - upload image to specific meeting
-    if (req.method === 'POST') {
-
-        try {
-            const faultResult = await sql`SELECT * FROM faults WHERE building_id=${buildingId} AND id=${faultId};`;
-            return res.status(200).json({ fault: faultResult.rows[0] });
-
-        } catch (error: any) {
-            res.status(500).json({ error: error.message });
+    const options: formidable.Options = {};
+    if (saveLocally) {
+        options.uploadDir = path.join(process.cwd(), `/public/faults/${buildingId}/${faultId}`);
+        options.filename = (name, ext, path, form) => {
+            return "img";
         }
     }
+
+    const form = formidable(options);
+    return new Promise((resolve, reject) => {
+        form.parse(req, (err, fields, files) => {
+            if (err) reject(err);
+            resolve({ fields, files });
+        })
+    })
+}
+
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
+    const { building_id, fault_id } = req.query;
+    const faultId = fault_id as string;
+    const buildingId = building_id as string;
+
+    if (req.method === 'POST') {
+
+        // Check if directory exist. If not - create it
+        try {
+            await fs.readdir(path.join(process.cwd(), `/public/faults/${buildingId}/${faultId}`));
+
+        } catch (error: any) {
+            await fs.mkdir(path.join(process.cwd(), `/public/faults/${buildingId}/${faultId}`));
+        }
+
+
+        try {
+            // Read file
+            await readFile(req, true);
+            res.json({ message: "Fault image uploaded successfuly" });
+        } catch (error: any) {
+            res.status(500).json({ message: "Error upload image." })
+        }
+    }
+
+
 
 }
