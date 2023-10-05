@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import style from "./ModalAreYouSure.module.css"
+import { FC, ReactNode } from 'react';
 
 const styleModal = {
     position: 'absolute' as 'absolute',
@@ -25,14 +26,14 @@ const styleModal = {
 export function ModalAreYouSure({
     isOpen,
     handleClose,
-    message,
+    Message,
     mainButtonText,
     secondButtonText,
-    handleClickMainButton,
+    handleClickMainButton
 }: {
     isOpen: boolean;
     handleClose: () => void;
-    message: string;
+    Message: string | ReactNode;
     mainButtonText: string;
     secondButtonText: string;
     handleClickMainButton: (value?: any) => void;
@@ -47,7 +48,8 @@ export function ModalAreYouSure({
         >
             <Box sx={styleModal}>
                 <Typography id="modal-modal-description" className={style.message}>
-                    {message}
+                    {/* {typeof Message === "string" ? Message : <Message />} */}
+                    {Message}
                 </Typography>
                 <div className={style.btns_container}>
                     <button onClick={handleClickMainButton} type='button'>{mainButtonText}</button>
