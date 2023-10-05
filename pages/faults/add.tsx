@@ -10,6 +10,16 @@ import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
 import { useRouter } from 'next/router';
 import { userStore } from '@/stores/UserStore';
 
+
+export interface UploadedFile {
+    lastModified: number;
+    lastModifiedDate: Date;
+    name: string;
+    size: number;
+    type: string; // "image/jpeg"
+    webkitRelativePath: string;
+}
+
 export default function AddFaultPage() {
 
     const router = useRouter();
@@ -31,7 +41,9 @@ export default function AddFaultPage() {
     const [doneBy, setDoneBy] = useState<string>("");
     const [isSupplierInvolved, setIsSupplierInvolved] = useState<string>("");
     const [faultPrice, setFaultPrice] = useState<number>(0);
-    const [faultImage, setFaultImage] = useState(""); // Need to check how to implement image
+    const [selectedFile, setSelectedFile] = useState<UploadedFile | any>();
+    const [selectedImage, setSelectedImage] = useState<any>();
+    const [faultImageValue, setFaultImageValue] = useState(); // For input value only
 
     // Message Modal Functions
     const handleCloseSuccessModal = () => {
@@ -40,6 +52,42 @@ export default function AddFaultPage() {
     }
     const handleCloseErrorModal = () => {
         setErrorModal(false);
+    }
+
+    // handle change file input
+    const handleChangeFile = (event: any) => {
+        setFaultImageValue(event.target.value);
+
+        const file = event.target.files[0];
+        setSelectedFile(file);
+        setSelectedImage(URL.createObjectURL(file));
+    }
+
+    // Upload fault image
+    const uploadImage = async (faultId: number) => {
+
+        if (!selectedFile) return;
+
+        const formdata = new FormData();
+        formdata.append("myImage", selectedFile);
+
+        const endpointUpload = apiEndpoint + faultEndpoint + `/${faultId}/image`;
+        const responseUpload = await fetch(endpointUpload, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formdata)
+        });
+
+        const resUpload = responseUpload.json();
+        console.log("response upload fault image: ", resUpload);
+        if (responseUpload.ok) {
+            console.log("success");
+        } else {
+            console.log("error uploading image");
+        }
+        // const imageLocation = `/faults/${building_id}/${faultId}`;
     }
 
     // Submit add fault form
@@ -73,6 +121,8 @@ export default function AddFaultPage() {
             const resJson = await response.json();
             setIsLoadingAddFault(false);
             if (response.ok) {
+                console.log(resJson.id);
+                uploadImage(resJson.id);
                 setSuccessModal(true);
             }
         } catch (error: any) {
@@ -110,7 +160,7 @@ export default function AddFaultPage() {
                                     </div>
                                 )
                             }
-                            <CustomInputRow value={faultImage} onChange={(e) => setFaultImage(e.target.value)} label='תמונה' placeholder='' type='file' dir='rtl' fileTypesAccept='image/*' />
+                            <CustomInputRow value={faultImageValue || ""} onChange={handleChangeFile} label='תמונה' placeholder='' type='file' dir='rtl' fileTypesAccept='image/*' />
                         </div>
                     </div>
                 </div>
