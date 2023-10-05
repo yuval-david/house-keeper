@@ -19,7 +19,8 @@ async function loadSavedCredentialsIfExist() {
     try {
         const content = fs.readFileSync(TOKEN_PATH);
         const credentials = JSON.parse(content);
-        return google.auth.fromJSON(credentials);
+        let auth =  google.auth.fromJSON(credentials);
+        const accesstoken = await auth.getAccessToken();
     } catch (err) {
         return null;
     }
