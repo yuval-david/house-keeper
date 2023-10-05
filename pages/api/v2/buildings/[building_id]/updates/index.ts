@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // GET
     if (req.method === 'GET') {
         try {
-            const data = await sql`SELECT * FROM updates WHERE building_id = ${buildingId};`;
+            const data = await sql`SELECT * FROM updates WHERE building_id = ${buildingId} ORDER BY timestemp desc;`;
             console.log(data);
             res.status(200).json({ updates: data.rows });
         } catch (error: any) {
