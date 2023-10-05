@@ -6,6 +6,8 @@ import { getDate } from '@/utils/getDate';
 import { userStore } from '@/stores/UserStore';
 import { ModalMessage } from '../UI/Modals/ModalMessage';
 import { Loader } from '../UI/Loader';
+import { ModalAreYouSure } from '../UI/Modals/ModalAreYouSure';
+import { ModalCalendarMessage } from './ModalCalendarMessage';
 
 export function MeetingCard({
     id,
@@ -38,6 +40,7 @@ export function MeetingCard({
     const [successModal, setSuccessModal] = useState(false);
     const [errorModal, setErrorModal] = useState(false);
     const [addCalendarModal, setAddCalendarModal] = useState(false);
+    const [selectedEmail, setSelectedEmail] = useState(email);
 
     const handleCloseSuccessModal = () => {
         setSuccessModal(false);
@@ -47,10 +50,42 @@ export function MeetingCard({
     }
     const handleCloseAddCalendarModal = () => {
         setAddCalendarModal(false);
+    }
+    const handleAproveAddCalendarModal = () => {
+
+        const isValid = emailValidation();
+        if (!isValid) return;
+        setAddCalendarModal(false);
         createMeetingOnCalendar();
     }
 
     const router = useRouter();
+
+    const emailValidation = () => {
+
+        // Check value exist
+        if (!selectedEmail) {
+            alert("עלייך להזין כתובת מייל.");
+            return false;
+        }
+
+        // Check email is valid
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(selectedEmail)) {
+
+            // Check email is gmail
+            if (!selectedEmail.includes("gmail.com")) {
+                alert("כתובת המייל צריכה להיות של gmail. אנא הזינו כתובת מתאימה.");
+                return false;
+            }
+
+            return true;
+
+        } else {
+            alert("כתובת המייל אינה תקינה, אנא נסו שוב.");
+            return false;
+        }
+
+    }
 
     const handleClickViewShortBtn = () => {
         router.push(`/meetings/${id}/view-summary`);
@@ -68,7 +103,7 @@ export function MeetingCard({
         setIsLoading(true);
 
         const data = {
-            email
+            email: selectedEmail
         };
 
         const response = await fetch(meetingCalendarEndpoint, {
@@ -182,7 +217,8 @@ export function MeetingCard({
             </div>
             <ModalMessage isOpen={successModal} handleClose={handleCloseSuccessModal} message="נשלחה תזכורת לפגישה! תוכלו למצוא אותה באזור העדכונים." buttonText='אישור' type='success' />
             <ModalMessage isOpen={errorModal} handleClose={handleCloseErrorModal} message="ישנה שגיאה בשליחת התזכורת, אנא נסו שוב." buttonText='אישור' type='error' />
-            <ModalMessage isOpen={addCalendarModal} handleClose={handleCloseAddCalendarModal} message={`ברצונך להוסיף את הפגישה ביומן של כתובת המייל: ${email} ?`} buttonText='כן' type='info' />
+            <ModalAreYouSure Message={<ModalCalendarMessage selectedEmail={selectedEmail} setSelectedEmail={setSelectedEmail} />} mainButtonText='כן' secondButtonText='לא' handleClickMainButton={handleAproveAddCalendarModal} isOpen={addCalendarModal} handleClose={handleCloseAddCalendarModal} />
+
             {isLoading && <Loader />}
         </div>
     )

@@ -68,6 +68,13 @@
 @media (max-width:1024px) {
     .meeting_actions {
         row-gap: 3vw;
+        margin: 0;
+        margin-top: 2vw;
+    }
+
+    .meeting_actions > div {
+        flex-direction: column;
+        row-gap: 3vw;
     }
 }
 
@@ -83,7 +90,7 @@
 
 @media (max-width:1024px) {
     .meeting_actions > div button {
-        width: 48%;
+        width: 100%;
     }
 }
 
