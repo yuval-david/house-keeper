@@ -1,6 +1,6 @@
 .btn_edit {
     margin: 1.5vw auto;
-    margin-bottom: 1vw;
+    margin-bottom: 0vw;
     display: flex;
     align-items: center;
     column-gap: 0.5vw;
@@ -20,11 +20,13 @@
 
 .input_container {
     font-size: 75%;
+    margin-top: 1.5vw;
 }
 
 @media (max-width: 1024px) {
     .input_container {
         font-size: 55%;
+        margin-top: 3vw;
     }
 }
 
