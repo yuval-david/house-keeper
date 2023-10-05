@@ -92,11 +92,17 @@ export async function createMeeting(body: any) {
         calendarId: 'primary',
         resource: event,
     });
-    const id = await newEvent.then((res) => {
-        console.log('Event created: %s');
-        // @ts-ignore
-        return res.data.id
-    })
-    console.log('id:', id);
-    return id;
+
+    try {
+        const id = await newEvent.then((res) => {
+            console.log('Event created: %s');
+            // @ts-ignore
+            return res.data.id
+        })
+        console.log('id:', id);
+        return id;
+    } catch (error) {
+        console.log("Error insert evento to calendar.", error);
+        throw new Error("Error insert evento to calendar.");
+    }
 }

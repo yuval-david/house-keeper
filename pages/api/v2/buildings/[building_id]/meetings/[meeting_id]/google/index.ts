@@ -9,20 +9,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (req.method === 'POST') {
         try {
-            try {
-                let meeting = await getMeeting(building_id, meeting_id);
-                meeting.users = [email];
+            // Get meeting & add the user email
+            let meeting = await getMeeting(building_id, meeting_id);
+            meeting.users = [email];
 
-                await createMeeting(meeting);
-                res.status(200);
-            } catch (error: any) {
-                res.status(500).json({ error: error.message });
-            }
+            // Create meeting in google calendar
+            await createMeeting(meeting);
 
             res.status(201).json({ message: 'Meeting created in calendar.' });
+
         } catch (error: any) {
             res.status(500).json({ error: error.message });
         }
+
     } else {
         res.status(405).end();  // Method Not Allowed
     }
