@@ -74,7 +74,7 @@ export interface Update {
     item_id: string;
     item_name: string;
     item_date: string;
-    timestamp: string; // created date
+    timestemp: string; // created date
 }
 
 export interface User {
