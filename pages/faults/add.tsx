@@ -9,6 +9,7 @@ import { AddFaultRequest, FaultSeveriry, FaultStatus, FaultUrgency } from '@/Typ
 import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
 import { useRouter } from 'next/router';
 import { userStore } from '@/stores/UserStore';
+import axios from 'axios';
 
 
 export interface UploadedFile {
@@ -73,19 +74,14 @@ export default function AddFaultPage() {
         formdata.append("fault_img", selectedFile);
 
         const endpointUpload = faultEndpoint + `/${faultId}/image`;
-        const responseUpload = await fetch(endpointUpload, {
-            method: "POST",
-            headers: { 'Content-Type': 'multipart/form-data' },
-            body: JSON.stringify(formdata)
-        });
 
-        const resUpload = responseUpload.json();
-        console.log("response upload fault image: ", resUpload);
-        if (responseUpload.ok) {
-            console.log("success");
-        } else {
-            console.log("error uploading image");
+        try {
+            const { data } = await axios.post(endpointUpload, formdata);
+            console.log(data);
+        } catch (error: any) {
+            console.log(error.response?.data);
         }
+
     }
 
     // Submit add fault form

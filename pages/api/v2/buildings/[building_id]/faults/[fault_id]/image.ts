@@ -17,16 +17,22 @@ const readFile = (req: NextApiRequest, saveLocally: boolean)
     const { building_id, fault_id } = req.query;
     const faultId = fault_id as string;
     const buildingId = building_id as string;
-
     const options: formidable.Options = {};
+
     if (saveLocally) {
-        options.uploadDir = path.join(process.cwd(), `/public/faults/${buildingId}/${faultId}`);
-        options.filename = (name, ext, path, form) => {
-            return "img";
+        try {
+            options.uploadDir = path.join(process.cwd(), `/public/faults/${buildingId}/${faultId}`);
+            // options.maxFileSize = 200000;
+            options.filename = (name, ext, path, form) => {
+                return "img.jpg";
+            }
+        } catch (error) {
+            console.log("error uploading: ", error);
         }
     }
 
     const form = formidable(options);
+
     return new Promise((resolve, reject) => {
         form.parse(req, (err, fields, files) => {
             if (err) reject(err);
