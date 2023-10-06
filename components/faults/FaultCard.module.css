@@ -101,12 +101,14 @@
 
 .fault_img_container {
     width: 15vw;
+    max-height: 15vw;
     margin-right: auto;
 }
 
 @media (max-width:1024px) {
     .fault_img_container {
         width: 75%;
+        max-height: unset;
         margin-right: 0;
         margin-top: 1vw;
         margin-bottom: 2vw;

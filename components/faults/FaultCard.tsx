@@ -14,7 +14,7 @@ export function FaultCard({
 }) {
 
     // Get User Details
-    const { is_vahadbait, is_management_company } = userStore();
+    const { is_vahadbait, is_management_company, building_id } = userStore();
     const { name, severity, urgency, status, location, handledby, price } = faultData;
     const statusText = status ? "טופלה" : "לא טופלה";
 
@@ -65,8 +65,11 @@ export function FaultCard({
                 <div className={style.more_details}>
                     {(is_vahadbait || is_management_company) && <ButtonEditItem buttonLink={`/faults/${id}/edit`} buttonText='לעריכה לחצו כאן' />}
                     <div className={style.fault_img_container}>
-                        <img src="/icons/preview_img.svg" alt="fault image" />
-                        {/** TODO: Add condition with the real picture **/}
+                        <img
+                            src={`/faults/${building_id}/${id}/img.jpg`}
+                            onError={(e: any) => { e.target.onError = null; e.target.src = "/icons/preview_img.svg" }}
+                            alt="fault image" />
+
                     </div>
                 </div>
             </div>
