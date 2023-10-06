@@ -9,6 +9,8 @@ import { useRouter } from 'next/router';
 import { Fault, FaultStatus, FaultSeveriry, FaultUrgency, editFaultRequest } from '@/Types/objects_types';
 import { ModalMessage } from '@/components/UI/Modals/ModalMessage';
 import { userStore } from '@/stores/UserStore';
+import { UploadedFile } from '../add';
+import axios from 'axios';
 
 
 export default function EditPage() {
@@ -22,6 +24,9 @@ export default function EditPage() {
     const faultEndpoint = useMemo(() => {
         return apiEndpoint + `/v2/buildings/${building_id}/faults/${faultId}`;
     }, [building_id, faultId]);
+    const faultsEndpoint = useMemo(() => {
+        return apiEndpoint + `/v2/buildings/${building_id}/faults`;
+    }, [building_id]);
     const updatesEndpoint = useMemo(() => {
         return apiEndpoint + `/v2/buildings/${building_id}/updates`;
     }, [building_id]);
@@ -37,7 +42,8 @@ export default function EditPage() {
     const [doneBy, setDoneBy] = useState<string>();
     const [isSupplierInvolved, setIsSupplierInvolved] = useState<string>();
     const [faultPrice, setFaultPrice] = useState<number>();
-    const [faultImage, setFaultImage] = useState(); // Need to check how to implement image
+    const [faultImageValue, setFaultImageValue] = useState(); // For input value only
+    const [selectedFile, setSelectedFile] = useState<UploadedFile | any>();
     const [successModal, setSuccessModal] = useState(false);
     const [errorModal, setErrorModal] = useState(false);
     const [successMessage, setSuccessMessage] = useState("פרטי התקלה עודכנו בהצלחה");
@@ -46,6 +52,7 @@ export default function EditPage() {
 
     const handleCloseSuccessModal = () => {
         setSuccessModal(false);
+        router.reload();
     }
     const handleCloseErrorModal = () => {
         setErrorModal(false);
@@ -134,10 +141,13 @@ export default function EditPage() {
                 const resJson = await response.json();
                 setIsLoadingEditFault(false);
                 if (response.ok) {
+                    if (response.ok) {
+                        uploadImage(parseInt(faultId as string));
+                    }
                     setSuccessModal(true);
                     if (faultStatus === "טופלה") {
                         setSuccessMessage("פרטי התקלה עודכנו בהצלחה! נשלח לדיירים עדכון על הטיפול בתקלה.");
-                        handleClickSendUpdate()
+                        handleClickSendUpdate();
                     };
                 }
             } catch (error: any) {
@@ -168,8 +178,31 @@ export default function EditPage() {
             body: JSON.stringify(data)
         });
 
-        console.log("Create update res", response);
+    }
 
+
+    // handle change file input
+    const handleChangeFile = (event: any) => {
+        setFaultImageValue(event.target.value);
+
+        const file = event.target.files[0];
+        setSelectedFile(file);
+    }
+
+    // Upload fault image
+    const uploadImage = async (faultId: number) => {
+        if (!selectedFile) return;
+
+        const formdata = new FormData();
+        formdata.append("fault_img", selectedFile);
+
+        const endpointUpload = faultsEndpoint + `/${faultId}/image`;
+
+        try {
+            const { data } = await axios.post(endpointUpload, formdata);
+        } catch (error: any) {
+            console.log(error.response?.data);
+        }
     }
 
 
@@ -207,7 +240,19 @@ export default function EditPage() {
                                     </div>
                                 )
                             }
-                            <CustomInputRow value={faultImage} onChange={(e) => setFaultImage(e.target.value)} label='תמונה' placeholder='' type='file' dir='rtl' fileTypesAccept='image/*' />
+                            <CustomInputRow value={faultImageValue || ""} onChange={handleChangeFile} label='תמונה' placeholder='' type='file' dir='rtl' fileTypesAccept='image/*' />
+                            {faultImageValue &&
+                                <span>
+                                    התמונה תחליף את התמונה הנוכחית.
+                                </span>
+                            }
+                            <div className={style.fault_img_container}>
+                                <img
+                                    src={`/faults/${building_id}/${faultId}/img.jpg`}
+                                    onError={(e: any) => { e.target.onError = null; e.target.src = "/icons/preview_img.svg" }}
+                                    alt="fault image" />
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -218,6 +263,6 @@ export default function EditPage() {
             {isLoadingEditFault && <Loader />}
             <ModalMessage isOpen={successModal} handleClose={handleCloseSuccessModal} message={successMessage} buttonText='אישור' type='success' />
             <ModalMessage isOpen={errorModal} handleClose={handleCloseErrorModal} message="ישנה שגיאה בעריכת פרטי התקלה, אנא נסו שוב." buttonText='אישור' type='error' />
-        </PageLayout>
+        </PageLayout >
     )
 }

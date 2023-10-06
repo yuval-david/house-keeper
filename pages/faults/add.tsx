@@ -66,8 +66,6 @@ export default function AddFaultPage() {
 
     // Upload fault image
     const uploadImage = async (faultId: number) => {
-        console.log("upload image: ", faultId);
-
         if (!selectedFile) return;
 
         const formdata = new FormData();
@@ -77,11 +75,9 @@ export default function AddFaultPage() {
 
         try {
             const { data } = await axios.post(endpointUpload, formdata);
-            console.log(data);
         } catch (error: any) {
             console.log(error.response?.data);
         }
-
     }
 
     // Submit add fault form
