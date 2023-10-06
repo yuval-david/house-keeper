@@ -48,7 +48,6 @@ export function ModalAreYouSure({
         >
             <Box sx={styleModal}>
                 <Typography id="modal-modal-description" className={style.message}>
-                    {/* {typeof Message === "string" ? Message : <Message />} */}
                     {Message}
                 </Typography>
                 <div className={style.btns_container}>

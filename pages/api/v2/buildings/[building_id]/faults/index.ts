@@ -22,10 +22,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             INSERT INTO faults 
             (name, severity, urgency, location, status, handledby, vendor, price, building_id)
             VALUES 
-            (${name}, ${severity}, ${urgency}, ${location}, ${status}, ${handledby}, ${vendor}, ${price}, ${buildingId});
-            `;
+            (${name}, ${severity}, ${urgency}, ${location}, ${status}, ${handledby}, ${vendor}, ${price}, ${buildingId})
+            RETURNING id;`;
 
-            res.status(201).json({ message: 'Fault created.' });
+            const created_fault_id = data.rows[0]?.id;
+            res.status(201).json({ message: 'Fault created.', id: created_fault_id });
+
         } catch (error: any) {
             res.status(500).json({ error: error.message });
         }

@@ -123,3 +123,16 @@
         max-width: 100%;
     }
 }
+
+.fault_img_container {
+    width: 25vw;
+    margin-top: 0.5vw;
+}
+
+@media (max-width:1024px) {
+    .fault_img_container {
+        width: 90%;
+        margin: auto;
+        margin-top: 3vw;
+    }
+}
